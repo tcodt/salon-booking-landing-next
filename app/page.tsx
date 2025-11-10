@@ -9,15 +9,32 @@ import Testimonials from "./components/Testimonials/Testimonials";
 import CtaSection from "./components/CtaSection/CtaSection";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
+import FaqDropdown from "./components/FaqDropdown/FaqDropdown";
 
 function Home() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
-    alert(`با تشکر! ایمیل شما ثبت شد: ${email}`);
+
+    // 🟢 این بخش را میتونی بعداً به API یا EmailJS وصل کنی
+    alert(`
+      ✅ پیام شما ارسال شد!
+
+      نام: ${name}
+      ایمیل: ${email}
+      شماره تماس: ${phone}
+      پیام: ${message}
+    `);
+
+    // پاک کردن فرم
+    setName("");
     setEmail("");
+    setPhone("");
+    setMessage("");
   };
 
   return (
@@ -37,6 +54,9 @@ function Home() {
       {/* About Section */}
       <About />
 
+      {/* FAQ Section */}
+      <FaqDropdown />
+
       {/* Testimonials Section */}
       <Testimonials />
 
@@ -44,7 +64,17 @@ function Home() {
       <CtaSection />
 
       {/* Contact Section */}
-      <Contact email={email} setEmail={setEmail} handleSubmit={handleSubmit} />
+      <Contact
+        handleSubmit={handleSubmit}
+        name={name}
+        setName={setName}
+        email={email}
+        setEmail={setEmail}
+        phone={phone}
+        setPhone={setPhone}
+        message={message}
+        setMessage={setMessage}
+      />
 
       {/* Footer */}
       <Footer />

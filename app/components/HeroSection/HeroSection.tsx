@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import MobileVideo from "../MobileVideo/MobileVideo";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -23,8 +24,8 @@ const HeroSection = () => {
 
   return (
     <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-        <div className="md:w-1/2 mb-10 md:mb-0">
+      <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center">
+        <div className="md:w-1/2 mt-10 md:mt-0">
           <h1
             className="text-4xl md:text-5xl font-bold mb-4"
             style={{ color: "#19705D" }}
@@ -32,8 +33,10 @@ const HeroSection = () => {
             مدیریت هوشمند، زیبایی بی‌نقص
           </h1>
           <p className="text-lg mb-8 text-gray-600">
-            اپلیکیشن نارژین یک راهکار هوشمند برای مدیریت و رزرو آنلاین خدمات
-            آرایشگاهی است.
+            با نارژین، دیگه نیازی به دفتر یادداشت و تماس تلفنی نیست! همه چیز، از
+            رزرو نوبت تا مدیریت مشتریان و حساب‌ها، فقط با چند کلیک انجام می‌شود.
+            نارژین کنار شماست تا کسب‌وکارتان را حرفه‌ای‌تر، سریع‌تر و زیباتر
+            بسازید.
           </p>
           <div className="flex flex-col sm:flex-row space-y-reverse space-y-4 sm:space-y-0 sm:space-x-reverse sm:space-x-4 gap-4">
             <a
@@ -41,20 +44,16 @@ const HeroSection = () => {
               className="px-8 py-3 rounded-lg text-white font-medium text-center transition hover:opacity-90"
               style={{ backgroundColor: "#19705D" }}
             >
-              رزرو آنلاین
-            </a>
-            <button
-              className="px-8 py-3 rounded-lg border-2 font-medium text-center transition hover:bg-gray-50"
-              style={{ borderColor: "#19705D", color: "#19705D" }}
-            >
               اطلاعات بیشتر
-            </button>
+            </a>
           </div>
         </div>
         <div className="md:w-1/2 flex justify-center">
           <div className="relative">
+            <MobileVideo />
+
             {/* Image Slider */}
-            <div
+            {/* <div
               className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-8"
               style={{ borderColor: "#19705D" }}
             >
@@ -73,10 +72,10 @@ const HeroSection = () => {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
 
             {/* Slider Dots */}
-            <div className="flex justify-center mt-4 space-x-reverse space-x-2">
+            {/* <div className="flex justify-center mt-4 space-x-reverse space-x-2">
               {salonImages.map((_, index) => (
                 <button
                   key={index}
@@ -91,10 +90,10 @@ const HeroSection = () => {
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
-            </div>
+            </div> */}
 
             {/* Feature Badge */}
-            <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-lg">
+            {/* <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-lg">
               <div className="flex items-center">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -120,7 +119,7 @@ const HeroSection = () => {
                   <p className="text-sm text-gray-600">سالها تجربه</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ const About = () => {
               تیم ما متشکل از آرایشگران حرفه‌ای و خلاق است که با آخرین متدهای
               روز دنیا آشنا هستند و همواره بهترین خدمات را به شما ارائه می‌دهند.
             </p>
-            <div className="flex items-center mb-6">
+            {/* <div className="flex items-center mb-6">
               <div className="mr-4">
                 <div
                   className="text-3xl font-bold"
@@ -63,13 +63,13 @@ const About = () => {
                 </div>
                 <div className="text-gray-600">آرایشگر حرفه‌ای</div>
               </div>
-            </div>
+            </div> */}
             <a
               href="https://your-main-website.com"
               className="inline-block px-6 py-3 rounded-lg text-white font-medium transition hover:opacity-90"
               style={{ backgroundColor: "#19705D" }}
             >
-              درباره بیشتر بدانید
+              بیشتر بدانید
             </a>
           </div>
         </div>
@@ -110,6 +110,48 @@ const About = () => {
                 {service.title}
               </h3>
               <p className="text-gray-600">{service.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 grid-rows-3">
+          <h2
+            className="text-3xl font-bold mb-4 col-span-full text-center"
+            style={{ color: "#19705D" }}
+          >
+            چرا نارژین؟
+          </h2>
+
+          {[
+            {
+              title: "نوبت‌دهی سریع و دقیق",
+            },
+            {
+              title: "مدیریت کارمندان و زمان‌بندی شیفت‌ها",
+            },
+            {
+              title: "مدیریت کامل مشتریان و ارتباط مستقیم",
+            },
+            {
+              title: "گزارش‌های مالی و حسابداری پیشرفته",
+            },
+            {
+              title: "پشتیبانی از پرداخت آنلاین و کیف پول",
+            },
+            {
+              title: "استفاده از هوش مصنوعی برای بهبود عملکرد",
+            },
+          ].map((service, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-center"
+            >
+              <h3
+                className="text-lg md:text-xl font-bold text-center"
+                style={{ color: "#19705D" }}
+              >
+                {service.title}
+              </h3>
             </div>
           ))}
         </div>
