@@ -7,7 +7,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   return (
-    <header className="bg-white shadow-sm relative">
+    <header className="bg-white shadow-sm relative md:fixed w-full z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <div className="relative w-16 h-16 rounded-full flex items-center justify-center border shadow-sm border-[#19705D]">
@@ -98,7 +98,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white rounded shadow-lg absolute top-full left-4">
+          <div className="md:hidden bg-white rounded shadow-lg absolute top-full left-4 z-50">
             <div className="container mx-auto px-4 py-2 flex flex-col space-y-3">
               <a
                 href="#services"
