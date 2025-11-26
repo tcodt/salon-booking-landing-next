@@ -14,12 +14,12 @@ const MobileVideo = () => {
       "
       >
         <video
-          src="/videos/demo.mp4"
+          src="/video/narjin-introduce.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
     </div>

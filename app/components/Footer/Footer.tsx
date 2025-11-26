@@ -124,14 +124,15 @@ const Footer = () => {
               <a href="#" className="text-gray-400 hover:text-white text-sm">
                 شرایط استفاده
               </a>
-              <div>
-                <Image
-                  src="/images/enamad.png"
-                  alt="Enamad"
-                  width={150}
-                  height={150}
-                />
-              </div>
+            </div>
+
+            <div>
+              <Image
+                src="/images/enamad.png"
+                alt="Enamad"
+                width={150}
+                height={150}
+              />
             </div>
           </div>
         </div>
