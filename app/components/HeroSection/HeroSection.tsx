@@ -40,7 +40,7 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row space-y-reverse space-y-4 sm:space-y-0 sm:space-x-reverse sm:space-x-4 gap-4">
             <a
-              href="https://api.narjin.ir"
+              href="https://panel.narjin.ir"
               className="px-8 py-3 rounded-lg text-white font-medium text-center transition hover:opacity-90"
               style={{ backgroundColor: "#19705D" }}
             >

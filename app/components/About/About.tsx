@@ -11,7 +11,7 @@ const About = () => {
         <div className="flex flex-col md:flex-row items-center">
           <div className="relative w-full h-[400px] md:h-[500px] md:w-1/2 mb-10 md:mb-0">
             <Image
-              src="/images/about-pic.avif"
+              src="/images/about.png"
               alt="Salon Interior"
               className="rounded-xl shadow-lg"
               fill
@@ -65,7 +65,7 @@ const About = () => {
               </div>
             </div> */}
             <a
-              href="https://your-main-website.com"
+              href="https://panel.narjin.ir"
               className="inline-block px-6 py-3 rounded-lg text-white font-medium transition hover:opacity-90"
               style={{ backgroundColor: "#19705D" }}
             >

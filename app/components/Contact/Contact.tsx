@@ -56,7 +56,7 @@ const Contact: React.FC<ContactProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="نام و نام خانوادگی"
-                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
+                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ring-[#19705D]"
                   style={{ borderColor: "#19705D" }}
                   required
                 />
@@ -69,7 +69,7 @@ const Contact: React.FC<ContactProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ایمیل"
-                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
+                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ring-[#19705D]"
                   style={{ borderColor: "#19705D" }}
                   required
                 />
@@ -82,7 +82,7 @@ const Contact: React.FC<ContactProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="شماره تماس (اختیاری)"
-                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
+                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ring-[#19705D]"
                   style={{ borderColor: "#19705D" }}
                 />
               </div>
@@ -94,7 +94,7 @@ const Contact: React.FC<ContactProps> = ({
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="پیام شما..."
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
+                  className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ring-[#19705D]"
                   style={{ borderColor: "#19705D" }}
                   required
                 ></textarea>
