@@ -29,11 +29,11 @@ const FaqDropdown = () => {
   ];
 
   return (
-    <section className="py-16 p-4">
+    <section className="py-16 p-4 bg-[#19705D]">
       <div className="w-full max-w-2xl mx-auto space-y-4">
         <h3
-          className="text-2xl font-bold mb-4 text-center"
-          style={{ color: "#19705D" }}
+          className="text-2xl font-bold mb-4 text-center text-white"
+          // style={{ color: "#19705D" }}
         >
           سوالات پر کاربرد
         </h3>

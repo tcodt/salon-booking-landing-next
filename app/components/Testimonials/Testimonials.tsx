@@ -1,227 +1,214 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
-import { useState, useEffect, useCallback } from "react";
 
-const testimonialsData = [
-  {
-    name: "احمد رضایی",
-    text: "خدمات حرفه‌ای و محیطی بسیار تمیز. پرسنل خوش برخورد و متخصص. حتماً توصیه می‌کنم.",
-  },
-  {
-    name: "رضا محمدی",
-    text: "بهترین آرایشگاهی که تا حالا رفتم. کوتاهی مو عالی و اصلاح صورت بی‌نظیر. حتماً دوباره مراجعه خواهم کرد.",
-  },
-  {
-    name: "امیر حسینی",
-    text: "تجربه‌ای عالی و متفاوت. از کیفیت خدمات بسیار راضی بودم. قیمت‌ها هم منصفانه است.",
-  },
-  {
-    name: "مهدی قربانی",
-    text: "رفتار حرفه‌ای و فضای بسیار عالی. قطعاً همیشه مشتری می‌مونم.",
-  },
-];
+import { useEffect, useRef } from "react";
+import { MdStar } from "react-icons/md";
 
-const Testimonials = () => {
-  const [current, setCurrent] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+export default function Testimonials() {
+  const sliderRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Infinite carousel with smooth transitions
-  const nextSlide = useCallback(() => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % testimonialsData.length);
-      setIsTransitioning(false);
-    }, 300);
-  }, []);
-
-  const prevSlide = useCallback(() => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrent((prev) =>
-        prev === 0 ? testimonialsData.length - 1 : prev - 1
-      );
-      setIsTransitioning(false);
-    }, 300);
-  }, []);
-
-  // ✅ Auto-rotate every 4 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [nextSlide]);
+    const slider = sliderRef.current;
+    if (!slider) return;
 
-  const handlePrev = () => {
-    prevSlide();
-  };
+    let animationFrame: number;
+    let paused = false;
 
-  const handleNext = () => {
-    nextSlide();
-  };
+    const speed = 0.6; // px/frame
 
-  // ✅ Calculate visible testimonials for infinite effect
-  const getVisibleTestimonials = () => {
-    const total = testimonialsData.length;
-    const prev = current === 0 ? total - 1 : current - 1;
-    const next = (current + 1) % total;
+    const animate = () => {
+      if (!paused) {
+        slider.scrollLeft += speed;
 
-    return [
-      testimonialsData[prev],
-      testimonialsData[current],
-      testimonialsData[next],
-    ];
-  };
+        if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1) {
+          slider.scrollLeft = 0;
+        }
+      }
 
-  const visibleTestimonials = getVisibleTestimonials();
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    const pause = () => {
+      paused = true;
+    };
+
+    const resume = () => {
+      paused = false;
+    };
+
+    slider.addEventListener("mouseenter", pause);
+    slider.addEventListener("mouseleave", resume);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      slider.removeEventListener("mouseenter", pause);
+      slider.removeEventListener("mouseleave", resume);
+    };
+  }, []);
 
   return (
-    <section id="testimonials" className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4" style={{ color: "#19705D" }}>
-            نظرات مشتریان
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            نظر برخی از همراهان ما درباره کیفیت خدمات
-          </p>
-        </div>
-
-        {/* ✅ Enhanced Carousel Container */}
-        <div className="relative max-w-4xl mx-auto">
-          <div className="flex items-center justify-center">
-            {/* ✅ Main Carousel */}
-            <div className="relative w-full overflow-hidden">
-              <div className="flex justify-center items-center">
-                {/* Previous Card (hidden on mobile) */}
-                <div className="hidden md:block transform scale-90 opacity-60 transition-all duration-300">
-                  <div className="bg-gray-50 p-6 rounded-xl shadow-sm w-64 mx-2">
-                    <div className="flex items-center mb-3">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "#19705D" }}
-                      >
-                        <span className="text-white font-bold text-sm">
-                          {visibleTestimonials[0].name.charAt(0)}
-                        </span>
-                      </div>
-                      <div className="mr-3">
-                        <h3 className="font-bold text-sm">
-                          {visibleTestimonials[0].name}
-                        </h3>
-                        <div className="flex text-yellow-400 text-sm">
-                          {"★".repeat(5)}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic text-sm">
-                      {visibleTestimonials[0].text}
-                    </p>
-                  </div>
+    <section className="py-xl bg-background">
+      <div className="container mx-auto px-margin-mobile">
+        <h2 className="font-headline-lg text-headline-lg text-center text-primary mb-xl">
+          از زبان مدیران سالن‌ها
+        </h2>
+        <div
+          ref={sliderRef}
+          className="
+      flex
+      gap-6
+      overflow-x-auto
+      scroll-smooth
+      snap-x
+      snap-mandatory
+      scrollbar-hide
+      pb-6"
+          id="testimonial-slider"
+        >
+          <div
+            className="
+flex-shrink-0
+w-[90%]
+sm:w-[80%]
+md:w-[500px]
+lg:w-[550px]
+snap-center
+glass-card
+rounded-[28px]
+p-6
+"
+          >
+            <div className="flex items-center gap-md mb-lg">
+              <div
+                className="w-16 h-16 rounded-full bg-cover bg-center border-2 border-primary-fixed"
+                style={{
+                  backgroundImage:
+                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_IssQQixJH5pjI_zpUCxgkI3jyIQ9KbxcDwJW2mSA0s2YSEV07vJSueSofQQc92DyxdRdn9x_sGijQ0xmWUacpep7PIW1g7oISd_u66vmUnYZA2QNJHcIcBfSyf19YkLlENkZv0anv20D2YgzXMcd5yW9ESNOclXS0UpTTjHCEFdO7LYv9gCS6MEMetaHU3IXl98z5trmxXMl3PulTEFhSmhyL6fwHbdOICmhr3suUfa8XVNUdOYSLeEZZnfem38PjTXd2Cdzq-s")',
+                }}
+              />
+              <div>
+                <div className="font-headline-sm text-headline-sm text-primary">
+                  مریم سعادتی
                 </div>
-
-                {/* ✅ Current Active Card */}
-                <div
-                  className={`bg-gray-50 p-8 rounded-xl shadow-lg mx-2 max-w-md w-full transform transition-all duration-500 ${
-                    isTransitioning
-                      ? "opacity-0 scale-95"
-                      : "opacity-100 scale-100"
-                  }`}
-                >
-                  <div className="flex items-center mb-4">
-                    <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: "#19705D" }}
-                    >
-                      <span className="text-white font-bold text-lg">
-                        {testimonialsData[current].name.charAt(0)}
-                      </span>
-                    </div>
-                    <div className="mr-3">
-                      <h3 className="font-bold">
-                        {testimonialsData[current].name}
-                      </h3>
-                      <div className="flex text-yellow-400">
-                        {"★".repeat(5)}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 italic">
-                    {testimonialsData[current].text}
-                  </p>
-                </div>
-
-                {/* Next Card (hidden on mobile) */}
-                <div className="hidden md:block transform scale-90 opacity-60 transition-all duration-300">
-                  <div className="bg-gray-50 p-6 rounded-xl shadow-sm w-64 mx-2">
-                    <div className="flex items-center mb-3">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "#19705D" }}
-                      >
-                        <span className="text-white font-bold text-sm">
-                          {visibleTestimonials[2].name.charAt(0)}
-                        </span>
-                      </div>
-                      <div className="mr-3">
-                        <h3 className="font-bold text-sm">
-                          {visibleTestimonials[2].name}
-                        </h3>
-                        <div className="flex text-yellow-400 text-sm">
-                          {"★".repeat(5)}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic text-sm">
-                      {visibleTestimonials[2].text}
-                    </p>
-                  </div>
+                <div className="font-label-sm text-label-sm text-secondary">
+                  مدیر سالن زیبایی ماهور
                 </div>
               </div>
             </div>
+            <p className="font-body-md text-body-md text-on-surface-variant italic mb-lg">
+              "از وقتی نارژین رو فعال کردم، دیگه دغدغه تداخل نوبت‌ها رو ندارم.
+              مشتری‌ها خیلی راحت از بایو اینستاگرام نوبتشون رو رزرو می‌کنن."
+            </p>
+            <div className="flex text-tertiary">
+              {[...Array(5)].map((_, i) => (
+                <span
+                  key={i}
+                  className="material-symbols-outlined"
+                  style={{ fontVariationSettings: '"FILL" 1' }}
+                >
+                  <MdStar />
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* ✅ Navigation Buttons */}
-          <button
-            onClick={handlePrev}
-            className="absolute top-1/2 -left-4 md:-left-12 transform -translate-y-1/2 bg-white shadow-lg px-4 py-3 rounded-full text-xl hover:bg-gray-100 transition-all duration-200 hover:scale-110"
-            aria-label="مشاهده نظر قبلی"
+          <div
+            className="
+flex-shrink-0
+w-[90%]
+sm:w-[80%]
+md:w-[500px]
+lg:w-[550px]
+snap-center
+glass-card
+rounded-[28px]
+p-6
+"
           >
-            ‹
-          </button>
-
-          <button
-            onClick={handleNext}
-            className="absolute top-1/2 -right-4 md:-right-12 transform -translate-y-1/2 bg-white shadow-lg px-4 py-3 rounded-full text-xl hover:bg-gray-100 transition-all duration-200 hover:scale-110"
-            aria-label="مشاهده نظر بعدی"
-          >
-            ›
-          </button>
-
-          {/* ✅ Enhanced Dots Indicator */}
-          <div className="flex justify-center mt-8 gap-3">
-            {testimonialsData.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setIsTransitioning(true);
-                  setTimeout(() => {
-                    setCurrent(index);
-                    setIsTransitioning(false);
-                  }, 300);
+            <div className="flex items-center gap-md mb-lg">
+              <div
+                className="w-16 h-16 rounded-full bg-cover bg-center border-2 border-primary-fixed"
+                style={{
+                  backgroundImage:
+                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCeD_1evrhI849glnsGzexA4P0eBomnvKphKibun9uTasNrtekRf0ZnS4Vhm3xzFlrhcNcDjE7TpoLW2ggZAez3jl7PFz9ZFb_-wOuucbN66o65KsaPJR1YN2S7XqEwCk0DyOgmq2D1mgxa-CZX0sZLi7bwqGrpxwBWnYfdTZ_eRVVokwEUbodZshZnuIT34PSeNzvRHMxiD2LZ0-F219ADME61t8IhONL3YTgXQrubbCIT5H-3Rlhqz8eO0beJK2d3exZuHcd3-OI")',
                 }}
-                className={`transition-all duration-300 rounded-full ${
-                  current === index
-                    ? "bg-[#19705D] w-8"
-                    : "bg-gray-300 hover:bg-gray-400"
-                } h-3`}
-                aria-label={`رفتن به نظر ${index + 1}`}
-              ></button>
-            ))}
+              />
+              <div>
+                <div className="font-headline-sm text-headline-sm text-primary">
+                  رضا علوی
+                </div>
+                <div className="font-label-sm text-label-sm text-secondary">
+                  مدیریت پیرایش مدرن
+                </div>
+              </div>
+            </div>
+            <p className="font-body-md text-body-md text-on-surface-variant italic mb-lg">
+              "سیستم حسابداری و درصدبندی آرایشگرها توی نارژین عالیه. هر شب گزارش
+              دقیق درآمدم رو توی گوشیم دارم."
+            </p>
+            <div className="flex text-tertiary">
+              {[...Array(5)].map((_, i) => (
+                <span
+                  key={i}
+                  className="material-symbols-outlined"
+                  style={{ fontVariationSettings: '"FILL" 1' }}
+                >
+                  <MdStar />
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="
+flex-shrink-0
+w-[90%]
+sm:w-[80%]
+md:w-[500px]
+lg:w-[550px]
+snap-center
+glass-card
+rounded-[28px]
+p-6
+"
+          >
+            <div className="flex items-center gap-md mb-lg">
+              <div
+                className="w-16 h-16 rounded-full bg-cover bg-center border-2 border-primary-fixed"
+                style={{
+                  backgroundImage:
+                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBaalxJn4DfMgTCNUTXUdlA0-DzJMR3GN0L9TDTSdLILRrh0bc4Rk3CmTFLKVe5pftelKi1IO-zEfiq1Hl6j6qz2UtbEmTjtZBdU9OpUBWCPxCnPTZvcO20RlDwD4cS8dD8aCAiQzAaXK7NlcQFmYnUp63NsrmZafNBgSTDKZpkx_Hn4Tf30kSNPjXY8Znqxz8DcUUMfIiv2GGke3U3pZ1v7ikdG3TI_dB9e9HusI7uEyy7FxsCJhmjUL8aEx1yF5nll9Yb9zznDaw")',
+                }}
+              />
+              <div>
+                <div className="font-headline-sm text-headline-sm text-primary">
+                  سارا رضایی
+                </div>
+                <div className="font-label-sm text-label-sm text-secondary">
+                  مرکز تخصصی ناخن سارا
+                </div>
+              </div>
+            </div>
+            <p className="font-body-md text-body-md text-on-surface-variant italic mb-lg">
+              "ارسال پیامک یادآوری باعث شده کنسلی‌های ما نزدیک به صفر بشه.
+              واقعاً برای هر سالنی واجبه."
+            </p>
+            <div className="flex text-tertiary">
+              {[...Array(5)].map((_, i) => (
+                <span
+                  key={i}
+                  className="material-symbols-outlined"
+                  style={{ fontVariationSettings: '"FILL" 1' }}
+                >
+                  <MdStar />
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Testimonials;
+}
