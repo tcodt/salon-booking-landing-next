@@ -62,21 +62,20 @@ export default function Hero() {
           className="fade-up font-body-lg text-body-lg text-secondary-home max-w-2xl mx-auto mb-xl opacity-0"
           style={{ transitionDelay: "0.6s" }}
         >
-          نارژین هوشمندترین دستیار مدیریت سالن شماست. بدون تماس تلفنی، ۲۴ ساعته
-          نوبت بگیرید و درآمدتان را افزایش دهید.
+نارژین یک نرم‌افزار تخصصی مدیریت سالن‌های زیبایی است که رزرو آنلاین، مدیریت مشتریان، گزارش‌های مالی و مدیریت کارکنان را در یک پنل ساده و هوشمند در اختیار شما قرار می‌دهد.
         </p>
         <div
           className="fade-up flex flex-col md:flex-row gap-md justify-center items-center opacity-0"
           style={{ transitionDelay: "0.8s" }}
         >
           <button className="glow-pulse bg-primary-container-home text-on-primary px-xl py-md rounded-full font-headline-sm text-headline-sm hover:scale-105 transition-transform">
-            همین الان امتحان کن
+           رایگان شروع کنید
           </button>
           <button className="flex items-center gap-sm text-primary-home font-bold font-body-md text-body-md group">
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
               <MdArrowBack />
             </span>
-            مشاهده دمو محصول
+            مشاهده دمو 
           </button>
         </div>
       </div>

@@ -64,6 +64,12 @@ export default function Comparison() {
                 </span>
                 فراموشی نوبت توسط مشتری
               </li>
+              <li className="flex items-center gap-sm text-secondary-home font-body-md">
+                <span className="material-symbols-outlined text-error-home">
+                  <MdClose />
+                </span>
+                عدم گزارش‌های دقیق
+              </li>
             </ul>
           </div>
           {/* With Narjin */}
@@ -91,7 +97,7 @@ export default function Comparison() {
                 <span className="material-symbols-outlined text-primary-fixed">
                   <MdCheckCircleOutline />
                 </span>
-                لینک اختصاصی نوبت‌دهی در اینستاگرام
+                لینک اختصاصی نوبت‌دهی 
               </li>
               <li
                 className="flex items-center gap-sm font-body-md animate-pulse"
