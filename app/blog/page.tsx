@@ -2,12 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  FaClock,
-  FaArrowLeft,
-  FaChevronDown,
-} from "react-icons/fa";
+import { FaClock, FaArrowLeft, FaChevronDown } from "react-icons/fa";
 
+// type
 interface Article {
   id: number;
   title: string;
@@ -31,30 +28,36 @@ export default function BlogPage() {
     const fetchArticles = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
-        console.log('📤 درخواست به API...');
-        const response = await fetch('https://queuingprojectapi.pythonanywhere.com/landing/article/');
-        
-        console.log('📥 وضعیت پاسخ:', response.status);
-        
+        console.log("📤 درخواست به API...");
+        const response = await fetch(
+          "https://queuingprojectapi.pythonanywhere.com/landing/article/",
+        );
+
+        console.log("📥 وضعیت پاسخ:", response.status);
+
         if (!response.ok) {
           throw new Error(`خطا ${response.status}: ${response.statusText}`);
         }
-        
+
         const data = await response.json();
-        console.log('✅ مقالات دریافت شدند:', data);
-        
+        console.log("✅ مقالات دریافت شدند:", data);
+
         if (Array.isArray(data)) {
-          const published = data.filter((item: Article) => item.is_published !== false);
-          console.log('📰 مقالات منتشر شده:', published.length);
+          const published = data.filter(
+            (item: Article) => item.is_published !== false,
+          );
+          console.log("📰 مقالات منتشر شده:", published.length);
           setArticles(published);
         } else {
-          throw new Error('داده دریافتی معتبر نیست');
+          throw new Error("داده دریافتی معتبر نیست");
         }
       } catch (err) {
-        console.error('❌ خطا:', err);
-        setError(err instanceof Error ? err.message : 'مشکلی در دریافت مقالات پیش آمد');
+        console.error("❌ خطا:", err);
+        setError(
+          err instanceof Error ? err.message : "مشکلی در دریافت مقالات پیش آمد",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -66,10 +69,10 @@ export default function BlogPage() {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('fa-IR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
+      return date.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
     } catch (e) {
       return dateString;
@@ -88,14 +91,14 @@ export default function BlogPage() {
   };
 
   const getExcerpt = (content: string, maxLength: number = 120) => {
-    if (!content) return '';
-    const plainText = content.replace(/<[^>]*>/g, '');
+    if (!content) return "";
+    const plainText = content.replace(/<[^>]*>/g, "");
     if (plainText.length <= maxLength) return plainText;
-    return plainText.slice(0, maxLength) + '...';
+    return plainText.slice(0, maxLength) + "...";
   };
 
   const getInitial = (title: string) => {
-    if (!title) return 'ن';
+    if (!title) return "ن";
     return title.charAt(0);
   };
 
@@ -114,7 +117,10 @@ export default function BlogPage() {
       {isLoading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant animate-pulse">
+            <div
+              key={index}
+              className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant animate-pulse"
+            >
               <div className="aspect-video bg-surface-container-high"></div>
               <div className="p-4 space-y-3">
                 <div className="h-4 bg-surface-container-high rounded w-1/3"></div>
@@ -138,7 +144,7 @@ export default function BlogPage() {
         <div className="text-center py-12">
           <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
             <p className="text-red-600 text-base font-medium">❌ {error}</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="mt-4 bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-colors"
             >
@@ -166,28 +172,36 @@ export default function BlogPage() {
                     key={post.id}
                     className="group bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant shadow-[0px_4px_20px_rgba(6,95,70,0.05)] flex flex-col h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                   >
-                    <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="flex flex-col h-full"
+                    >
                       <div className="relative aspect-video overflow-hidden bg-primary-fixed/10">
                         {post.image ? (
                           <img
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            alt={post.title || 'مقاله'}
+                            alt={post.title || "مقاله"}
                             src={post.image}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
+                              target.style.display = "none";
                               const parent = target.parentElement;
                               if (parent) {
-                                const placeholder = document.createElement('div');
-                                placeholder.className = 'w-full h-full bg-primary-fixed/20 flex items-center justify-center';
-                                placeholder.innerHTML = '<span class="text-4xl text-primary/40">نارژین</span>';
+                                const placeholder =
+                                  document.createElement("div");
+                                placeholder.className =
+                                  "w-full h-full bg-primary-fixed/20 flex items-center justify-center";
+                                placeholder.innerHTML =
+                                  '<span class="text-4xl text-primary/40">نارژین</span>';
                                 parent.appendChild(placeholder);
                               }
                             }}
                           />
                         ) : (
                           <div className="w-full h-full bg-primary-fixed/20 flex items-center justify-center">
-                            <span className="text-4xl text-primary/40">نارژین</span>
+                            <span className="text-4xl text-primary/40">
+                              نارژین
+                            </span>
                           </div>
                         )}
                       </div>
@@ -197,15 +211,18 @@ export default function BlogPage() {
                           <span>{formatDate(post.created_at)}</span>
                         </div>
                         <h3 className="text-lg md:text-xl font-bold text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title || 'بدون عنوان'}
+                          {post.title || "بدون عنوان"}
                         </h3>
                         <p className="text-sm text-on-surface-variant line-clamp-3 mb-4">
-                          {getExcerpt(post.meta_description || post.content || '', 120)}
+                          {getExcerpt(
+                            post.meta_description || post.content || "",
+                            120,
+                          )}
                         </p>
                         <div className="mt-auto flex justify-between items-center">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-xs font-bold">
-                              {getInitial(post.title || 'ن')}
+                              {getInitial(post.title || "ن")}
                             </div>
                             <span className="text-xs font-medium text-on-surface-variant">
                               نارژین
