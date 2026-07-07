@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaClock, FaArrowLeft, FaChevronDown } from "react-icons/fa";
+import Image from "next/image";
 
-// type
 interface Article {
   id: number;
   title: string;
@@ -74,7 +74,7 @@ export default function BlogPage() {
         month: "long",
         day: "numeric",
       });
-    } catch (e) {
+    } catch {
       return dateString;
     }
   };
@@ -167,7 +167,7 @@ export default function BlogPage() {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                {displayedPosts.map((post, index) => (
+                {displayedPosts.map((post) => (
                   <article
                     key={post.id}
                     className="group bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant shadow-[0px_4px_20px_rgba(6,95,70,0.05)] flex flex-col h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
@@ -178,7 +178,9 @@ export default function BlogPage() {
                     >
                       <div className="relative aspect-video overflow-hidden bg-primary-fixed/10">
                         {post.image ? (
-                          <img
+                          <Image
+                            width={300}
+                            height={300}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             alt={post.title || "مقاله"}
                             src={post.image}
@@ -205,7 +207,7 @@ export default function BlogPage() {
                           </div>
                         )}
                       </div>
-                      <div className="p-4 flex flex-col flex-grow">
+                      <div className="p-4 flex flex-col grow">
                         <div className="flex items-center gap-1 text-on-surface-variant text-xs font-medium mb-2">
                           <FaClock className="text-sm" />
                           <span>{formatDate(post.created_at)}</span>
