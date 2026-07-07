@@ -11,9 +11,30 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "queuingprojectapi.pythonanywhere.com",
+        port: "",
+        pathname: "/uploads/articles/**",
+      },
+      {
+        protocol: "https",
+        hostname: "queuingprojectapi.pythonanywhere.com",
+        port: "",
         pathname: "/uploads/**",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/landing/article/:slug",
+        destination:
+          "https://queuingprojectapi.pythonanywhere.com/landing/article/:slug/",
+      },
+      {
+        source: "/landing/article/",
+        destination:
+          "https://queuingprojectapi.pythonanywhere.com/landing/article/",
+      },
+    ];
   },
 };
 
