@@ -344,3 +344,66 @@ button {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Critical secondary page animations */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-up.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.fade-in-header {
+  animation: fadeInHeader 1.2s forwards;
+}
+@keyframes fadeInHeader {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.featured-pulse {
+  animation: pulse-border 3s infinite;
+}
+.pulse-animation {
+  animation: pulse-border 2s infinite;
+}
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(255, 195, 41, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(255, 195, 41, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 195, 41, 0); }
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.prose {
+  color: #181c1a;
+  line-height: 1.75;
+}
+.prose h2, .prose h3 {
+  color: #003527;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.prose p { margin-bottom: 1em; }
+.prose a { color: #004532; text-decoration: underline; }
+.prose a:hover { opacity: 0.8; }
+.floating-label-input:focus + label,
+.floating-label-input:not(:placeholder-shown) + label {
+  transform: translateY(-20px);
+  font-size: 12px;
+  color: #003527;
+}
+.floating-label-input:focus { outline: none; }
