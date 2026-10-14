@@ -73,7 +73,7 @@ export default function Features() {
           {featuresData.map((feature, index) => (
             <div
               key={feature.title}
-              className="fade-up glass-card p-xl rounded-3xl hover:shadow-xl transition-all duration-500 group"
+              className="fade-up glass-card p-5 sm:p-xl rounded-2xl sm:rounded-3xl hover:shadow-xl transition-all duration-500 group"
               style={{ transitionDelay: `${(index + 1) * 0.1}s` }}
             >
               <div
