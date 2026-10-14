@@ -81,13 +81,13 @@ export default function Testimonials() {
         </h2>
         <div
           ref={sliderRef}
-          className="flex gap-lg overflow-x-auto pb-lg snap-x scroll-smooth"
+          className="flex gap-4 sm:gap-lg overflow-x-auto pb-lg snap-x snap-mandatory scroll-smooth no-scrollbar -mx-1 px-1"
           id="testimonial-slider"
         >
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="min-w-80 md:min-w-[450px] snap-center glass-card p-xl rounded-[28px]"
+              className="w-[85vw] max-w-[320px] sm:min-w-80 md:min-w-[420px] md:max-w-none shrink-0 snap-center glass-card p-5 sm:p-xl rounded-2xl sm:rounded-[28px]"
             >
               <div className="flex items-center gap-md mb-lg">
                 <div
