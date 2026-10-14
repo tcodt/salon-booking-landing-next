@@ -54,10 +54,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -184,6 +180,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={() => setIsMenuOpen(false)}
                 className={`px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                   pathname === link.href
                     ? "bg-primary/10 text-primary"
