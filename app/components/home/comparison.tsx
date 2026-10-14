@@ -39,7 +39,7 @@ export default function Comparison() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-lg max-w-5xl mx-auto">
           {/* Without Narjin */}
           <div
-            className="fade-up p-xl bg-white rounded-4xl border border-outline-variant/30 opacity-60"
+            className="fade-up p-5 sm:p-xl bg-white rounded-2xl sm:rounded-4xl border border-outline-variant/30 opacity-60"
             style={{ transitionDelay: "0.1s" }}
           >
             <h4 className="font-headline-sm text-headline-sm text-secondary-home mb-lg">
@@ -74,10 +74,10 @@ export default function Comparison() {
           </div>
           {/* With Narjin */}
           <div
-            className="fade-up p-xl bg-primary-container-home text-on-primary rounded-4xl shadow-2xl relative scale-105 z-10"
+            className="fade-up p-5 sm:p-xl bg-primary-container-home text-on-primary rounded-2xl sm:rounded-4xl shadow-2xl relative md:scale-105 z-10 comparison-highlight"
             style={{ transitionDelay: "0.2s" }}
           >
-            <div className="absolute -top-4 -right-4 bg-tertiary-home text-on-tertiary-home px-md py-xs rounded-full font-label-md">
+            <div className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 bg-tertiary-home text-on-tertiary-home px-3 sm:px-md py-1 sm:py-xs rounded-full font-label-md text-xs sm:text-sm">
               پیشنهادی
             </div>
             <h4 className="font-headline-sm text-headline-sm mb-lg">
