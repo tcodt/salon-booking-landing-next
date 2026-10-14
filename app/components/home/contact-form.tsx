@@ -90,36 +90,38 @@ export default function ContactForm() {
   ];
 
   return (
-    <section className="py-24 px-6 bg-surface" id="contact">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16">
+    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-surface" id="contact">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 md:gap-16">
         <div className="flex-1">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-center text-primary mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center md:text-right text-primary mb-6 sm:mb-12">
             با ما در ارتباط باشید
           </h1>
-          <p className="text-lg text-on-surface-variant mb-12">
+          <p className="text-base sm:text-lg text-on-surface-variant mb-6 sm:mb-12 leading-relaxed">
             آماده‌اید تا کسب‌وکار خود را متحول کنید؟ فرم را پر کنید تا کارشناسان
             ما با شما تماس بگیرند.
           </p>
-          <div className="flex items-center gap-6 mb-8">
-            <div className="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg animate-bounce">
-              <span className="material-symbols-outlined text-2xl">call</span>
+          <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg shrink-0">
+              <span className="material-symbols-outlined text-xl sm:text-2xl">call</span>
             </div>
             <div>
               <p className="text-sm opacity-60">تلفن پشتیبانی</p>
-              <p className="text-xl font-bold tracking-widest">۰۲۱-۱۲۳۴۵۶۷۸</p>
+              <p className="text-lg sm:text-xl font-bold tracking-widest">۰۹۹۱۲۱۴۶۰۸۳</p>
             </div>
           </div>
           <a
-            className="inline-flex items-center gap-4 bg-[#25D366] text-white px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-transform relative"
-            href="#"
+            className="inline-flex items-center gap-3 sm:gap-4 bg-[#25D366] text-white px-5 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-xl hover:scale-105 transition-transform relative min-h-[48px]"
+            href="https://wa.me/989912146083"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <span className="material-symbols-outlined text-3xl">chat</span>
-            <span className="font-bold">گفتگو در واتس‌اپ</span>
-            <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full border-2 border-white animate-ping"></span>
+            <span className="material-symbols-outlined text-2xl sm:text-3xl">chat</span>
+            <span className="font-bold text-sm sm:text-base">گفتگو در واتس‌اپ</span>
+            <span className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 rounded-full border-2 border-white animate-ping"></span>
           </a>
         </div>
 
-        <div className="flex-1 bg-white p-10 rounded-3xl shadow-xl border border-outline-variant/20">
+        <div className="flex-1 bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-outline-variant/20">
           {isSuccess && (
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-center">
               <span className="material-symbols-outlined text-2xl align-middle ml-2">check_circle</span>
