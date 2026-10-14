@@ -4,9 +4,9 @@ import { MdPlayArrow } from "react-icons/md";
 
 export default function ProductVideo() {
   return (
-    <section className="py-xl bg-surface-home">
-      <div className="container mx-auto px-margin-mobile">
-        <div className="fade-up relative max-w-5xl mx-auto rounded-4xl overflow-hidden shadow-2xl border-4 border-white aspect-video bg-surface-container-high group cursor-pointer">
+    <section className="py-8 sm:py-xl bg-surface-home">
+      <div className="container mx-auto px-4 sm:px-margin-mobile">
+        <div className="fade-up relative max-w-5xl mx-auto rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white aspect-video bg-surface-container-high group cursor-pointer">
           <div
             className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
             style={{
@@ -15,9 +15,9 @@ export default function ProductVideo() {
             }}
           />
           <div className="absolute inset-0 bg-primary-home/20 flex items-center justify-center">
-            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl glow-pulse transition-transform group-hover:scale-110">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-xl glow-pulse transition-transform group-hover:scale-110">
               <span
-                className="material-symbols-outlined text-primary-home text-[48px]"
+                className="material-symbols-outlined text-primary-home text-[28px] sm:text-[40px] md:text-[48px]"
                 style={{ fontVariationSettings: '"FILL" 1' }}
               >
                 <MdPlayArrow />
