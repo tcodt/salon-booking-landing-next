@@ -148,10 +148,10 @@ export default function Navbar() {
           onClick={() => setIsMenuOpen(false)}
         />
 
-        {/* سایدبار منو */}
+        {/* سایدبار منو — سمت راست برای RTL */}
         <div
-          className={`absolute top-0 left-0 h-full w-80 bg-surface shadow-2xl transition-all duration-500 ease-out ${
-            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          className={`absolute top-0 right-0 h-full w-[min(20rem,88vw)] max-w-[320px] bg-surface shadow-2xl transition-all duration-500 ease-out ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {/* هدر سایدبار با لوگو */}
