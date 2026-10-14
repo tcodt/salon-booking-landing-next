@@ -46,36 +46,41 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center pt-24 sm:pt-20 pb-10 overflow-hidden">
       <div className="absolute inset-0 w-full h-full -z-10 opacity-40">
         <HeroShader />
       </div>
-      <div className="container mx-auto px-margin-mobile text-center z-10">
+      <div className="container mx-auto px-4 sm:px-margin-mobile text-center z-10 max-w-4xl">
         <h1
           ref={titleRef}
-          className="font-headline-lg text-headline-lg md:text-[56px] md:leading-[72px] text-primary-home mb-lg split-reveal"
+          className="font-headline-lg text-primary-home mb-4 sm:mb-lg split-reveal px-1"
           id="hero-title"
+          style={{
+            fontSize: "clamp(1.375rem, 4.5vw + 0.75rem, 3.5rem)",
+            lineHeight: "1.35",
+            fontWeight: 700,
+          }}
         >
           نوبت‌دهی آنلاین برای آرایشگاه رایگان شروع کن
         </h1>
         <p
-          className="fade-up font-body-lg text-body-lg text-secondary-home max-w-2xl mx-auto mb-xl opacity-0"
+          className="fade-up font-body-lg text-sm sm:text-body-lg text-secondary-home max-w-2xl mx-auto mb-6 sm:mb-xl opacity-0 leading-relaxed px-1"
           style={{ transitionDelay: "0.6s" }}
         >
-نارژین یک نرم‌افزار تخصصی مدیریت سالن‌های زیبایی است که رزرو آنلاین، مدیریت مشتریان، گزارش‌های مالی و مدیریت کارکنان را در یک پنل ساده و هوشمند در اختیار شما قرار می‌دهد.
+          نارژین یک نرم‌افزار تخصصی مدیریت سالن‌های زیبایی است که رزرو آنلاین، مدیریت مشتریان، گزارش‌های مالی و مدیریت کارکنان را در یک پنل ساده و هوشمند در اختیار شما قرار می‌دهد.
         </p>
         <div
-          className="fade-up flex flex-col md:flex-row gap-md justify-center items-center opacity-0"
+          className="fade-up flex flex-col sm:flex-row gap-3 sm:gap-md justify-center items-center opacity-0 w-full"
           style={{ transitionDelay: "0.8s" }}
         >
-          <button className="glow-pulse bg-primary-container-home text-on-primary px-xl py-md rounded-full font-headline-sm text-headline-sm hover:scale-105 transition-transform">
-           رایگان شروع کنید
+          <button className="glow-pulse w-full sm:w-auto bg-primary-container-home text-on-primary px-6 sm:px-xl py-3 sm:py-md rounded-full font-headline-sm text-base sm:text-headline-sm hover:scale-105 transition-transform min-h-[48px]">
+            رایگان شروع کنید
           </button>
-          <button className="flex items-center gap-sm text-primary-home font-bold font-body-md text-body-md group">
+          <button className="flex items-center justify-center gap-sm text-primary-home font-bold font-body-md text-body-md group min-h-[44px] px-2">
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
               <MdArrowBack />
             </span>
-            مشاهده دمو 
+            مشاهده دمو
           </button>
         </div>
       </div>
