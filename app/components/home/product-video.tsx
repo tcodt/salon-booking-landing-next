@@ -4,24 +4,19 @@ import { MdPlayArrow } from "react-icons/md";
 
 export default function ProductVideo() {
   return (
-    <section className="py-8 sm:py-xl bg-surface-home">
+    <section id="product-video" className="py-8 sm:py-xl bg-surface-home scroll-mt-24">
       <div className="container mx-auto px-4 sm:px-margin-mobile">
-        <div className="fade-up relative max-w-5xl mx-auto rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white aspect-video bg-surface-container-high group cursor-pointer">
+        <div className="relative aspect-video w-full max-w-5xl mx-auto rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl bg-primary-home group cursor-pointer">
           <div
-            className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
             style={{
               backgroundImage:
-                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuB-nbz07sdP3DItUhWdD-_7Nioe8bE3SYWAr_wR_0T9vXPgRaSUxwyuHj9xarMt-2OMjXXT48Xq8RPZXTrHZ5-DBgzbJbRKO5fA-RyH1wia39syQ-maS0aGU4qKB4HM18y_KrZfcmE_OyjYUfphjEIxCbfpYhct20EKotVrbfvFxlHiRD1QC5TbNHXK9CDFVDWa0dTqwuKSDkmS2mOf4w2ljVLJTgQYBfFNHwzzzz7Ifn4E7VQXW1GS75kd7HxGJnLR3DYwFC3DwdU")',
+                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5X9yQ3vR8Z0mK2pL4nO6wE1rT7uY9iU3oP5aS8dF0gH2jK4lZ6xC1vB3nM5qW7eR9tY0uI2oP4aS6dF8gH0jK2lZ4xC6vB8nM0qW2eR4tY6uI8oP0aS2dF4gH6jK8lZ0xC2vB4nM6qW")',
             }}
           />
-          <div className="absolute inset-0 bg-primary-home/20 flex items-center justify-center">
-            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-xl glow-pulse transition-transform group-hover:scale-110">
-              <span
-                className="material-symbols-outlined text-primary-home text-[28px] sm:text-[40px] md:text-[48px]"
-                style={{ fontVariationSettings: '"FILL" 1' }}
-              >
-                <MdPlayArrow />
-              </span>
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <MdPlayArrow className="text-3xl sm:text-4xl md:text-5xl text-primary-home mr-[-2px]" />
             </div>
           </div>
         </div>

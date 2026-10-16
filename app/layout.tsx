@@ -15,8 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "نارژین",
-  description: "سالن زیبایی نارژین",
+  title: "نارژین | نرم‌افزار نوبت‌دهی و مدیریت سالن زیبایی",
+  description:
+    "نارژین نرم‌افزار تخصصی مدیریت سالن‌های زیبایی — رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان",
+  icons: {
+    icon: [{ url: "/images/logo-main.png", type: "image/png" }],
+    apple: [{ url: "/images/logo-main.png", type: "image/png" }],
+    shortcut: "/images/logo-main.png",
+  },
 };
 
 export default function RootLayout({

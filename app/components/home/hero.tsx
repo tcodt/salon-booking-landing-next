@@ -8,7 +8,6 @@ export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    // Split text animation
     const splitText = (el: HTMLElement) => {
       const words = el.textContent?.split(" ") || [];
       el.innerHTML = words
@@ -23,7 +22,6 @@ export default function Hero() {
       splitText(titleRef.current);
     }
 
-    // Intersection Observer for animations
     const observerOptions = { threshold: 0.1 };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -40,8 +38,18 @@ export default function Hero() {
       .querySelectorAll(".fade-up, .split-reveal")
       .forEach((el) => observer.observe(el));
 
+    // Ensure hero CTAs become visible even if observer misses
+    const timer = window.setTimeout(() => {
+      document
+        .querySelectorAll("#hero-ctas, #hero-subtitle, #hero-title")
+        .forEach((el) => {
+          el.classList.add("visible", "active");
+        });
+    }, 400);
+
     return () => {
       observer.disconnect();
+      window.clearTimeout(timer);
     };
   }, []);
 
@@ -64,24 +72,36 @@ export default function Hero() {
           نوبت‌دهی آنلاین برای آرایشگاه رایگان شروع کن
         </h1>
         <p
+          id="hero-subtitle"
           className="fade-up font-body-lg text-sm sm:text-body-lg text-secondary-home max-w-2xl mx-auto mb-6 sm:mb-xl opacity-0 leading-relaxed px-1"
           style={{ transitionDelay: "0.6s" }}
         >
           نارژین یک نرم‌افزار تخصصی مدیریت سالن‌های زیبایی است که رزرو آنلاین، مدیریت مشتریان، گزارش‌های مالی و مدیریت کارکنان را در یک پنل ساده و هوشمند در اختیار شما قرار می‌دهد.
         </p>
+
+        {/* دو دکمه اصلی هیرو */}
         <div
-          className="fade-up flex flex-col sm:flex-row gap-3 sm:gap-md justify-center items-center opacity-0 w-full"
+          id="hero-ctas"
+          className="fade-up flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center w-full max-w-md sm:max-w-none mx-auto opacity-0"
           style={{ transitionDelay: "0.8s" }}
         >
-          <button className="glow-pulse w-full sm:w-auto bg-primary-container-home text-on-primary px-6 sm:px-xl py-3 sm:py-md rounded-full font-headline-sm text-base sm:text-headline-sm hover:scale-105 transition-transform min-h-[48px]">
+          <a
+            href="https://panel.narjin.ir"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glow-pulse inline-flex items-center justify-center w-full sm:w-auto bg-primary-container-home text-on-primary px-6 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-transform min-h-[48px] shadow-md"
+          >
             رایگان شروع کنید
-          </button>
-          <button className="flex items-center justify-center gap-sm text-primary-home font-bold font-body-md text-body-md group min-h-[44px] px-2">
-            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+          </a>
+          <a
+            href="#product-video"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-primary-home font-bold text-base sm:text-lg group min-h-[48px] px-4 py-3 rounded-full border-2 border-primary-home/30 hover:border-primary-home hover:bg-primary-home/5 transition-all"
+          >
+            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform inline-flex">
               <MdArrowBack />
             </span>
             مشاهده دمو
-          </button>
+          </a>
         </div>
       </div>
     </section>
