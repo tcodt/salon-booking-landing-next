@@ -34,8 +34,11 @@ const testimonials = [
   },
 ];
 
+const AUTO_SCROLL_MS = 4000;
+
 export default function Testimonials() {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
 
   useEffect(() => {
     const slider = sliderRef.current;
@@ -47,44 +50,82 @@ export default function Testimonials() {
 
     const onMouseDown = (e: MouseEvent) => {
       isDown = true;
+      pausedRef.current = true;
       slider.classList.add("cursor-grabbing");
       startX = e.pageX - slider.offsetLeft;
       scrollLeft = slider.scrollLeft;
     };
-
     const onMouseLeave = () => {
       isDown = false;
       slider.classList.remove("cursor-grabbing");
+      pausedRef.current = false;
     };
-
     const onMouseUp = () => {
       isDown = false;
       slider.classList.remove("cursor-grabbing");
+      pausedRef.current = false;
     };
-
     const onMouseMove = (e: MouseEvent) => {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      slider.scrollLeft = scrollLeft - walk;
+      slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    };
+
+    const pause = () => {
+      pausedRef.current = true;
+    };
+    const resume = () => {
+      pausedRef.current = false;
     };
 
     slider.addEventListener("mousedown", onMouseDown);
     slider.addEventListener("mouseleave", onMouseLeave);
     slider.addEventListener("mouseup", onMouseUp);
     slider.addEventListener("mousemove", onMouseMove);
+    slider.addEventListener("touchstart", pause, { passive: true });
+    slider.addEventListener("touchend", resume, { passive: true });
+    slider.addEventListener("mouseenter", pause);
+    slider.addEventListener("mouseleave", resume);
+
+    const tick = () => {
+      if (pausedRef.current || !slider) return;
+      const cards = slider.querySelectorAll("article");
+      if (cards.length === 0) return;
+
+      const first = cards[0] as HTMLElement;
+      const gap = 16;
+      const step = first.offsetWidth + gap;
+      const maxScroll = slider.scrollWidth - slider.clientWidth;
+      const next = slider.scrollLeft + step;
+
+      if (next >= maxScroll - 8) {
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        slider.scrollTo({ left: next, behavior: "smooth" });
+      }
+    };
+
+    const interval = window.setInterval(tick, AUTO_SCROLL_MS);
 
     return () => {
+      window.clearInterval(interval);
       slider.removeEventListener("mousedown", onMouseDown);
       slider.removeEventListener("mouseleave", onMouseLeave);
       slider.removeEventListener("mouseup", onMouseUp);
       slider.removeEventListener("mousemove", onMouseMove);
+      slider.removeEventListener("touchstart", pause);
+      slider.removeEventListener("touchend", resume);
+      slider.removeEventListener("mouseenter", pause);
+      slider.removeEventListener("mouseleave", resume);
     };
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 md:py-xl bg-background-home" id="testimonials">
+    <section
+      className="py-12 sm:py-16 md:py-xl bg-background-home"
+      id="testimonials"
+    >
       <div className="container mx-auto px-4 sm:px-margin-mobile">
         <h2 className="text-2xl sm:text-3xl md:text-headline-lg font-extrabold text-center text-primary-home mb-8 sm:mb-xl">
           از زبان مدیران سالن‌ها
@@ -122,7 +163,10 @@ export default function Testimonials() {
                 {testimonial.text}
               </p>
 
-              <div className="flex text-tertiary-home gap-0.5" aria-label="۵ ستاره">
+              <div
+                className="flex text-tertiary-home gap-0.5"
+                aria-label="۵ ستاره"
+              >
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-lg sm:text-xl leading-none">
                     <MdStar />
@@ -133,7 +177,6 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* نشانگر اسکرول برای موبایل */}
         <p className="mt-4 text-center text-xs text-on-surface-variant-home/70 md:hidden">
           برای دیدن نظرات بیشتر به چپ و راست بکشید
         </p>
