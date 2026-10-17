@@ -19,9 +19,13 @@ export const metadata: Metadata = {
   description:
     "نارژین نرم‌افزار تخصصی مدیریت سالن‌های زیبایی — رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان",
   icons: {
-    icon: [{ url: "/images/logo-main.png", type: "image/png" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/images/logo-main.png", type: "image/png", sizes: "1280x1280" },
+    ],
     apple: [{ url: "/images/logo-main.png", type: "image/png" }],
-    shortcut: "/images/logo-main.png",
+    shortcut: "/favicon.ico",
   },
 };
 
@@ -32,7 +36,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-            <head>
+      <head>
+        <link
+          rel="icon"
+          href="/favicon.ico"
+          sizes="any"
+        />
+        <link
+          rel="icon"
+          href="/images/favicon-32.png"
+          type="image/png"
+          sizes="32x32"
+        />
+        <link rel="apple-touch-icon" href="/images/logo-main.png" />
         <link
           href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
