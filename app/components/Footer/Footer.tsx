@@ -5,13 +5,9 @@ import Image from "next/image";
 import {
   FaInstagram,
   FaTelegramPlane,
-  FaPhone,
   FaEnvelope,
   FaWhatsapp,
 } from "react-icons/fa";
-
-const PHONE_DISPLAY = "۰۹۹۱۲۱۴۶۰۸۳";
-const PHONE_TEL = "09912146083";
 
 export default function Footer() {
   const currentYear = (() => {
@@ -31,7 +27,7 @@ export default function Footer() {
     <footer className="mt-auto bg-[#0a0a0a] text-white">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:px-12 md:py-14">
         <div className="grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10">
-          <div className="text-center min-[480px]:text-right">
+          <div className="min-w-0 text-center min-[480px]:text-right">
             <Link href="/" className="inline-flex items-center gap-3">
               <Image
                 src="/images/logo-main.png"
@@ -42,7 +38,10 @@ export default function Footer() {
               />
               <span className="text-2xl font-extrabold text-white">نارژین</span>
             </Link>
-            <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/75 min-[480px]:mx-0">
+            <p
+              className="mx-auto mt-3 w-full min-w-0 text-sm leading-[1.9] text-white/75 min-[480px]:mx-0 lg:max-w-[18rem]"
+              style={{ overflowWrap: "normal", wordBreak: "normal" }}
+            >
               نرم‌افزار مدیریت و نوبت‌دهی آنلاین سالن زیبایی
             </p>
             <div className="mt-5 flex justify-center gap-3 min-[480px]:justify-start">
@@ -79,21 +78,14 @@ export default function Footer() {
           </div>
 
           <div className="text-center min-[480px]:text-right">
-            <h3 className="mb-3 text-sm font-bold text-white">تماس و پشتیبانی</h3>
-            <ul className="flex flex-col gap-3 text-sm text-white/85">
+            <h3 className="mb-3 text-sm font-bold text-white">تماس</h3>
+            <ul className="flex flex-col gap-1">
+              <li><Link href="/#contact" className={linkClass}>تماس با ما</Link></li>
               <li>
-                <a href={`tel:${PHONE_TEL}`} className="inline-flex min-h-[44px] items-center justify-center gap-2 hover:text-[#8bd6b6] min-[480px]:justify-start">
-                  <FaPhone className="h-3.5 w-3.5 shrink-0 text-[#8bd6b6]" />
-                  {PHONE_DISPLAY}
-                </a>
-              </li>
-              <li>
-                <a href="mailto:info@narjin.ir" className="inline-flex min-h-[44px] items-center justify-center gap-2 hover:text-[#8bd6b6] min-[480px]:justify-start">
-                  <FaEnvelope className="h-3.5 w-3.5 shrink-0 text-[#8bd6b6]" />
+                <a href="mailto:info@narjin.ir" className={linkClass}>
                   info@narjin.ir
                 </a>
               </li>
-              <li className="text-white/80">پشتیبانی ۲۴ ساعته</li>
             </ul>
           </div>
         </div>
