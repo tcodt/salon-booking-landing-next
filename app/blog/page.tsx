@@ -31,9 +31,7 @@ export default function BlogPage() {
 
       try {
         console.log("📤 درخواست به API...");
-        const response = await fetch(
-          "https://queuingprojectapi.pythonanywhere.com/landing/article/",
-        );
+        const response = await fetch("/api/articles/");
 
         console.log("📥 وضعیت پاسخ:", response.status);
 
@@ -184,20 +182,6 @@ export default function BlogPage() {
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             alt={post.title || "مقاله"}
                             src={post.image}
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                              const parent = target.parentElement;
-                              if (parent) {
-                                const placeholder =
-                                  document.createElement("div");
-                                placeholder.className =
-                                  "w-full h-full bg-primary-fixed/20 flex items-center justify-center";
-                                placeholder.innerHTML =
-                                  '<span class="text-4xl text-primary/40">نارژین</span>';
-                                parent.appendChild(placeholder);
-                              }
-                            }}
                           />
                         ) : (
                           <div className="w-full h-full bg-primary-fixed/20 flex items-center justify-center">
