@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     let response: Response;
     try {
       response = await fetch(
-        'https://queuingprojectapi.pythonanywhere.com/landing/contact/',
+        'https://api.narjin.ir/landing/contact/',
         {
           method: 'POST',
           headers: {
@@ -17,14 +17,11 @@ export async function POST(request: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
-          // جلوگیری از هنگ کردن درخواست در صورت مشکل شبکه/فیلترینگ
           signal: AbortSignal.timeout(15000),
         }
       );
     } catch (fetchError) {
-      // این بلاک وقتی اجرا میشه که اصلاً نتونستیم به سرور وصل بشیم
-      // (قطع شبکه، DNS، فیلترینگ سطح TLS، تایم‌اوت و ...)
-      console.error('❌ خطای اتصال به pythonanywhere:', fetchError);
+      console.error('❌ خطای اتصال به api.narjin.ir:', fetchError);
       return NextResponse.json(
         {
           error: true,
@@ -49,7 +46,6 @@ export async function POST(request: NextRequest) {
     try {
       data = JSON.parse(responseText);
     } catch (parseError) {
-      // پاسخ JSON نیست (مثلاً یک صفحه HTML از فیلترینگ یا ارور سرور)
       console.error('❌ پاسخ سرور JSON معتبر نبود:', parseError);
       return NextResponse.json(
         {
