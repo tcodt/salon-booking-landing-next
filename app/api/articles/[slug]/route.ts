@@ -12,7 +12,7 @@ export async function GET(
     if (!slug) {
       return NextResponse.json({ error: true, message: "slug لازم است" }, { status: 400 });
     }
-    const response = await fetch(`${UPSTREAM}/${encodeURIComponent(slug)}`, {
+    const response = await fetch(`${UPSTREAM}/${encodeURIComponent(slug)}/`, {
       headers: { accept: "application/json" },
       next: { revalidate: 60 },
     });
