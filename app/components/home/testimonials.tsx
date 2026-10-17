@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { MdStar } from "react-icons/md";
+import { useEffect, useRef, useState } from "react";
+import { MdStar, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const testimonials = [
   {
@@ -9,177 +9,188 @@ const testimonials = [
     role: "مدیر سالن زیبایی ماهور",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB_IssQQixJH5pjI_zpUCxgkI3jyIQ9KbxcDwJW2mSA0s2YSEV07vJSueSofQQc92DyxdRdn9x_sGijQ0xmWUacpep7PIW1g7oISd_u66vmUnYZA2QNJHcIcBfSyf19YkLlENkZv0anv20D2YgzXMcd5yW9ESNOclXS0UpTTjHCEFdO7LYv9gCS6MEMetaHU3IXl98z5trmxXMl3PulTEFhSmhyL6fwHbdOICmhr3suUfa8XVNUdOYSLeEZZnfem38PjTXd2Cdzq-s",
-    text: '"از وقتی نارژین رو فعال کردم، دیگه دغدغه تداخل نوبت‌ها رو ندارم. مشتری‌ها خیلی راحت از بایو اینستاگرام نوبتشون رو رزرو می‌کنن."',
+    text: "از وقتی نارژین را فعال کردم، تداخل نوبت‌ها کمتر شده. مشتری‌ها از بایو اینستاگرام راحت نوبت می‌گیرند.",
   },
   {
     name: "رضا علوی",
     role: "مدیریت پیرایش مدرن",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCeD_1evrhI849glnsGzexA4P0eBomnvKphKibun9uTasNrtekRf0ZnS4Vhm3xzFlrhcNcDjE7TpoLW2ggZAez3jl7PFz9ZFb_-wOuucbN66o65KsaPJR1YN2S7XqEwCk0DyOgmq2D1mgxa-CZX0sZLi7bwqGrpxwBWnYfdTZ_eRVVokwEUbodZshZnuIT34PSeNzvRHMxiD2LZ0-F219ADME61t8IhONL3YTgXQrubbCIT5H-3Rlhqz8eO0beJK2d3exZuHcd3-OI",
-    text: '"سیستم حسابداری و درصدبندی آرایشگرها توی نارژین عالیه. هر شب گزارش دقیق درآمدم رو توی گوشیم دارم."',
+    text: "سیستم حسابداری و درصدبندی آرایشگرها در نارژین کاربردی است. هر شب گزارش درآمد را روی گوشی می‌بینم.",
   },
   {
     name: "سارا رضایی",
     role: "مرکز تخصصی ناخن سارا",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBaalxJn4DfMgTCNUTXUdlA0-DzJMR3GN0L9TDTSdLILRrh0bc4Rk3CmTFLKVe5pftelKi1IO-zEfiq1Hl6j6qz2UtbEmTjtZBdU9OpUBWCPxCnPTZvcO20RlDwD4cS8dD8aCAiQzAaXK7NlcQFmYnUp63NsrmZafNBgSTDKZpkx_Hn4Tf30kSNPjXY8Znqxz8DcUUMfIiv2GGke3U3pZ1v7ikdG3TI_dB9e9HusI7uEyy7FxsCJhmjUL8aEx1yF5nll9Yb9zznDaw",
-    text: '"ارسال پیامک یادآوری باعث شده کنسلی‌های ما نزدیک به صفر بشه. واقعاً برای هر سالنی واجبه."',
+    text: "ارسال پیامک یادآوری باعث شده کنسلی‌ها کمتر شود. برای سالن ما ابزار مفیدی بوده است.",
   },
   {
     name: "نیلوفر احمدی",
     role: "سالن تخصصی پوست و مو آوا",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB_IssQQixJH5pjI_zpUCxgkI3jyIQ9KbxcDwJW2mSA0s2YSEV07vJSueSofQQc92DyxdRdn9x_sGijQ0xmWUacpep7PIW1g7oISd_u66vmUnYZA2QNJHcIcBfSyf19YkLlENkZv0anv20D2YgzXMcd5yW9ESNOclXS0UpTTjHCEFdO7LYv9gCS6MEMetaHU3IXl98z5trmxXMl3PulTEFhSmhyL6fwHbdOICmhr3suUfa8XVNUdOYSLeEZZnfem38PjTXd2Cdzq-s",
-    text: '"با پنل آنلاین نارژین، نوبت‌دهی و مدیریت پرسنل خیلی ساده‌تر شده. مشتری‌ها هم از سرعت کار راضی‌ان."',
+    text: "با پنل آنلاین نارژین، نوبت‌دهی و مدیریت پرسنل ساده‌تر شده. مشتری‌ها از سرعت کار راضی‌اند.",
   },
 ];
 
-const AUTO_SCROLL_MS = 4000;
-
 export default function Testimonials() {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
+  const [index, setIndex] = useState(0);
+
+  const scrollTo = (i: number) => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+    const cards = slider.querySelectorAll("article");
+    const card = cards[i] as HTMLElement | undefined;
+    if (!card) return;
+    card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    setIndex(i);
+  };
+
+  const next = () => scrollTo((index + 1) % testimonials.length);
+  const prev = () =>
+    scrollTo((index - 1 + testimonials.length) % testimonials.length);
 
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
-
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-
-    const onMouseDown = (e: MouseEvent) => {
-      isDown = true;
-      pausedRef.current = true;
-      slider.classList.add("cursor-grabbing");
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
+    const onScroll = () => {
+      const cards = Array.from(slider.querySelectorAll("article"));
+      if (!cards.length) return;
+      const mid = slider.scrollLeft + slider.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      cards.forEach((c, i) => {
+        const el = c as HTMLElement;
+        const center = el.offsetLeft + el.offsetWidth / 2;
+        const d = Math.abs(center - mid);
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      });
+      setIndex(best);
     };
-    const onMouseLeave = () => {
-      isDown = false;
-      slider.classList.remove("cursor-grabbing");
-      pausedRef.current = false;
-    };
-    const onMouseUp = () => {
-      isDown = false;
-      slider.classList.remove("cursor-grabbing");
-      pausedRef.current = false;
-    };
-    const onMouseMove = (e: MouseEvent) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
-    };
-
-    const pause = () => {
-      pausedRef.current = true;
-    };
-    const resume = () => {
-      pausedRef.current = false;
-    };
-
-    slider.addEventListener("mousedown", onMouseDown);
-    slider.addEventListener("mouseleave", onMouseLeave);
-    slider.addEventListener("mouseup", onMouseUp);
-    slider.addEventListener("mousemove", onMouseMove);
-    slider.addEventListener("touchstart", pause, { passive: true });
-    slider.addEventListener("touchend", resume, { passive: true });
-    slider.addEventListener("mouseenter", pause);
-    slider.addEventListener("mouseleave", resume);
-
-    const tick = () => {
-      if (pausedRef.current || !slider) return;
-      const cards = slider.querySelectorAll("article");
-      if (cards.length === 0) return;
-
-      const first = cards[0] as HTMLElement;
-      const gap = 16;
-      const step = first.offsetWidth + gap;
-      const maxScroll = slider.scrollWidth - slider.clientWidth;
-      const next = slider.scrollLeft + step;
-
-      if (next >= maxScroll - 8) {
-        slider.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        slider.scrollTo({ left: next, behavior: "smooth" });
-      }
-    };
-
-    const interval = window.setInterval(tick, AUTO_SCROLL_MS);
-
-    return () => {
-      window.clearInterval(interval);
-      slider.removeEventListener("mousedown", onMouseDown);
-      slider.removeEventListener("mouseleave", onMouseLeave);
-      slider.removeEventListener("mouseup", onMouseUp);
-      slider.removeEventListener("mousemove", onMouseMove);
-      slider.removeEventListener("touchstart", pause);
-      slider.removeEventListener("touchend", resume);
-      slider.removeEventListener("mouseenter", pause);
-      slider.removeEventListener("mouseleave", resume);
-    };
+    slider.addEventListener("scroll", onScroll, { passive: true });
+    return () => slider.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <section
-      className="py-12 sm:py-16 md:py-xl bg-background-home"
-      id="testimonials"
-    >
-      <div className="container mx-auto px-4 sm:px-margin-mobile">
-        <h2 className="text-2xl sm:text-3xl md:text-headline-lg font-extrabold text-center text-primary-home mb-8 sm:mb-xl">
+    <section className="bg-background-home py-12 sm:py-16" id="testimonials">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6">
+        <h2 className="mb-2 text-center text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
           از زبان مدیران سالن‌ها
         </h2>
+        <p className="mb-8 text-center text-sm text-on-surface-variant-home">
+          نمونه‌ای از بازخورد کاربران نارژین
+        </p>
 
-        <div
-          ref={sliderRef}
-          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth no-scrollbar cursor-grab active:cursor-grabbing -mx-1 px-1"
-          id="testimonial-slider"
-          style={{ WebkitOverflowScrolling: "touch" }}
-        >
-          {testimonials.map((testimonial, index) => (
+        <div className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-4">
+          {testimonials.map((t) => (
             <article
-              key={index}
-              className="w-[78vw] max-w-[300px] sm:w-[280px] sm:max-w-[300px] md:w-[320px] md:max-w-[340px] shrink-0 snap-center glass-card p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-outline-variant/20 shadow-sm select-none"
+              key={t.name}
+              className="flex flex-col rounded-2xl border border-outline-variant/25 bg-white p-5 shadow-sm"
             >
-              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
+              <div className="mb-4 flex items-center gap-3">
                 <div
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-cover bg-center border-2 border-primary-fixed shrink-0"
-                  style={{ backgroundImage: `url("${testimonial.image}")` }}
+                  className="h-12 w-12 shrink-0 rounded-full border-2 border-primary-fixed bg-cover bg-center"
+                  style={{ backgroundImage: `url("${t.image}")` }}
                   role="img"
-                  aria-label={testimonial.name}
+                  aria-label={t.name}
                 />
                 <div className="min-w-0">
-                  <div className="font-bold text-base sm:text-lg text-primary-home truncate">
-                    {testimonial.name}
+                  <div className="truncate font-bold text-primary-home">
+                    {t.name}
                   </div>
-                  <div className="text-xs sm:text-sm text-secondary-home truncate">
-                    {testimonial.role}
+                  <div className="truncate text-xs text-on-surface-variant">
+                    {t.role}
                   </div>
                 </div>
               </div>
-
-              <p className="text-sm sm:text-base text-on-surface-variant-home leading-relaxed italic mb-4 sm:mb-5 min-h-[4.5rem]">
-                {testimonial.text}
+              <p className="mb-4 flex-1 text-sm leading-relaxed text-on-surface-variant not-italic">
+                «{t.text}»
               </p>
-
-              <div
-                className="flex text-tertiary-home gap-0.5"
-                aria-label="۵ ستاره"
-              >
+              <div className="flex gap-0.5 text-amber-500" aria-label="۵ ستاره">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-lg sm:text-xl leading-none">
-                    <MdStar />
-                  </span>
+                  <MdStar key={i} className="text-lg" />
                 ))}
               </div>
             </article>
           ))}
         </div>
 
-        <p className="mt-4 text-center text-xs text-on-surface-variant-home/70 md:hidden">
-          برای دیدن نظرات بیشتر به چپ و راست بکشید
-        </p>
+        <div className="md:hidden">
+          <div
+            ref={sliderRef}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 no-scrollbar"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            {testimonials.map((t) => (
+              <article
+                key={t.name}
+                className="w-[85vw] max-w-[320px] shrink-0 snap-center rounded-2xl border border-outline-variant/25 bg-white p-5 shadow-sm"
+              >
+                <div className="mb-4 flex items-center gap-3">
+                  <div
+                    className="h-12 w-12 shrink-0 rounded-full border-2 border-primary-fixed bg-cover bg-center"
+                    style={{ backgroundImage: `url("${t.image}")` }}
+                    role="img"
+                    aria-label={t.name}
+                  />
+                  <div className="min-w-0">
+                    <div className="truncate font-bold text-primary-home">
+                      {t.name}
+                    </div>
+                    <div className="truncate text-xs text-on-surface-variant">
+                      {t.role}
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-4 text-sm leading-relaxed text-on-surface-variant not-italic">
+                  «{t.text}»
+                </p>
+                <div className="flex gap-0.5 text-amber-500" aria-label="۵ ستاره">
+                  {[...Array(5)].map((_, i) => (
+                    <MdStar key={i} className="text-lg" />
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={prev}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-outline-variant bg-white text-primary-home shadow-sm"
+              aria-label="نظر قبلی"
+            >
+              <MdChevronRight className="text-2xl" />
+            </button>
+            <div className="flex gap-1.5">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => scrollTo(i)}
+                  className={`h-2 rounded-full transition-all ${
+                    i === index ? "w-5 bg-primary-home" : "w-2 bg-outline-variant"
+                  }`}
+                  aria-label={`نظر ${i + 1}`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={next}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-outline-variant bg-white text-primary-home shadow-sm"
+              aria-label="نظر بعدی"
+            >
+              <MdChevronLeft className="text-2xl" />
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
