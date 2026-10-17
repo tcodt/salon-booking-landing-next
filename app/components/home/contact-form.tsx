@@ -83,11 +83,10 @@ export default function ContactForm() {
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="min-w-0">
           <h2 className="mb-3 text-xl font-extrabold text-primary-home sm:text-2xl">
-            با ما در ارتباط باشید
+            آماده‌اید سالنتون رو آنلاین کنید؟
           </h2>
           <p className="mb-6 text-sm leading-relaxed text-[#3d5a4c] sm:text-base">
-            فرم را پر کنید تا کارشناسان نارژین با شما تماس بگیرند. همچنین
-            می‌توانید مستقیم تماس بگیرید یا در واتس‌اپ پیام بگذارید.
+            فرم رو پر کنید یا مستقیم تماس بگیرید؛ کارشناسان ما جواب می‌دن.
           </p>
 
           <div className="space-y-4 rounded-2xl border border-primary-home/10 bg-[#f5f8f6] p-5">
@@ -163,7 +162,7 @@ export default function ContactForm() {
             <button type="submit" disabled={isLoading} className={`min-h-[48px] w-full rounded-xl py-3.5 text-base font-bold text-white transition ${
               isLoading ? "cursor-not-allowed bg-gray-400" : "bg-primary-home hover:opacity-95"
             }`}>
-              {isLoading ? "در حال ارسال..." : "ارسال پیام"}
+              {isLoading ? "در حال ارسال..." : "دریافت مشاوره"}
             </button>
           </form>
         </div>
