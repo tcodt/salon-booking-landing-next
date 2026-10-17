@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { MdPhone, MdSchedule } from "react-icons/md";
 
 interface FormData {
   full_name: string;
@@ -9,6 +10,10 @@ interface FormData {
   subject: string;
   message: string;
 }
+
+const PHONE_DISPLAY = "۰۹۹۱۲۱۴۶۰۸۳";
+const PHONE_TEL = "09912146083";
+const WHATSAPP = "https://wa.me/989912146083";
 
 const subjectOptions = [
   { value: "مشاوره رایگان", label: "مشاوره رایگان" },
@@ -19,7 +24,7 @@ const subjectOptions = [
 ];
 
 const fieldClass =
-  "w-full rounded-xl border border-outline-variant/50 bg-surface-container-low px-4 py-3 text-base text-on-surface outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-60 min-h-[48px]";
+  "w-full rounded-xl border border-primary-home/20 bg-[#f5f8f6] px-4 py-3 text-base text-[#15241c] outline-none transition focus:border-primary-home focus:ring-2 focus:ring-primary-home/20 disabled:opacity-60 min-h-[48px]";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
@@ -38,19 +43,13 @@ export default function ContactForm() {
     setIsLoading(true);
     setError(null);
     setIsSuccess(false);
-
     try {
       const response = await fetch(
         "https://queuingprojectapi.pythonanywhere.com/landing/contact/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            full_name: formData.full_name,
-            phone: formData.phone,
-            subject: formData.subject,
-            message: formData.message,
-          }),
+          body: JSON.stringify(formData),
         },
       );
       const data = await response.json();
@@ -64,7 +63,7 @@ export default function ContactForm() {
       setError(
         err instanceof Error
           ? err.message
-          : "خطا در ارتباط با سرور. لطفاً اتصال اینترنت خود را بررسی کنید.",
+          : "خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.",
       );
     } finally {
       setIsLoading(false);
@@ -80,75 +79,76 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="bg-surface py-12 sm:py-16" id="contact">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:flex-row md:gap-14">
-        <div className="flex-1">
-          <h2 className="mb-4 text-center text-xl font-extrabold text-primary md:text-right md:text-2xl lg:text-3xl">
+    <section className="bg-surface-home py-12 sm:py-16" id="contact">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
+        <div className="min-w-0">
+          <h2 className="mb-3 text-xl font-extrabold text-primary-home sm:text-2xl">
             با ما در ارتباط باشید
           </h2>
-          <p className="mb-8 text-center text-sm leading-relaxed text-on-surface-variant sm:text-base md:text-right">
-            فرم را پر کنید تا کارشناسان نارژین با شما تماس بگیرند.
+          <p className="mb-6 text-sm leading-relaxed text-[#3d5a4c] sm:text-base">
+            فرم را پر کنید تا کارشناسان نارژین با شما تماس بگیرند. همچنین
+            می‌توانید مستقیم تماس بگیرید یا در واتس‌اپ پیام بگذارید.
           </p>
 
-          <div className="mb-6 flex items-center justify-center gap-4 md:justify-start">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-white shadow-md sm:h-14 sm:w-14">
-              <span className="material-symbols-outlined text-xl">call</span>
-            </div>
-            <div>
-              <p className="text-sm text-on-surface-variant">تلفن پشتیبانی</p>
-              <a
-                href="tel:09912146083"
-                className="text-lg font-bold tracking-wide text-on-surface hover:text-primary"
-              >
-                ۰۹۹۱۲۱۴۶۰۸۳
-              </a>
-            </div>
-          </div>
-
-          <div className="flex justify-center md:justify-start">
+          <div className="space-y-4 rounded-2xl border border-primary-home/10 bg-[#f5f8f6] p-5">
             <a
-              className="inline-flex min-h-[48px] items-center gap-3 rounded-2xl bg-[#25D366] px-6 py-3 text-white shadow-lg transition hover:opacity-95"
-              href="https://wa.me/989912146083"
+              href={`tel:${PHONE_TEL}`}
+              className="flex items-center gap-3 text-[#15241c] transition hover:text-primary-home"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-home text-white">
+                <MdPhone className="text-xl" />
+              </span>
+              <span>
+                <span className="block text-xs text-[#5a7266]">تلفن پشتیبانی</span>
+                <span className="text-lg font-bold tracking-wide">{PHONE_DISPLAY}</span>
+              </span>
+            </a>
+
+            <div className="flex items-center gap-3 text-[#15241c]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-home/10 text-primary-home">
+                <MdSchedule className="text-xl" />
+              </span>
+              <span>
+                <span className="block text-xs text-[#5a7266]">پشتیبانی</span>
+                <span className="text-sm font-semibold">۲۴ ساعته</span>
+              </span>
+            </div>
+
+            <a
+              href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 font-bold text-white transition hover:opacity-95"
             >
-              <FaWhatsapp className="text-2xl" />
-              <span className="font-bold">گفتگو در واتس‌اپ</span>
+              <FaWhatsapp className="text-xl" />
+              گفتگو در واتس‌اپ
             </a>
           </div>
         </div>
 
-        <div className="flex-1 rounded-2xl border border-outline-variant/25 bg-white p-5 shadow-md sm:rounded-3xl sm:p-8">
+        <div className="min-w-0 rounded-2xl border border-primary-home/10 bg-white p-5 shadow-sm sm:p-7">
           {isSuccess && (
-            <div className="mb-5 rounded-xl border border-green-200 bg-green-50 p-4 text-center text-green-700">
-              پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.
+            <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-sm text-emerald-800">
+              پیام شما ارسال شد. به‌زودی تماس می‌گیریم.
             </div>
           )}
           {error && (
-            <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-center text-red-700">
+            <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-center text-sm text-red-700">
               {error}
             </div>
           )}
 
-          <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="full_name" className="mb-1.5 block text-sm font-medium text-on-surface">
-                نام و نام خانوادگی <span className="text-error">*</span>
-              </label>
+              <label htmlFor="full_name" className="mb-1.5 block text-sm font-medium text-[#15241c]">نام و نام خانوادگی *</label>
               <input id="full_name" type="text" className={fieldClass} value={formData.full_name} onChange={handleChange} required disabled={isLoading} autoComplete="name" />
             </div>
-
             <div>
-              <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-on-surface">
-                شماره تماس <span className="text-error">*</span>
-              </label>
+              <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[#15241c]">شماره تماس *</label>
               <input id="phone" type="tel" inputMode="tel" className={fieldClass} value={formData.phone} onChange={handleChange} required disabled={isLoading} autoComplete="tel" />
             </div>
-
             <div>
-              <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-on-surface">
-                موضوع <span className="text-error">*</span>
-              </label>
+              <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-[#15241c]">موضوع *</label>
               <select id="subject" className={fieldClass} value={formData.subject} onChange={handleChange} required disabled={isLoading}>
                 <option value="" disabled>انتخاب موضوع</option>
                 {subjectOptions.map((o) => (
@@ -156,16 +156,12 @@ export default function ContactForm() {
                 ))}
               </select>
             </div>
-
             <div>
-              <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-on-surface">
-                پیام شما <span className="text-error">*</span>
-              </label>
-              <textarea id="message" rows={4} className={`${fieldClass} min-h-[120px] resize-y`} value={formData.message} onChange={handleChange} required disabled={isLoading} />
+              <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-[#15241c]">پیام شما *</label>
+              <textarea id="message" rows={4} className={`${fieldClass} min-h-[110px] resize-y`} value={formData.message} onChange={handleChange} required disabled={isLoading} />
             </div>
-
-            <button type="submit" disabled={isLoading} className={`min-h-[48px] w-full rounded-xl py-3.5 text-lg font-bold transition ${
-              isLoading ? "cursor-not-allowed bg-gray-400 text-white" : "bg-primary text-white hover:opacity-95 active:scale-[0.99]"
+            <button type="submit" disabled={isLoading} className={`min-h-[48px] w-full rounded-xl py-3.5 text-base font-bold text-white transition ${
+              isLoading ? "cursor-not-allowed bg-gray-400" : "bg-primary-home hover:opacity-95"
             }`}>
               {isLoading ? "در حال ارسال..." : "ارسال پیام"}
             </button>
