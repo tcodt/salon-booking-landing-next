@@ -37,16 +37,13 @@ export default function Faq() {
     <section className="bg-[#eef4f0] py-12 sm:py-16" id="faq">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
-          پرسش‌های متداول
+          سؤال دارید؟ جواب‌ها اینجاست
         </h2>
         <div className="space-y-3">
           {faqs.map((item, i) => {
             const isOpen = open === i;
             return (
-              <div
-                key={item.q}
-                className="overflow-hidden rounded-2xl border border-primary-home/10 bg-white"
-              >
+              <div key={item.q} className="overflow-hidden rounded-2xl border border-primary-home/10 bg-white">
                 <button
                   type="button"
                   className="flex w-full items-center justify-between gap-3 px-4 py-4 text-right text-sm font-bold text-[#15241c] sm:px-5 sm:text-base"
@@ -54,11 +51,7 @@ export default function Faq() {
                   onClick={() => setOpen(isOpen ? null : i)}
                 >
                   <span className="min-w-0 flex-1">{item.q}</span>
-                  <MdExpandMore
-                    className={`shrink-0 text-2xl text-primary-home transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <MdExpandMore className={`shrink-0 text-2xl text-primary-home transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isOpen && (
                   <div className="border-t border-primary-home/10 px-4 pb-4 pt-3 text-sm leading-relaxed text-[#3d5a4c] sm:px-5">

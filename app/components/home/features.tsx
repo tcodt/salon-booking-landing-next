@@ -29,10 +29,10 @@ export default function Features() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mb-8 text-center sm:mb-10">
           <h2 className="text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
-            خداحافظی با چالش‌های سنتی
+            دیگه دفترچه و تلفن، سالن شما رو اداره نمی‌کنن
           </h2>
           <p className="mt-2 text-sm text-[#3d5a4c] sm:text-base">
-            دغدغه‌های رایج سالن‌ها را می‌شناسیم و برایشان راهکار داریم.
+            چالش‌های روزمره مدیریت سالن را می‌شناسیم و برایشان ابزار داریم.
           </p>
         </div>
 
@@ -45,12 +45,8 @@ export default function Features() {
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-home/10 text-primary-home">
                 <Icon className="text-2xl" />
               </div>
-              <h3 className="mb-2 text-base font-bold text-[#15241c] sm:text-lg">
-                {title}
-              </h3>
-              <p className="text-sm leading-relaxed text-[#3d5a4c]">
-                {description}
-              </p>
+              <h3 className="mb-2 text-base font-bold text-[#15241c] sm:text-lg">{title}</h3>
+              <p className="text-sm leading-relaxed text-[#3d5a4c]">{description}</p>
             </div>
           ))}
         </div>
