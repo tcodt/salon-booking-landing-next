@@ -59,14 +59,14 @@ export default function Hero() {
               نرم‌افزار مدیریت سالن زیبایی
             </p>
             <h1 id="hero-title" className="mb-4 font-extrabold leading-[1.35] text-primary-home sm:mb-5" style={{ fontSize: "clamp(1.5rem, 2.6vw + 0.85rem, 2.5rem)" }}>
-              نوبت‌دهی آنلاین برای سالن شما؛ رایگان شروع کنید
+              نوبت‌های سالنتون رو خودکار مدیریت کنید؛ رایگان شروع کنید
             </h1>
             <p className="narjin-prose mx-auto mb-7 max-w-[36rem] text-[0.95rem] leading-[1.85] text-[#3d5a4c] sm:mb-8 sm:text-base lg:mx-0 lg:max-w-none">
               نارژین رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان را در یک پنل ساده کنار هم قرار می‌دهد تا کمتر تلفن پاسخ دهید و نوبت‌ها منظم‌تر پیش بروند.
             </p>
             <div id="hero-ctas" className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:justify-start">
               <a href="https://panel.narjin.ir" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-container-home px-8 py-3.5 text-base font-bold text-on-primary shadow-md transition hover:opacity-95 hover:shadow-lg">
-                رایگان شروع کنید
+                ساخت سالن من، رایگان
               </a>
               <a href="#product-demo" className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary-home/30 px-5 py-3 text-base font-bold text-primary-home transition hover:border-primary-home hover:bg-primary-home/5">
                 <MdPlayArrow className="text-xl" />
