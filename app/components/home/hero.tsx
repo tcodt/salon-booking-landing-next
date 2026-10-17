@@ -1,69 +1,89 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import HeroShader from "./hero-shader";
-import { MdArrowBack } from "react-icons/md";
+import Image from "next/image";
+import { MdArrowBack, MdPlayArrow } from "react-icons/md";
 
 export default function Hero() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-
-  useEffect(() => {
-    // Optional polish animation — content is already visible without JS
-    const el = titleRef.current;
-    if (!el) return;
-    el.classList.add("active");
-  }, []);
-
   return (
-    <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center pt-24 sm:pt-20 pb-10 overflow-hidden">
-      <div className="absolute inset-0 w-full h-full -z-10 opacity-40">
-        <HeroShader />
-      </div>
-      <div className="container mx-auto px-4 sm:px-margin-mobile text-center z-10 max-w-4xl">
-        <h1
-          ref={titleRef}
-          className="font-headline-lg text-primary-home mb-4 sm:mb-lg px-1"
-          id="hero-title"
-          style={{
-            fontSize: "clamp(1.375rem, 4.5vw + 0.75rem, 3.5rem)",
-            lineHeight: "1.35",
-            fontWeight: 700,
-          }}
-        >
-          نوبت‌دهی آنلاین برای آرایشگاه رایگان شروع کن
-        </h1>
+    <section className="relative overflow-hidden bg-background-home pt-28 sm:pt-32 pb-12 sm:pb-16 md:pb-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(6,95,70,0.06),_transparent_55%)]" />
 
-        <p
-          id="hero-subtitle"
-          className="font-body-lg text-sm sm:text-body-lg text-secondary-home max-w-2xl mx-auto mb-6 sm:mb-xl leading-relaxed px-1"
-        >
-          نارژین یک نرم‌افزار تخصصی مدیریت سالن‌های زیبایی است که رزرو آنلاین،
-          مدیریت مشتریان، گزارش‌های مالی و مدیریت کارکنان را در یک پنل ساده و
-          هوشمند در اختیار شما قرار می‌دهد.
-        </p>
+      <div className="container relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          <div className="order-2 text-center lg:order-1 lg:text-right">
+            <p className="mb-3 text-sm font-medium text-primary-home/80 sm:text-base">
+              نرم‌افزار مدیریت سالن زیبایی
+            </p>
+            <h1
+              id="hero-title"
+              className="mb-4 text-primary-home font-extrabold leading-snug sm:mb-5"
+              style={{
+                fontSize: "clamp(1.5rem, 3.2vw + 0.8rem, 2.75rem)",
+              }}
+            >
+              نوبت‌دهی آنلاین آرایشگاه را رایگان شروع کنید
+            </h1>
+            <p className="mx-auto mb-7 max-w-xl text-sm leading-relaxed text-on-surface-variant-home sm:mb-8 sm:text-base lg:mx-0">
+              نارژین رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان را در یک
+              پنل ساده کنار هم قرار می‌دهد تا کمتر تلفن پاسخ دهید و نوبت‌ها منظم‌تر
+              پیش بروند.
+            </p>
 
-        {/* دو دکمه — همیشه visible بدون وابستگی به انیمیشن */}
-        <div
-          id="hero-ctas"
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center w-full max-w-md sm:max-w-none mx-auto"
-        >
-          <a
-            href="https://panel.narjin.ir"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glow-pulse inline-flex items-center justify-center w-full sm:w-auto bg-primary-container-home text-on-primary px-6 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-transform min-h-[48px] shadow-md"
-          >
-            رایگان شروع کنید
-          </a>
-          <a
-            href="#product-video"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-primary-home font-bold text-base sm:text-lg group min-h-[48px] px-4 py-3 rounded-full border-2 border-primary-home/30 hover:border-primary-home hover:bg-primary-home/5 transition-all"
-          >
-            <span className="inline-flex group-hover:translate-x-1 transition-transform">
-              <MdArrowBack className="text-xl" />
-            </span>
-            مشاهده دمو
-          </a>
+            <div
+              id="hero-ctas"
+              className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start"
+            >
+              <a
+                href="https://panel.narjin.ir"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-container-home px-7 py-3.5 text-base font-bold text-on-primary shadow-md transition hover:opacity-95 hover:shadow-lg sm:px-9"
+              >
+                رایگان شروع کنید
+              </a>
+              <a
+                href="#product-demo"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary-home/25 px-5 py-3 text-base font-bold text-primary-home transition hover:border-primary-home hover:bg-primary-home/5"
+              >
+                <MdPlayArrow className="text-xl" />
+                مشاهده معرفی
+              </a>
+            </div>
+
+            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-on-surface-variant-home sm:text-sm lg:justify-start">
+              <li className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-home" />
+                رزرو ۲۴ ساعته
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-home" />
+                یادآوری پیامکی
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-home" />
+                گزارش درآمد
+              </li>
+            </ul>
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
+              <div className="overflow-hidden rounded-2xl border border-outline-variant/25 bg-white shadow-[0_20px_50px_-20px_rgba(6,95,70,0.25)] sm:rounded-3xl">
+                <Image
+                  src="/images/about.png"
+                  alt="نمای نرم‌افزار نارژین — مدیریت سالن زیبایی"
+                  width={900}
+                  height={700}
+                  className="h-auto w-full object-cover object-top"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+              <p className="mt-3 text-center text-xs text-on-surface-variant-home/80 lg:text-right">
+                نمای نمایشی از فضای کاری نارژین
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

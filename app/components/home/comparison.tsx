@@ -1,122 +1,59 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { MdCheckCircleOutline, MdClose } from "react-icons/md";
 
+const withoutItems = [
+  "دفترچه‌های کاغذی شلوغ و نامرتب",
+  "پاسخگویی به تلفن حتی در زمان کار",
+  "فراموشی نوبت توسط مشتری",
+  "محاسبه دستی سهم آرایشگرها",
+];
+
+const withItems = [
+  "تقویم آنلاین و منظم نوبت‌ها",
+  "لینک اختصاصی نوبت‌دهی",
+  "پیامک تأیید و یادآوری خودکار",
+  "گزارش مالی و عملکرد آرایشگران",
+];
+
 export default function Comparison() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observerOptions = { threshold: 0.1 };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, observerOptions);
-
-    if (sectionRef.current) {
-      sectionRef.current
-        .querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-xl bg-surface-container-low overflow-hidden"
-    >
-      <div className="container mx-auto px-margin-mobile">
-        <h2 className="font-headline-lg text-headline-lg text-center text-primary-home mb-xl">
+    <section className="bg-surface-container-low py-12 sm:py-16">
+      <div className="container mx-auto max-w-5xl px-4 sm:px-6">
+        <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:mb-10 sm:text-2xl md:text-3xl">
           تفاوت را احساس کنید
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-lg max-w-5xl mx-auto">
-          {/* Without Narjin */}
-          <div
-            className="fade-up p-5 sm:p-xl bg-white rounded-2xl sm:rounded-4xl border border-outline-variant/30 opacity-60"
-            style={{ transitionDelay: "0.1s" }}
-          >
-            <h4 className="font-headline-sm text-headline-sm text-secondary-home mb-lg">
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
+          <div className="rounded-2xl border border-outline-variant/40 bg-white p-5 sm:rounded-3xl sm:p-7">
+            <h3 className="mb-5 text-lg font-bold text-on-surface">
               بدون نارژین
-            </h4>
-            <ul className="space-y-md">
-              <li className="flex items-center gap-sm text-secondary-home font-body-md">
-                <span className="material-symbols-outlined text-error-home">
-                  <MdClose />
-                </span>
-                دفترچه‌های کاغذی شلوغ و نامرتب
-              </li>
-              <li className="flex items-center gap-sm text-secondary-home font-body-md">
-                <span className="material-symbols-outlined text-error-home">
-                  <MdClose />
-                </span>
-                پاسخگویی به تلفن حتی در زمان کار
-              </li>
-              <li className="flex items-center gap-sm text-secondary-home font-body-md">
-                <span className="material-symbols-outlined text-error-home">
-                  <MdClose />
-                </span>
-                فراموشی نوبت توسط مشتری
-              </li>
-              <li className="flex items-center gap-sm text-secondary-home font-body-md">
-                <span className="material-symbols-outlined text-error-home">
-                  <MdClose />
-                </span>
-                عدم گزارش‌های دقیق
-              </li>
+            </h3>
+            <ul className="space-y-3.5">
+              {withoutItems.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5 text-sm text-on-surface-variant sm:text-base"
+                >
+                  <MdClose className="mt-0.5 shrink-0 text-xl text-error-home" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
-          {/* With Narjin */}
-          <div
-            className="fade-up p-5 sm:p-xl bg-primary-container-home text-on-primary rounded-2xl sm:rounded-4xl shadow-2xl relative md:scale-105 z-10 comparison-highlight"
-            style={{ transitionDelay: "0.2s" }}
-          >
-            <div className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 bg-tertiary-home text-on-tertiary-home px-3 sm:px-md py-1 sm:py-xs rounded-full font-label-md text-xs sm:text-sm">
-              پیشنهادی
-            </div>
-            <h4 className="font-headline-sm text-headline-sm mb-lg">
-              با نارژین
-            </h4>
-            <ul className="space-y-md">
-              <li className="flex items-center gap-sm font-body-md animate-pulse">
-                <span className="material-symbols-outlined text-primary-fixed">
-                  <MdCheckCircleOutline />
-                </span>
-                تقویم هوشمند و مدیریت لحظه‌ای
-              </li>
-              <li
-                className="flex items-center gap-sm font-body-md animate-pulse"
-                style={{ animationDelay: "0.2s" }}
-              >
-                <span className="material-symbols-outlined text-primary-fixed">
-                  <MdCheckCircleOutline />
-                </span>
-                لینک اختصاصی نوبت‌دهی 
-              </li>
-              <li
-                className="flex items-center gap-sm font-body-md animate-pulse"
-                style={{ animationDelay: "0.4s" }}
-              >
-                <span className="material-symbols-outlined text-primary-fixed">
-                  <MdCheckCircleOutline />
-                </span>
-                پیامک تایید و یادآوری خودکار
-              </li>
-              <li
-                className="flex items-center gap-sm font-body-md animate-pulse"
-                style={{ animationDelay: "0.6s" }}
-              >
-                <span className="material-symbols-outlined text-primary-fixed">
-                  <MdCheckCircleOutline />
-                </span>
-                گزارش‌های دقیق مالی و عملکرد آرایشگران
-              </li>
+
+          <div className="rounded-2xl border-2 border-primary-home/40 bg-primary-home text-on-primary p-5 shadow-md sm:rounded-3xl sm:p-7">
+            <h3 className="mb-5 text-lg font-bold">با نارژین</h3>
+            <ul className="space-y-3.5">
+              {withItems.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5 text-sm sm:text-base"
+                >
+                  <MdCheckCircleOutline className="mt-0.5 shrink-0 text-xl text-secondary-container" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

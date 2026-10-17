@@ -1,92 +1,62 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { MdEventBusy, MdSupportAgent, MdTrendingDown } from "react-icons/md";
+import { MdEventBusy, MdPhoneDisabled, MdTrendingUp } from "react-icons/md";
 
 const featuresData = [
   {
-    icon: <MdEventBusy />,
-    color: "error-home",
-    bgColor: "bg-error-home/10",
-    title: "نوبت‌های فراموش شده",
+    icon: <MdEventBusy className="text-3xl" />,
+    bg: "bg-primary-home/10",
+    color: "text-primary-home",
+    title: "نوبت‌های فراموش‌شده",
     description:
-      "با ارسال پیامک یادآوری خودکار به مشتریان، کنسلی‌ها را تا ۷۰٪ کاهش دهید.",
+      "با یادآوری خودکار پیامکی، پیگیری نوبت‌ها منظم‌تر می‌شود و کمتر نوبت از قلم می‌افتد.",
   },
   {
-    icon: <MdSupportAgent />,
-    color: "primary-home",
-    bgColor: "bg-primary-home/10",
-    title: "ترافیک تلفنی بالا",
+    icon: <MdPhoneDisabled className="text-3xl" />,
+    bg: "bg-secondary-container/30",
+    color: "text-secondary",
+    title: "تلفن‌های بی‌پایان",
     description:
-      "دیگر نیاز نیست تمام وقت پشت تلفن باشید. مشتریان آنلاین نوبت خود را ثبت می‌کنند.",
+      "مشتری از لینک اختصاصی سالن، هر ساعت از شبانه‌روز نوبت می‌گیرد؛ بدون قطع کار شما.",
   },
   {
-    icon: <MdTrendingDown />,
-    color: "tertiary-home",
-    bgColor: "bg-tertiary-home/10",
-    title: "درآمد از دست رفته",
+    icon: <MdTrendingUp className="text-3xl" />,
+    bg: "bg-tertiary-home/10",
+    color: "text-tertiary-home",
+    title: "مدیریت درآمد و زمان",
     description:
-      "با تحلیل هوشمند پرنشده‌ترین ساعت‌ها، جشنواره بگذارید و صندلی‌های خالی را پر کنید.",
+      "گزارش عملکرد و ساعات خلوت را ببینید تا برنامه‌ریزی خدمات و پرسنل دقیق‌تر شود.",
   },
 ];
 
 export default function Features() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observerOptions = { threshold: 0.1 };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, observerOptions);
-
-    if (sectionRef.current) {
-      sectionRef.current
-        .querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-xl bg-background-home"
-      id="features"
-    >
-      <div className="container mx-auto px-margin-mobile">
-        <div className="text-center mb-xl">
-          <h2 className="font-headline-lg text-headline-lg text-primary-home mb-sm">
+    <section className="bg-background-home py-12 sm:py-16" id="features">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mb-8 text-center sm:mb-10">
+          <h2 className="text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
             خداحافظی با چالش‌های سنتی
           </h2>
-          <p className="font-body-md text-body-md text-secondary-home">
-            ما دغدغه‌های شما را می‌شناسیم و برای آن‌ها راهکار داریم.
+          <p className="mt-2 text-sm text-on-surface-variant-home sm:text-base">
+            دغدغه‌های رایج سالن‌ها را می‌شناسیم و برایشان راهکار داریم.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-lg max-w-6xl mx-auto">
-          {featuresData.map((feature, index) => (
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+          {featuresData.map((feature) => (
             <div
               key={feature.title}
-              className="fade-up glass-card p-5 sm:p-xl rounded-2xl sm:rounded-3xl hover:shadow-xl transition-all duration-500 group"
-              style={{ transitionDelay: `${(index + 1) * 0.1}s` }}
+              className="rounded-2xl border border-outline-variant/20 bg-white p-5 shadow-sm transition hover:shadow-md sm:p-6 sm:rounded-3xl"
             >
               <div
-                className={`w-16 h-16 ${feature.bgColor} text-${feature.color} rounded-2xl flex items-center justify-center mb-lg group-hover:rotate-6 transition-transform`}
+                className={`mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${feature.bg} ${feature.color}`}
               >
-                <span className="material-symbols-outlined text-[32px]">
-                  {feature.icon}
-                </span>
+                {feature.icon}
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-on-surface mb-md">
+              <h3 className="mb-2 text-base font-bold text-on-surface sm:text-lg">
                 {feature.title}
               </h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant-home">
+              <p className="text-sm leading-relaxed text-on-surface-variant-home">
                 {feature.description}
               </p>
             </div>
