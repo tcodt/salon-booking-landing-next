@@ -24,36 +24,43 @@ export default function Footer() {
     }
   })();
 
-  const linkClass = "text-sm text-white/75 transition-colors hover:text-white";
+  const linkClass =
+    "block py-1 text-sm text-white/80 transition-colors hover:text-[#8bd6b6] active:text-white";
 
   return (
-    <footer className="mt-auto bg-primary-home text-white">
-      <div className="mx-auto max-w-7xl px-4 py-10 md:px-12 md:py-14">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
-          <div className="text-center sm:text-right">
+    <footer className="mt-auto bg-[#0a0a0a] text-white">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:px-12 md:py-14">
+        <div className="grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10">
+          <div className="text-center min-[480px]:text-right">
             <Link href="/" className="inline-flex items-center gap-3">
-              <Image src="/images/logo-main.png" alt="نارژین" width={40} height={40} className="h-10 w-10 object-contain" />
+              <Image
+                src="/images/logo-main.png"
+                alt="نارژین"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain"
+              />
               <span className="text-2xl font-extrabold text-white">نارژین</span>
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-white/75">
+            <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/75 min-[480px]:mx-0">
               نرم‌افزار مدیریت و نوبت‌دهی آنلاین سالن زیبایی
             </p>
-            <div className="mt-5 flex justify-center gap-3 sm:justify-start">
-              <a href="https://instagram.com/narjin" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:bg-white/10" aria-label="اینستاگرام">
+            <div className="mt-5 flex justify-center gap-3 min-[480px]:justify-start">
+              <a href="https://instagram.com/narjin" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="اینستاگرام">
                 <FaInstagram className="h-4 w-4" />
               </a>
-              <a href="https://t.me/narjin" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:bg-white/10" aria-label="تلگرام">
+              <a href="https://t.me/narjin" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="تلگرام">
                 <FaTelegramPlane className="h-4 w-4" />
               </a>
-              <a href="https://wa.me/989912146083" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:bg-white/10" aria-label="واتس‌اپ">
+              <a href="https://wa.me/989912146083" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="واتس‌اپ">
                 <FaWhatsapp className="h-4 w-4" />
               </a>
             </div>
           </div>
 
-          <div className="text-center sm:text-right">
-            <h3 className="mb-4 text-sm font-bold text-[#ffc329]">محصول</h3>
-            <ul className="flex flex-col gap-2.5">
+          <div className="text-center min-[480px]:text-right">
+            <h3 className="mb-3 text-sm font-bold text-white">محصول</h3>
+            <ul className="flex flex-col gap-1">
               <li><Link href="/features" className={linkClass}>قابلیت‌ها</Link></li>
               <li><Link href="/pricing" className={linkClass}>تعرفه‌ها</Link></li>
               <li><Link href="/blog" className={linkClass}>مقالات</Link></li>
@@ -61,40 +68,38 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="text-center sm:text-right">
-            <h3 className="mb-4 text-sm font-bold text-[#ffc329]">شرکت</h3>
-            <ul className="flex flex-col gap-2.5">
+          <div className="text-center min-[480px]:text-right">
+            <h3 className="mb-3 text-sm font-bold text-white">شرکت</h3>
+            <ul className="flex flex-col gap-1">
+              <li><Link href="/about" className={linkClass}>درباره ما</Link></li>
               <li><Link href="/#contact" className={linkClass}>تماس با ما</Link></li>
-              <li><Link href="/#pricing-preview" className={linkClass}>پلن‌ها</Link></li>
-              <li><Link href="/" className={linkClass}>صفحه اصلی</Link></li>
+              <li><Link href="/terms" className={linkClass}>قوانین و مقررات</Link></li>
+              <li><Link href="/privacy" className={linkClass}>حریم خصوصی</Link></li>
             </ul>
-            <p className="mt-3 text-xs text-white/50">
-              صفحات درباره ما، قوانین و حریم خصوصی هنوز در سایت تعریف نشده‌اند.
-            </p>
           </div>
 
-          <div className="text-center sm:text-right">
-            <h3 className="mb-4 text-sm font-bold text-[#ffc329]">تماس</h3>
+          <div className="text-center min-[480px]:text-right">
+            <h3 className="mb-3 text-sm font-bold text-white">تماس و پشتیبانی</h3>
             <ul className="flex flex-col gap-3 text-sm text-white/85">
               <li>
-                <a href={`tel:${PHONE_TEL}`} className="inline-flex items-center justify-center gap-2 hover:text-white sm:justify-start">
-                  <FaPhone className="h-3.5 w-3.5 shrink-0 text-[#ffc329]" />
+                <a href={`tel:${PHONE_TEL}`} className="inline-flex min-h-[44px] items-center justify-center gap-2 hover:text-[#8bd6b6] min-[480px]:justify-start">
+                  <FaPhone className="h-3.5 w-3.5 shrink-0 text-[#8bd6b6]" />
                   {PHONE_DISPLAY}
                 </a>
               </li>
               <li>
-                <a href="mailto:info@narjin.ir" className="inline-flex items-center justify-center gap-2 hover:text-white sm:justify-start">
-                  <FaEnvelope className="h-3.5 w-3.5 shrink-0 text-[#ffc329]" />
+                <a href="mailto:info@narjin.ir" className="inline-flex min-h-[44px] items-center justify-center gap-2 hover:text-[#8bd6b6] min-[480px]:justify-start">
+                  <FaEnvelope className="h-3.5 w-3.5 shrink-0 text-[#8bd6b6]" />
                   info@narjin.ir
                 </a>
               </li>
-              <li className="text-white/90">پشتیبانی ۲۴ ساعته</li>
+              <li className="text-white/80">پشتیبانی ۲۴ ساعته</li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/15 pt-6 text-center text-xs text-white/60">
-          © {currentYear} تمامی حقوق برای <span className="font-medium text-white/90">نارژین</span> محفوظ است.
+        <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs leading-relaxed text-white/55">
+          © {currentYear} تمامی حقوق برای <span className="font-medium text-white/85">نارژین</span> محفوظ است.
         </div>
       </div>
     </footer>
