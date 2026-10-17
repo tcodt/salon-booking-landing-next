@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { 
-  FaBars, 
-  FaTimes, 
-  FaInstagram, 
-  FaTelegramPlane, 
-  FaPhone 
+import {
+  FaBars,
+  FaTimes,
+  FaInstagram,
+  FaTelegramPlane,
+  FaPhone,
 } from "react-icons/fa";
 
 export default function Navbar() {
@@ -25,23 +25,23 @@ export default function Navbar() {
   ];
 
   const socialLinks = [
-    { 
-      href: "https://instagram.com/narjin", 
-      icon: FaInstagram, 
+    {
+      href: "https://instagram.com/narjin",
+      icon: FaInstagram,
       label: "اینستاگرام",
-      color: "hover:text-pink-600"
+      color: "hover:text-pink-600",
     },
-    { 
-      href: "https://t.me/narjin", 
-      icon: FaTelegramPlane, 
+    {
+      href: "https://t.me/narjin",
+      icon: FaTelegramPlane,
       label: "تلگرام",
-      color: "hover:text-blue-500"
+      color: "hover:text-blue-500",
     },
-    { 
-      href: "tel:09912146083", 
-      icon: FaPhone, 
+    {
+      href: "tel:09912146083",
+      icon: FaPhone,
       label: "تماس تلفنی",
-      color: "hover:text-green-600"
+      color: "hover:text-green-600",
     },
   ];
 
@@ -67,15 +67,15 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+        className={
           isScrolled
-            ? "bg-white shadow-[0px_4px_20px_rgba(6,95,70,0.08)]"
-            : "bg-white border-b border-primary-home/5"
-        }`}
+            ? "fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-[0px_4px_20px_rgba(6,95,70,0.08)] transition-all duration-300"
+            : "fixed top-0 left-0 right-0 z-50 w-full bg-white border-b border-primary-home/5 transition-all duration-300"
+        }
       >
-        <nav className="flex items-center justify-between px-4 md:px-12 py-3 max-w-7xl mx-auto">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-12">
+          <Link href="/" className="group flex items-center gap-3">
+            <div className="relative h-10 w-10 flex-shrink-0 md:h-12 md:w-12">
               <Image
                 src="/images/logo-main.png"
                 alt="نارژین"
@@ -85,72 +85,80 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="text-xl md:text-2xl font-extrabold text-primary">
+            <span className="text-xl font-extrabold text-primary md:text-2xl">
               نارژین
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-base font-medium transition-colors duration-300 ${
+                className={
                   pathname === link.href
-                    ? "text-primary"
-                    : "text-on-surface-variant hover:text-primary"
-                }`}
+                    ? "text-base font-medium text-primary transition-colors duration-300"
+                    : "text-base font-medium text-on-surface-variant transition-colors duration-300 hover:text-primary"
+                }
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <a
               href="https://panel.narjin.ir"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-primary text-white px-6 py-2 rounded-full text-sm font-medium hover:opacity-90 active:scale-95 transition-all duration-200"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2 text-sm font-medium text-white transition-all duration-200 hover:opacity-90 active:scale-95"
             >
               شروع رایگان
             </a>
           </div>
 
           <button
+            type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-surface-container transition-colors duration-200 z-50"
-            aria-label="Toggle menu"
+            className="z-50 rounded-lg p-2 transition-colors duration-200 hover:bg-surface-container md:hidden"
+            aria-label={isMenuOpen ? "بستن منو" : "باز کردن منو"}
           >
             {isMenuOpen ? (
-              <FaTimes className="w-6 h-6 text-primary" />
+              <FaTimes className="h-6 w-6 text-primary" />
             ) : (
-              <FaBars className="w-6 h-6 text-primary" />
+              <FaBars className="h-6 w-6 text-primary" />
             )}
           </button>
         </nav>
       </header>
 
       <div
-        className={`fixed inset-0 z-40 transition-all duration-500 ${
+        className={
           isMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
+            ? "pointer-events-auto fixed inset-0 z-40 opacity-100 transition-all duration-500"
+            : "pointer-events-none fixed inset-0 z-40 opacity-0 transition-all duration-500"
+        }
       >
         <div
           className="absolute inset-0 bg-black/50 backdrop-blur-sm"
           onClick={() => setIsMenuOpen(false)}
+          role="presentation"
         />
 
         <div
-          className={`absolute top-0 right-0 h-full w-[min(20rem,88vw)] max-w-[320px] bg-surface shadow-2xl transition-all duration-500 ease-out ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={
+            isMenuOpen
+              ? "absolute top-0 right-0 h-full w-[min(20rem,88vw)] max-w-[320px] translate-x-0 bg-surface shadow-2xl transition-all duration-500 ease-out"
+              : "absolute top-0 right-0 h-full w-[min(20rem,88vw)] max-w-[320px] translate-x-full bg-surface shadow-2xl transition-all duration-500 ease-out"
+          }
         >
-          <div className="flex items-center justify-between p-6 border-b border-outline-variant/30">
-            <Link href="/" className="flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
-              <div className="relative w-10 h-10 flex-shrink-0">
+          <div className="flex items-center justify-between border-b border-outline-variant/30 p-6">
+            <Link
+              href="/"
+              className="flex items-center gap-3"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <div className="relative h-10 w-10 flex-shrink-0">
                 <Image
                   src="/images/logo-main.png"
                   alt="نارژین"
@@ -163,25 +171,26 @@ export default function Navbar() {
               <span className="text-xl font-extrabold text-primary">نارژین</span>
             </Link>
             <button
+              type="button"
               onClick={() => setIsMenuOpen(false)}
-              className="p-2 rounded-lg hover:bg-surface-container transition-colors"
-              aria-label="Close menu"
+              className="rounded-lg p-2 transition-colors hover:bg-surface-container"
+              aria-label="بستن منو"
             >
-              <FaTimes className="w-5 h-5 text-on-surface-variant" />
+              <FaTimes className="h-5 w-5 text-on-surface-variant" />
             </button>
           </div>
 
-          <nav className="p-6 flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)] mobile-menu-scroll">
+          <nav className="flex max-h-[calc(100vh-220px)] flex-col gap-2 overflow-y-auto p-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                className={
                   pathname === link.href
-                    ? "bg-primary/10 text-primary"
-                    : "text-on-surface-variant hover:bg-surface-container"
-                }`}
+                    ? "rounded-xl bg-primary/10 px-4 py-3 text-base font-medium text-primary transition-colors"
+                    : "rounded-xl px-4 py-3 text-base font-medium text-on-surface-variant transition-colors hover:bg-surface-container"
+                }
               >
                 {link.label}
               </Link>
@@ -191,26 +200,30 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}
-              className="mt-4 mx-4 inline-flex items-center justify-center bg-primary text-white px-6 py-3 rounded-full text-sm font-medium"
+              className="mx-4 mt-4 inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-white"
             >
               شروع رایگان
             </a>
           </nav>
 
-          <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-outline-variant/30">
+          <div className="absolute right-0 bottom-0 left-0 border-t border-outline-variant/30 p-6">
             <div className="flex justify-center gap-4">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
+                const isTel = social.href.startsWith("tel:");
                 return (
                   <a
                     key={social.label}
                     href={social.href}
-                    target={social.href.startsWith("tel:") ? undefined : "_blank"}
-                    rel={social.href.startsWith("tel:") ? undefined : "noopener noreferrer"}
-                    className={`w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant ${social.color} transition-all"}
+                    target={isTel ? undefined : "_blank"}
+                    rel={isTel ? undefined : "noopener noreferrer"}
+                    className={
+                      "flex h-10 w-10 items-center justify-center rounded-full border border-outline-variant text-on-surface-variant transition-all " +
+                      social.color
+                    }
                     aria-label={social.label}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="h-4 w-4" />
                   </a>
                 );
               })}
