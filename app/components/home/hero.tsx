@@ -7,6 +7,7 @@ import {
   MdBarChart,
 } from "react-icons/md";
 
+/** نمای نمایشی رابط پنل — داده نمونه، نه اسکرین‌شات زنده */
 function PanelPreview() {
   return (
     <div className="overflow-hidden rounded-2xl border border-[#0a4d3a]/20 bg-white shadow-[0_24px_60px_-24px_rgba(0,53,39,0.35)] sm:rounded-3xl">
@@ -62,7 +63,7 @@ export default function Hero() {
               نوبت‌های سالنتون رو خودکار مدیریت کنید؛ رایگان شروع کنید
             </h1>
             <p className="narjin-prose mx-auto mb-7 max-w-[36rem] text-[0.95rem] leading-[1.85] text-[#3d5a4c] sm:mb-8 sm:text-base lg:mx-0 lg:max-w-none">
-              نارژین رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان را در یک پنل ساده کنار هم قرار می‌دهد تا کمتر تلفن پاسخ دهید و نوبت‌ها منظم‌تر پیش بروند.
+              رزرو آنلاین، مشتریان و گزارش مالی در یک پنل ساده؛ کمتر تلفن جواب بدید و نوبت‌ها رو منظم‌تر مدیریت کنید.
             </p>
             <div id="hero-ctas" className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:justify-start">
               <a href="https://panel.narjin.ir" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-container-home px-8 py-3.5 text-base font-bold text-on-primary shadow-md transition hover:opacity-95 hover:shadow-lg">
@@ -90,7 +91,6 @@ export default function Hero() {
           </div>
           <div className="order-1 min-w-0 lg:order-2">
             <PanelPreview />
-            <p className="mt-3 text-center text-xs text-[#5a7266] lg:text-right">نمای نمایشی رابط کاربری — برای آشنایی با ساختار پنل</p>
           </div>
         </div>
       </div>

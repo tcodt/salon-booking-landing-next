@@ -20,12 +20,6 @@ export default function ProductVideo() {
           <h2 className="mx-auto max-w-2xl text-xl font-extrabold leading-snug text-primary-home sm:text-2xl md:text-3xl">
             در ۴۳ ثانیه با نارژین آشنا بشید
           </h2>
-          <p
-            className="mx-auto mt-3 w-full max-w-xl px-1 text-sm leading-[1.9] text-[#3d5a4c] sm:text-base"
-            style={{ overflowWrap: "normal", wordBreak: "normal" }}
-          >
-            ویدیوی معرفی محصول را ببینید و با فضای کلی پنل نارژین آشنا شوید.
-          </p>
         </div>
 
         <div
