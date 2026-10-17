@@ -21,7 +21,7 @@ export default function Comparison() {
     <section className="bg-[#eef4f0] py-12 sm:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:mb-10 sm:text-2xl md:text-3xl">
-          سالن شما با نارژین و بدون نارژین
+          یک روز کاری سالن شما، قبل و بعد از نارژین
         </h2>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           <div className="rounded-2xl border border-[#0a4d3a]/15 bg-white p-5 sm:rounded-3xl sm:p-7">
