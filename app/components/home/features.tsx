@@ -31,9 +31,6 @@ export default function Features() {
           <h2 className="text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
             دیگه نوبت‌هاتون بین دفترچه و تماس‌ها گم نمی‌شن
           </h2>
-          <p className="mt-2 text-sm text-[#3d5a4c] sm:text-base">
-            چالش‌های روزمره مدیریت سالن را می‌شناسیم و برایشان ابزار داریم.
-          </p>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
           {featuresData.map(({ icon: Icon, title, description }) => (

@@ -58,9 +58,6 @@ export default function PricingTeaser() {
           <h2 className="text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
             از رایگان شروع کنید؛ با رشد سالن ارتقا بدید
           </h2>
-          <p className="mt-2 text-sm text-[#3d5a4c] sm:text-base">
-            خلاصه پلن‌ها — جزئیات کامل در صفحه تعرفه‌ها
-          </p>
         </div>
 
         <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">

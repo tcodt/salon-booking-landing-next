@@ -81,17 +81,14 @@ export default function Testimonials() {
         <h2 className="mb-2 text-center text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
           مدیران سالن درباره نارژین چی می‌گن؟
         </h2>
-        <p className="mb-2 text-center text-sm text-[#3d5a4c]">
-          نمونه‌هایی از بازخوردهای رایج مدیران سالن
-        </p>
         <p className="mb-8 text-center text-xs font-medium text-amber-800">
           نمونه نمایشی — نظر واقعی مشتری نیست
         </p>
 
         <div
           ref={trackRef}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          style={{ WebkitOverflowScrolling: "touch" }}
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-1 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ WebkitOverflowScrolling: "touch", scrollPaddingInline: "12px" }}
           role="region"
           aria-label="نظرات مشتریان"
           tabIndex={0}
@@ -104,7 +101,7 @@ export default function Testimonials() {
             <article
               key={t.name + t.role}
               data-card
-              className="w-[min(85vw,320px)] shrink-0 snap-center rounded-2xl border border-primary-home/10 bg-white p-5 shadow-sm sm:w-[300px]"
+              className="w-[min(85vw,300px)] shrink-0 snap-start rounded-2xl border border-primary-home/10 bg-white p-5 shadow-sm sm:w-[280px]"
             >
               <div className="mb-3 flex items-center gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-home/10 text-sm font-bold text-primary-home">
@@ -118,9 +115,9 @@ export default function Testimonials() {
               <p className="mb-4 min-h-[4.5rem] text-sm leading-relaxed text-[#3d5a4c] not-italic">
                 «{t.text}»
               </p>
-              <div className="flex gap-0.5 text-amber-500" aria-hidden>
+              <div className="flex gap-0.5" aria-hidden>
                 {[...Array(5)].map((_, i) => (
-                  <MdStar key={i} className="text-base" />
+                  <MdStar key={i} className="text-lg" style={{ color: "#f59e0b", fill: "#f59e0b" }} />
                 ))}
               </div>
             </article>
