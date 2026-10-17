@@ -125,11 +125,8 @@ export default function PricingTeaser() {
           ))}
         </div>
 
-        <p className="mt-6 text-center text-sm font-medium text-[#3d5a4c]">بدون هزینه نصب، بدون قرارداد اجباری</p>
-        <p className="mt-2 text-center">
-          <Link href="/pricing" className="text-sm font-semibold text-primary-home underline-offset-4 hover:underline">
-            مشاهده پلن‌ها
-          </Link>
+        <p className="mt-6 text-center text-sm font-medium text-[#3d5a4c]">
+          بدون هزینه نصب، بدون قرارداد اجباری
         </p>
       </div>
     </section>
