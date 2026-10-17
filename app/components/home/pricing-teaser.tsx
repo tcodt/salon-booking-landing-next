@@ -1,56 +1,48 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MdCheck } from "react-icons/md";
-
-const plans = [
-  {
-    name: "شروع",
-    price: "رایگان",
-    desc: "مناسب برای سالن‌های تازه‌تأسیس",
-    features: [
-      "رزرو آنلاین تا ۱۰۰ نوبت در ماه",
-      "مدیریت خدمات و تقویم نوبت‌ها",
-      "مدیریت اطلاعات مشتریان",
-      "دسترسی به امکانات پایه",
-    ],
-    cta: "ساخت سالن من، رایگان",
-    href: "https://panel.narjin.ir",
-    external: true,
-  },
-  {
-    name: "حرفه‌ای",
-    price: "از ۴۹۰٬۰۰۰ تومان",
-    priceNote: "ماهانه",
-    desc: "بهترین انتخاب برای سالن‌های در حال رشد",
-    features: [
-      "رزرو آنلاین نامحدود",
-      "پیامک یادآوری و تأیید نوبت",
-      "مدیریت کارکنان و کمیسیون",
-      "گزارش‌های مالی و مدیریتی",
-      "CRM و پرونده مشتریان",
-    ],
-    cta: "مشاهده پلن‌ها",
-    href: "/pricing",
-    external: false,
-    featured: true,
-  },
-  {
-    name: "سازمانی",
-    price: "تماس بگیرید",
-    desc: "برای سالن‌های بزرگ و چندشعبه‌ای",
-    features: [
-      "تمام امکانات پلن حرفه‌ای",
-      "شعب و کارکنان نامحدود",
-      "داشبورد مدیریت شعب",
-      "پشتیبانی اختصاصی",
-      "آموزش و راه‌اندازی",
-    ],
-    cta: "دریافت مشاوره",
-    href: "#contact",
-    external: false,
-  },
-];
+import {
+  type Plan,
+  formatPlanPrice,
+  durationLabel,
+  featureLine,
+  isFeatureIncluded,
+} from "@/lib/api";
 
 export default function PricingTeaser() {
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/plans/");
+        if (!res.ok) throw new Error("fail");
+        const data = await res.json();
+        if (Array.isArray(data) && !cancelled) setPlans(data as Plan[]);
+      } catch {
+        if (!cancelled) setPlans([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const featuredId = (() => {
+    const paid = plans.filter((p) => p.price > 0);
+    if (paid.length >= 1) {
+      const sorted = [...paid].sort((a, b) => a.price - b.price);
+      return sorted[Math.floor((sorted.length - 1) / 2)]?.id ?? paid[0].id;
+    }
+    return plans[1]?.id ?? plans[0]?.id;
+  })();
+
   return (
     <section className="bg-background-home py-12 sm:py-16" id="pricing-preview">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -60,67 +52,131 @@ export default function PricingTeaser() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">
-          {plans.map((p) => (
-            <div
-              key={p.name}
-              className={
-                p.featured
-                  ? "relative flex flex-col rounded-2xl border border-primary-home bg-primary-home p-5 text-white shadow-lg sm:p-6"
-                  : "relative flex flex-col rounded-2xl border border-primary-home/15 bg-white p-5 sm:p-6"
-              }
-            >
-              {p.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ffc329] px-3 py-0.5 text-xs font-bold text-[#003527]">
-                  محبوب‌ترین
-                </span>
-              )}
-              <h3 className={p.featured ? "text-lg font-bold text-white" : "text-lg font-bold text-[#15241c]"}>
-                {p.name}
-              </h3>
-              <p className={p.featured ? "mt-2 text-2xl font-extrabold text-[#ffc329]" : "mt-2 text-2xl font-extrabold text-primary-home"}>
-                {p.price}
-              </p>
-              {p.priceNote && (
-                <p className={p.featured ? "text-xs text-white/70" : "text-xs text-[#5a7266]"}>{p.priceNote}</p>
-              )}
-              <p className={p.featured ? "mt-2 text-sm text-white/85" : "mt-2 text-sm text-[#3d5a4c]"}>{p.desc}</p>
-              <ul className="mt-5 flex flex-1 flex-col gap-2.5">
-                {p.features.map((f) => (
-                  <li key={f} className={p.featured ? "flex items-start gap-2 text-sm text-white/90" : "flex items-start gap-2 text-sm text-[#3d5a4c]"}>
-                    <MdCheck className={p.featured ? "mt-0.5 shrink-0 text-lg text-[#ffc329]" : "mt-0.5 shrink-0 text-lg text-primary-home"} />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              {p.external ? (
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+        {loading && (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 animate-pulse rounded-2xl bg-white/80" />
+            ))}
+          </div>
+        )}
+
+        {!loading && plans.length === 0 && (
+          <p className="text-center text-sm text-[#3d5a4c]">
+            برای دیدن جزئیات تعرفه‌ها به{" "}
+            <Link href="/pricing" className="font-semibold text-primary-home underline">
+              صفحه پلن‌ها
+            </Link>{" "}
+            سر بزنید.
+          </p>
+        )}
+
+        {!loading && plans.length > 0 && (
+          <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">
+            {plans.slice(0, 3).map((p) => {
+              const featured = p.id === featuredId;
+              const lines = (p.features || [])
+                .filter(isFeatureIncluded)
+                .map(featureLine)
+                .filter(Boolean)
+                .slice(0, 5);
+              const isFree = !p.price || p.price <= 0;
+              const isOrg = /سازمان|enterprise/i.test(p.title || "");
+
+              return (
+                <div
+                  key={p.id}
                   className={
-                    p.featured
-                      ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
-                      : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                    featured
+                      ? "relative flex flex-col rounded-2xl border border-primary-home bg-primary-home p-5 text-white shadow-lg sm:p-6"
+                      : "relative flex flex-col rounded-2xl border border-primary-home/15 bg-white p-5 sm:p-6"
                   }
                 >
-                  {p.cta}
-                </a>
-              ) : (
-                <Link
-                  href={p.href}
-                  className={
-                    p.featured
-                      ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
-                      : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
-                  }
-                >
-                  {p.cta}
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
+                  {featured && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ffc329] px-3 py-0.5 text-xs font-bold text-[#003527]">
+                      محبوب‌ترین
+                    </span>
+                  )}
+                  <h3
+                    className={
+                      featured
+                        ? "text-lg font-bold text-white"
+                        : "text-lg font-bold text-[#15241c]"
+                    }
+                  >
+                    {p.title}
+                  </h3>
+                  <p
+                    className={
+                      featured
+                        ? "mt-2 text-2xl font-extrabold text-[#ffc329]"
+                        : "mt-2 text-2xl font-extrabold text-primary-home"
+                    }
+                  >
+                    {formatPlanPrice(p.price)}
+                  </p>
+                  {durationLabel(p.duration_days) && (
+                    <p
+                      className={
+                        featured ? "text-xs text-white/70" : "text-xs text-[#5a7266]"
+                      }
+                    >
+                      {durationLabel(p.duration_days)}
+                    </p>
+                  )}
+                  <ul className="mt-5 flex flex-1 flex-col gap-2.5">
+                    {lines.map((f) => (
+                      <li
+                        key={f}
+                        className={
+                          featured
+                            ? "flex items-start gap-2 text-sm text-white/90"
+                            : "flex items-start gap-2 text-sm text-[#3d5a4c]"
+                        }
+                      >
+                        <MdCheck
+                          className={
+                            featured
+                              ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
+                              : "mt-0.5 shrink-0 text-lg text-primary-home"
+                          }
+                        />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {isFree ? (
+                    <a
+                      href="https://panel.narjin.ir"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                    >
+                      ساخت سالن من، رایگان
+                    </a>
+                  ) : isOrg ? (
+                    <Link
+                      href="/#contact"
+                      className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                    >
+                      دریافت مشاوره
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/pricing"
+                      className={
+                        featured
+                          ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
+                          : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                      }
+                    >
+                      مشاهده پلن‌ها
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <p className="mt-6 text-center text-sm font-medium text-[#3d5a4c]">
           بدون هزینه نصب، بدون قرارداد اجباری

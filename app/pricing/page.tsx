@@ -1,259 +1,253 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import {
-  FaCheckCircle,
-  FaTimesCircle,
-  FaArrowLeft,
-  FaChevronDown,
-} from "react-icons/fa";
+  type Plan,
+  formatPlanPrice,
+  durationLabel,
+  featureLine,
+  isFeatureIncluded,
+} from "@/lib/api";
 
 export default function PricingPage() {
-  const [isYearly, setIsYearly] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
-
-  const pricingPlans = [
-    {
-      id: "starter",
-      name: "شروع",
-      description: "مناسب برای سالن‌های تازه‌تأسیس",
-      monthlyPrice: "رایگان",
-      yearlyPrice: "رایگان",
-      isFree: true,
-      features: [
-        { text: "رزرو آنلاین تا ۱۰۰ نوبت در ماه", included: true },
-        { text: "مدیریت خدمات و تقویم نوبت‌ها", included: true },
-        { text: "مدیریت اطلاعات مشتریان", included: true },
-        { text: "گزارش‌های مالی پیشرفته", included: false },
-        { text: "پیامک یادآوری خودکار", included: false },
-        { text: "مدیریت کارکنان", included: false },
-      ],
-      buttonText: "رایگان شروع کنید",
-      buttonVariant: "outline",
-    },
-    {
-      id: "professional",
-      name: "حرفه‌ای",
-      description: "بهترین انتخاب برای سالن‌های در حال رشد",
-      monthlyPrice: "۴۹۰,۰۰۰",
-      yearlyPrice: "۴,۷۰۰,۰۰۰",
-      isFree: false,
-      isFeatured: true,
-      features: [
-        { text: "رزرو آنلاین نامحدود", included: true },
-        { text: "پیامک یادآوری و تأیید نوبت", included: true },
-        { text: "مدیریت کارکنان و کمیسیون", included: true },
-        { text: "گزارش‌های مالی و مدیریتی", included: true },
-        { text: "CRM و پرونده مشتریان", included: true },
-        { text: "پشتیبانی اولویت‌دار", included: true },
-      ],
-      buttonText: "شروع پلن حرفه‌ای",
-      buttonVariant: "primary",
-    },
-    {
-      id: "enterprise",
-      name: "سازمانی",
-      description: "برای سالن‌های بزرگ و چند شعبه‌ای",
-      monthlyPrice: "تماس بگیرید",
-      yearlyPrice: "تماس بگیرید",
-      isFree: false,
-      features: [
-        { text: "تمام امکانات پلن حرفه‌ای", included: true },
-        { text: "شعب و کارکنان نامحدود", included: true },
-        { text: "داشبورد اختصاصی مدیریت شعب", included: true },
-        { text: "API و یکپارچه‌سازی اختصاصی", included: true },
-        { text: "پشتیبانی اختصاصی VIP", included: true },
-        { text: "آموزش و راه‌اندازی اختصاصی", included: true },
-      ],
-      buttonText: "تماس با واحد فروش",
-      buttonVariant: "outline",
-    },
-  ];
-
-  const comparisonFeatures = [
-    { name: "تعداد نوبت ماهانه", basic: "۱۰۰", pro: "نامحدود", business: "نامحدود" },
-    { name: "تعداد کارکنان", basic: "۱ نفر", pro: "۵ نفر", business: "نامحدود" },
-    { name: "تعداد شعب", basic: "۱", pro: "۱", business: "نامحدود" },
-    { name: "رزرو آنلاین ۲۴ ساعته", basic: true, pro: true, business: true },
-    { name: "تقویم هوشمند", basic: true, pro: true, business: true },
-    { name: "مدیریت مشتریان (CRM)", basic: true, pro: true, business: true },
-    { name: "مدیریت کارکنان", basic: false, pro: true, business: true },
-    { name: "مدیریت کمیسیون", basic: false, pro: true, business: true },
-    { name: "پیامک یادآوری خودکار", basic: false, pro: true, business: true },
-    { name: "واتساپ یادآوری", basic: false, pro: true, business: true },
-    { name: "گزارش‌های مالی", basic: false, pro: true, business: true },
-    { name: "گزارش عملکرد کارکنان", basic: false, pro: true, business: true },
-    { name: "باشگاه مشتریان", basic: false, pro: true, business: true },
-    { name: "تخفیف و کد هدیه", basic: false, pro: true, business: true },
-    { name: "پشتیبانی VIP", basic: false, pro: false, business: true },
-    { name: "API اختصاصی", basic: false, pro: false, business: true },
-  ];
-
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const observerOptions = { threshold: 0.1 };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/plans/");
+        if (!res.ok) throw new Error(`خطا ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("داده پلن‌ها معتبر نیست");
+        if (!cancelled) setPlans(data as Plan[]);
+      } catch (e) {
+        if (!cancelled) {
+          setError(
+            e instanceof Error ? e.message : "مشکلی در دریافت تعرفه‌ها پیش آمد",
+          );
         }
-      });
-    }, observerOptions);
-
-    setTimeout(() => {
-      document.querySelectorAll(".reveal-up").forEach((el) => observer.observe(el));
-    }, 100);
-
-    return () => observer.disconnect();
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const toggleFaq = (index: number) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
+  const featuredId = (() => {
+    if (plans.length < 2) return plans[0]?.id;
+    const paid = plans.filter((p) => p.price > 0);
+    if (paid.length === 1) return paid[0].id;
+    if (paid.length >= 2) {
+      const sorted = [...paid].sort((a, b) => a.price - b.price);
+      return sorted[Math.floor((sorted.length - 1) / 2)]?.id ?? paid[0].id;
+    }
+    return plans[1]?.id;
+  })();
 
-  const getPrice = (plan: (typeof pricingPlans)[0]) => {
-    if (plan.isFree) return "رایگان";
-    return isYearly ? plan.yearlyPrice : plan.monthlyPrice;
-  };
-
-  const getPriceLabel = (plan: (typeof pricingPlans)[0]) => {
-    if (plan.isFree) return "";
-    return isYearly ? "تومان / سالانه" : "تومان / ماهانه";
+  const ctaFor = (plan: Plan) => {
+    if (!plan.price || plan.price <= 0) {
+      return {
+        href: "https://panel.narjin.ir",
+        external: true,
+        label: "رایگان شروع کنید",
+      };
+    }
+    const t = plan.title || "";
+    if (/سازمان|enterprise|business/i.test(t)) {
+      return { href: "/#contact", external: false, label: "تماس با فروش" };
+    }
+    return {
+      href: "https://panel.narjin.ir",
+      external: true,
+      label: "شروع این پلن",
+    };
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 md:px-12 pt-20 pb-12 mt-20">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-6 reveal-up">
+    <main className="mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 md:px-12">
+      <div className="mb-12 text-center">
+        <h1 className="mb-4 text-3xl font-extrabold text-primary-home sm:text-4xl md:text-5xl">
           پلن مناسب سالن خود را انتخاب کنید
         </h1>
-        <p className="text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto mb-12 md:mb-16 reveal-up leading-relaxed">
-          نارژین برای هر مرحله از رشد کسب‌وکار شما، از سالن‌های تازه‌تأسیس تا مجموعه‌های چندشعبه‌ای، پلنی متناسب ارائه می‌دهد. امکانات موردنیاز خود را انتخاب کنید و هر زمان که نیاز داشتید، پلن خود را ارتقا دهید.
+        <p className="mx-auto max-w-2xl text-base leading-relaxed text-[#3d5a4c] sm:text-lg">
+          تعرفه‌ها از سرور نارژین بارگذاری می‌شوند. هر زمان نیاز داشتید می‌توانید
+          پلن را ارتقا دهید.
         </p>
       </div>
 
-      {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-12">
-        {pricingPlans.map((plan, index) => (
-          <div
-            key={plan.id}
-            className={`glass-card border p-6 rounded-xl flex flex-col gap-4 transition-all duration-300 reveal-up ${
-              plan.isFeatured
-                ? "border-2 border-secondary-container scale-105 shadow-lg featured-pulse relative"
-                : "border border-outline-variant hover:scale-105 hover:shadow-xl"
-            }`}
-            style={{ transitionDelay: `${(index + 1) * 100}ms` }}
-          >
-            {plan.isFeatured && (
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap">
-                پیشنهاد ویژه
-              </div>
-            )}
-            <div>
-              <h3 className="text-2xl font-bold text-primary mb-1">{plan.name}</h3>
-              <p className="text-sm text-on-surface-variant">{plan.description}</p>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-on-surface">{getPrice(plan)}</span>
-              {!plan.isFree && (
-                <span className="text-sm text-on-surface-variant">{getPriceLabel(plan)}</span>
-              )}
-            </div>
-            <ul className="flex flex-col gap-2 border-t border-outline-variant pt-4">
-              {plan.features.map((feature, idx) => (
-                <li key={idx} className={`flex items-center gap-2 text-base ${!feature.included ? "opacity-50" : ""}`}>
-                  {feature.included ? (
-                    <FaCheckCircle className="text-primary flex-shrink-0" />
-                  ) : (
-                    <FaTimesCircle className="text-outline flex-shrink-0" />
-                  )}
-                  <span className={feature.included ? "" : "text-outline"}>{feature.text}</span>
-                </li>
-              ))}
-            </ul>
-            <button
-              className={`w-full py-2 rounded-lg font-medium transition-all duration-300 mt-auto ${
-                plan.buttonVariant === "primary"
-                  ? "bg-secondary-container text-on-secondary-container font-bold hover:shadow-md"
-                  : "border border-primary text-primary hover:bg-primary hover:text-white"
-              }`}
-            >
-              {plan.buttonText}
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Comparison Table Section */}
-      <section className="max-w-4xl mx-auto py-12">
-        <h2 className="text-3xl font-bold text-center text-primary mb-12 reveal-up">
-          مقایسه ویژگی‌ها
-        </h2>
-        <div className="overflow-x-auto glass-card rounded-xl border border-outline-variant reveal-up">
-          <table className="w-full text-right border-collapse min-w-[600px]">
-            <thead>
-              <tr className="bg-surface-container-low">
-                <th className="p-4 text-sm font-medium text-on-surface-variant">ویژگی</th>
-                <th className="p-4 text-sm font-medium text-primary text-center">شروع</th>
-                <th className="p-4 text-sm font-medium text-primary text-center">حرفه‌ای</th>
-                <th className="p-4 text-sm font-medium text-primary text-center">سازمانی</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-outline-variant">
-              {comparisonFeatures.map((feature, index) => (
-                <tr key={index} className="hover:bg-surface-container-lowest transition-colors">
-                  <td className="p-4 text-base">{feature.name}</td>
-                  <td className="p-4 text-base text-center">
-                    {typeof feature.basic === "string" ? (
-                      feature.basic
-                    ) : feature.basic ? (
-                      <FaCheckCircle className="text-primary inline" />
-                    ) : (
-                      <FaTimesCircle className="text-outline inline" />
-                    )}
-                  </td>
-                  <td className="p-4 text-base text-center">
-                    {typeof feature.pro === "string" ? (
-                      feature.pro
-                    ) : feature.pro ? (
-                      <FaCheckCircle className="text-primary inline" />
-                    ) : (
-                      <FaTimesCircle className="text-outline inline" />
-                    )}
-                  </td>
-                  <td className="p-4 text-base text-center">
-                    {typeof feature.business === "string" ? (
-                      feature.business
-                    ) : feature.business ? (
-                      <FaCheckCircle className="text-primary inline" />
-                    ) : (
-                      <FaTimesCircle className="text-outline inline" />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {loading && (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-80 animate-pulse rounded-2xl border border-primary-home/10 bg-white"
+            />
+          ))}
         </div>
-      </section>
+      )}
 
-      {/* Bottom CTA */}
-      <section className="max-w-7xl mx-auto py-12 mb-12">
-        <div className="relative overflow-hidden rounded-xl bg-primary-container p-8 md:p-12 text-center flex flex-col items-center gap-4 reveal-up shadow-xl">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-on-primary relative z-10">
-آماده‌اید مدیریت سالن خود را هوشمند کنید؟             </h2>
-<p className="text-base md:text-lg mb-6 w-full md:w-3/5 mx-auto opacity-90 text-white">
-  با نارژین، رزرو آنلاین، مدیریت مشتریان، کارکنان و گزارش‌های مالی را در یک پنل ساده و حرفه‌ای تجربه کنید. همین امروز رایگان شروع کنید و اولین قدم را برای رشد کسب‌وکار خود بردارید.
-</p>
-          <div className="flex flex-col sm:flex-row gap-4 relative z-10 mt-4">
-            <button className="bg-secondary-container text-on-secondary-container px-8 md:px-12 py-3 md:py-4 rounded-xl text-base md:text-xl font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-300">
-              شروع نوبت‌دهی آنلاین
-            </button>
-            <button className="bg-primary border border-on-primary-container text-on-primary px-8 md:px-12 py-3 md:py-4 rounded-xl text-base md:text-xl font-bold hover:bg-on-primary-fixed-variant transition-all duration-300">
-              مشاهده دموی پنل
-            </button>
-          </div>
+      {error && (
+        <div className="mx-auto max-w-md rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+          <p className="mb-4 text-red-700">{error}</p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="rounded-full bg-primary-home px-6 py-2 text-sm font-bold text-white"
+          >
+            تلاش مجدد
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && plans.length === 0 && (
+        <p className="text-center text-[#3d5a4c]">
+          در حال حاضر پلنی برای نمایش موجود نیست.
+        </p>
+      )}
+
+      {!loading && !error && plans.length > 0 && (
+        <div className="mb-16 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {plans.map((plan) => {
+            const featured = plan.id === featuredId;
+            const cta = ctaFor(plan);
+            const priceText = formatPlanPrice(plan.price);
+            const period = durationLabel(plan.duration_days);
+
+            return (
+              <div
+                key={plan.id}
+                className={
+                  featured
+                    ? "relative flex flex-col rounded-2xl border-2 border-primary-home bg-primary-home p-6 text-white shadow-lg"
+                    : "relative flex flex-col rounded-2xl border border-primary-home/15 bg-white p-6 shadow-sm"
+                }
+              >
+                {featured && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ffc329] px-3 py-0.5 text-xs font-bold text-[#003527]">
+                    پیشنهاد ویژه
+                  </span>
+                )}
+                <h2
+                  className={
+                    featured
+                      ? "text-xl font-bold text-white"
+                      : "text-xl font-bold text-primary-home"
+                  }
+                >
+                  {plan.title}
+                </h2>
+                <p
+                  className={
+                    featured
+                      ? "mt-3 text-2xl font-extrabold text-[#ffc329]"
+                      : "mt-3 text-2xl font-extrabold text-primary-home"
+                  }
+                >
+                  {priceText}
+                </p>
+                {period && (
+                  <p
+                    className={
+                      featured ? "text-xs text-white/70" : "text-xs text-[#5a7266]"
+                    }
+                  >
+                    {period}
+                  </p>
+                )}
+
+                <ul className="mt-6 flex flex-1 flex-col gap-2.5">
+                  {(plan.features || []).map((pf, idx) => {
+                    const included = isFeatureIncluded(pf);
+                    const line = featureLine(pf);
+                    if (!line) return null;
+                    return (
+                      <li
+                        key={`${plan.id}-${pf.feature?.id ?? idx}`}
+                        className={
+                          featured
+                            ? "flex items-start gap-2 text-sm text-white/90"
+                            : "flex items-start gap-2 text-sm text-[#3d5a4c]"
+                        }
+                      >
+                        {included ? (
+                          <FaCheckCircle
+                            className={
+                              featured
+                                ? "mt-0.5 shrink-0 text-[#ffc329]"
+                                : "mt-0.5 shrink-0 text-primary-home"
+                            }
+                          />
+                        ) : (
+                          <FaTimesCircle className="mt-0.5 shrink-0 text-gray-400" />
+                        )}
+                        <span className={included ? "" : "opacity-60"}>{line}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                {cta.external ? (
+                  <a
+                    href={cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={
+                      featured
+                        ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
+                        : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                    }
+                  >
+                    {cta.label}
+                  </a>
+                ) : (
+                  <Link
+                    href={cta.href}
+                    className={
+                      featured
+                        ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
+                        : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-primary-home px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-primary-home/5"
+                    }
+                  >
+                    {cta.label}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <section className="rounded-2xl bg-primary-home px-6 py-10 text-center text-white">
+        <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">
+          آماده‌اید مدیریت سالن را هوشمند کنید؟
+        </h2>
+        <p className="mx-auto mb-6 max-w-xl text-sm text-white/85 sm:text-base">
+          رایگان شروع کنید؛ با رشد سالن پلن را ارتقا دهید.
+        </p>
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href="https://panel.narjin.ir"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-7 py-3 text-base font-bold text-primary-home"
+          >
+            ساخت سالن من (رایگان)
+          </a>
+          <Link
+            href="/#contact"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-white/40 px-7 py-3 text-base font-bold text-white"
+          >
+            تماس با ما
+          </Link>
         </div>
       </section>
     </main>
