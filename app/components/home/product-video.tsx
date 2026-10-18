@@ -11,11 +11,8 @@ export default function ProductVideo() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section
-      id="product-demo"
-      className="scroll-mt-24 bg-surface-home py-12 sm:py-16"
-    >
-      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+    <section className="bg-background-home py-12 sm:py-16" id="demo">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mb-8 w-full text-center">
           <h2 className="mx-auto max-w-2xl text-xl font-extrabold leading-snug text-primary-home sm:text-2xl md:text-3xl">
             در ۴۳ ثانیه با نارژین آشنا بشید
@@ -59,12 +56,12 @@ export default function ProductVideo() {
           )}
         </div>
 
-        <div className="mt-8 flex justify-center px-2">
+        <div className="mt-6 flex w-full justify-center sm:mt-8">
           <a
             href="https://panel.narjin.ir"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[48px] w-full max-w-xs items-center justify-center whitespace-nowrap rounded-full bg-primary-home px-6 py-3 text-base font-bold text-white shadow-md transition hover:opacity-95 sm:w-auto sm:min-w-[14rem] sm:px-8"
+            className="inline-flex min-h-[48px] w-full max-w-[280px] items-center justify-center rounded-full bg-primary-home px-5 py-3 text-sm font-bold text-white shadow-md transition hover:opacity-95 active:scale-[0.98] sm:w-auto sm:min-w-[220px] sm:max-w-none sm:px-8 sm:text-base"
           >
             ساخت سالن من (رایگان)
           </a>
