@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaClock, FaArrowLeft, FaChevronDown } from "react-icons/fa";
-import Image from "next/image";
 
 interface Article {
   id: number;
@@ -15,6 +14,16 @@ interface Article {
   image: string;
   is_published: boolean;
   created_at: string;
+}
+
+function resolveArticleImage(src: string | null | undefined): string | null {
+  if (!src || typeof src !== "string") return null;
+  const s = src.trim();
+  if (!s) return null;
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  if (s.startsWith("//")) return `https:${s}`;
+  if (s.startsWith("/")) return `https://api.narjin.ir${s}`;
+  return `https://api.narjin.ir/${s.replace(/^\/+/, "")}`;
 }
 
 export default function BlogPage() {
@@ -30,29 +39,23 @@ export default function BlogPage() {
       setError(null);
 
       try {
-        console.log("📤 درخواست به API...");
         const response = await fetch("/api/articles/");
-
-        console.log("📥 وضعیت پاسخ:", response.status);
 
         if (!response.ok) {
           throw new Error(`خطا ${response.status}: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log("✅ مقالات دریافت شدند:", data);
 
         if (Array.isArray(data)) {
           const published = data.filter(
             (item: Article) => item.is_published !== false,
           );
-          console.log("📰 مقالات منتشر شده:", published.length);
           setArticles(published);
         } else {
           throw new Error("داده دریافتی معتبر نیست");
         }
       } catch (err) {
-        console.error("❌ خطا:", err);
         setError(
           err instanceof Error ? err.message : "مشکلی در دریافت مقالات پیش آمد",
         );
@@ -175,19 +178,34 @@ export default function BlogPage() {
                       className="flex flex-col h-full"
                     >
                       <div className="relative aspect-video overflow-hidden bg-primary-fixed/10">
-                        {post.image ? (
-                          <Image
-                            width={300}
-                            height={300}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        {resolveArticleImage(post.image) ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             alt={post.title || "مقاله"}
-                            src={post.image}
+                            src={resolveArticleImage(post.image)!}
+                            loading="lazy"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const parent = target.parentElement;
+                              if (
+                                parent &&
+                                !parent.querySelector("[data-img-fallback]")
+                              ) {
+                                const placeholder = document.createElement("div");
+                                placeholder.setAttribute("data-img-fallback", "1");
+                                placeholder.className =
+                                  "flex h-full w-full items-center justify-center bg-primary-fixed/20";
+                                placeholder.innerHTML =
+                                  '<span class="text-4xl text-primary/40">نارژین</span>';
+                                parent.appendChild(placeholder);
+                              }
+                            }}
                           />
                         ) : (
-                          <div className="w-full h-full bg-primary-fixed/20 flex items-center justify-center">
-                            <span className="text-4xl text-primary/40">
-                              نارژین
-                            </span>
+                          <div className="flex h-full w-full items-center justify-center bg-primary-fixed/20">
+                            <span className="text-4xl text-primary/40">نارژین</span>
                           </div>
                         )}
                       </div>
