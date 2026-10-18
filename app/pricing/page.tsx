@@ -115,7 +115,7 @@ export default function PricingPage() {
       )}
 
       {!loading && !error && plans.length > 0 && (
-        <div className="mb-16 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-8 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {plans.map((plan) => {
             const featured = plan.id === featuredId;
             const cta = ctaFor(plan);
@@ -225,33 +225,6 @@ export default function PricingPage() {
           })}
         </div>
       )}
-
-      <section className="mt-4 overflow-hidden rounded-2xl bg-primary-home px-4 py-8 text-center text-white sm:px-8 sm:py-10 md:px-10">
-        <div className="mx-auto w-full max-w-2xl">
-          <h2 className="mb-3 text-balance text-lg font-extrabold leading-relaxed sm:text-xl md:text-2xl">
-            آماده‌اید مدیریت سالن را هوشمند کنید؟
-          </h2>
-          <p className="mx-auto mb-6 max-w-md text-pretty text-sm leading-7 text-white/90 sm:text-base sm:leading-8">
-            رایگان شروع کنید؛ با رشد سالن پلن را ارتقا دهید.
-          </p>
-          <div className="flex w-full flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <a
-              href="https://panel.narjin.ir"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-primary-home transition hover:bg-white/95 sm:w-auto sm:min-w-[180px] sm:text-base"
-            >
-              ساخت سالن من (رایگان)
-            </a>
-            <Link
-              href="/#contact"
-              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full border-2 border-white/50 px-6 py-3 text-sm font-bold text-white transition hover:border-white sm:w-auto sm:min-w-[180px] sm:text-base"
-            >
-              تماس با ما
-            </Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
