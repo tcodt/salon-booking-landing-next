@@ -226,28 +226,30 @@ export default function PricingPage() {
         </div>
       )}
 
-      <section className="rounded-2xl bg-primary-home px-6 py-10 text-center text-white">
-        <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">
-          آماده‌اید مدیریت سالن را هوشمند کنید؟
-        </h2>
-        <p className="mx-auto mb-6 max-w-xl text-sm text-white/85 sm:text-base">
-          رایگان شروع کنید؛ با رشد سالن پلن را ارتقا دهید.
-        </p>
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href="https://panel.narjin.ir"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-7 py-3 text-base font-bold text-primary-home"
-          >
-            ساخت سالن من (رایگان)
-          </a>
-          <Link
-            href="/#contact"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-white/40 px-7 py-3 text-base font-bold text-white"
-          >
-            تماس با ما
-          </Link>
+      <section className="mt-4 overflow-hidden rounded-2xl bg-primary-home px-4 py-8 text-center text-white sm:px-8 sm:py-10 md:px-10">
+        <div className="mx-auto w-full max-w-2xl">
+          <h2 className="mb-3 text-balance text-lg font-extrabold leading-relaxed sm:text-xl md:text-2xl">
+            آماده‌اید مدیریت سالن را هوشمند کنید؟
+          </h2>
+          <p className="mx-auto mb-6 max-w-md text-pretty text-sm leading-7 text-white/90 sm:text-base sm:leading-8">
+            رایگان شروع کنید؛ با رشد سالن پلن را ارتقا دهید.
+          </p>
+          <div className="flex w-full flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <a
+              href="https://panel.narjin.ir"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-primary-home transition hover:bg-white/95 sm:w-auto sm:min-w-[180px] sm:text-base"
+            >
+              ساخت سالن من (رایگان)
+            </a>
+            <Link
+              href="/#contact"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full border-2 border-white/50 px-6 py-3 text-sm font-bold text-white transition hover:border-white sm:w-auto sm:min-w-[180px] sm:text-base"
+            >
+              تماس با ما
+            </Link>
+          </div>
         </div>
       </section>
     </main>
