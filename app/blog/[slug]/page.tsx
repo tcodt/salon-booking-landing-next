@@ -23,6 +23,16 @@ interface Article {
   created_at: string;
 }
 
+function resolveArticleImage(src: string | null | undefined): string | null {
+  if (!src || typeof src !== "string") return null;
+  const s = src.trim();
+  if (!s) return null;
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  if (s.startsWith("//")) return `https:${s}`;
+  if (s.startsWith("/")) return `https://api.narjin.ir${s}`;
+  return `https://api.narjin.ir/${s.replace(/^\/+/, "")}`;
+}
+
 const relatedArticles = [
   {
     id: 1,
@@ -30,7 +40,6 @@ const relatedArticles = [
     slug: "how-to-increase-customer-loyalty",
     category: "مدیریت",
     excerpt: "استراتژی‌های عملی برای ایجاد ارتباط عمیق با مراجعین...",
-    image: "/images/logo-main.png",
   },
   {
     id: 2,
@@ -38,7 +47,6 @@ const relatedArticles = [
     slug: "ai-impact-on-beauty-clinics",
     category: "فناوری",
     excerpt: "بررسی ابزارهای نوین و خودکارسازی فرآیندها...",
-    image: "/images/logo-main.png",
   },
   {
     id: 3,
@@ -46,7 +54,6 @@ const relatedArticles = [
     slug: "personal-branding-for-beauty-professionals",
     category: "بازاریابی",
     excerpt: "چگونه در شبکه‌های اجتماعی خود را به عنوان یک مرجع معتبر معرفی کنید...",
-    image: "/images/logo-main.png",
   },
 ];
 
@@ -231,6 +238,8 @@ export default function BlogPostPage() {
     );
   }
 
+  const heroSrc = resolveArticleImage(article.image);
+
   return (
     <main className="bg-background">
       <div className="fixed top-0 left-0 w-full h-1 z-[100] bg-surface-container">
@@ -240,17 +249,18 @@ export default function BlogPostPage() {
         />
       </div>
 
-      <section className="relative w-full min-h-[500px] md:h-[716px] flex items-end overflow-hidden">
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{
-            backgroundImage: article.image
-              ? `url(${article.image})`
-              : undefined,
-            backgroundColor: "#003527",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
+      <section className="relative flex min-h-[320px] w-full items-end overflow-hidden sm:min-h-[420px] md:min-h-[520px] lg:h-[600px]">
+        <div className="absolute inset-0 bg-[#003527]" aria-hidden />
+        {heroSrc && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={heroSrc}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full scale-110 object-cover blur-md brightness-[0.65]"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/55 to-primary/25" />
         <div className="relative w-full max-w-7xl mx-auto px-4 md:px-12 pb-8 md:pb-16 text-white">
           <div className="flex items-center gap-4 mb-4 md:mb-6">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary-fixed-dim bg-primary-fixed/20 flex items-center justify-center text-white text-xl md:text-2xl font-bold">
@@ -321,12 +331,13 @@ export default function BlogPostPage() {
               : "lg:col-span-12 max-w-4xl mx-auto"
           }
         >
-          {article.image && (
+          {heroSrc && (
             <div className="relative aspect-video rounded-2xl overflow-hidden mb-8 bg-primary-fixed/10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="w-full h-full object-cover"
                 alt={article.title}
-                src={article.image}
+                src={heroSrc}
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
