@@ -4,28 +4,37 @@ import { useEffect, useRef } from "react";
 import {
   MdPlayArrow,
   MdAccessTime,
-  MdSms,
-  MdBarChart,
   MdLink,
   MdCalendarMonth,
   MdGroups,
+  MdContentCut,
   MdStorefront,
+  MdBarChart,
   MdTrendingUp,
   MdAssessment,
+  MdFolderShared,
+  MdHistory,
+  MdSearch,
+  MdSms,
   MdLoyalty,
   MdCake,
 } from "react-icons/md";
 
+/** فقط سرتیتر امکانات — برای حلقه بی‌پایان هیرو */
 const FEATURE_CHIPS = [
-  { icon: MdAccessTime, label: "رزرو ۲۴ ساعته" },
-  { icon: MdSms, label: "یادآوری پیامکی" },
-  { icon: MdBarChart, label: "گزارش درآمد" },
+  { icon: MdAccessTime, label: "رزرو آنلاین ۲۴ ساعته" },
   { icon: MdLink, label: "لینک اختصاصی رزرو" },
   { icon: MdCalendarMonth, label: "تقویم هوشمند نوبت‌ها" },
   { icon: MdGroups, label: "مدیریت کارکنان" },
+  { icon: MdContentCut, label: "مدیریت خدمات سالن" },
   { icon: MdStorefront, label: "مدیریت اطلاعات سالن" },
+  { icon: MdBarChart, label: "گزارش درآمد سالن" },
   { icon: MdTrendingUp, label: "تحلیل خدمات پرفروش" },
   { icon: MdAssessment, label: "گزارش عملکرد کارکنان" },
+  { icon: MdFolderShared, label: "پرونده اختصاصی مشتریان" },
+  { icon: MdHistory, label: "تاریخچه مراجعات" },
+  { icon: MdSearch, label: "جستجوی سریع مشتریان" },
+  { icon: MdSms, label: "پیامک یادآوری خودکار" },
   { icon: MdLoyalty, label: "باشگاه مشتریان" },
   { icon: MdCake, label: "پیام تبریک تولد" },
 ] as const;
@@ -127,49 +136,51 @@ function FeatureChipsMarquee() {
     const track = trackRef.current;
     const firstSet = firstSetRef.current;
     if (!track || !firstSet) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let rafId = 0;
     let pos = 0;
     let prev = performance.now();
-    const PX_PER_SEC = 36;
+    const PX_PER_SEC = 40;
 
     const frame = (now: number) => {
-      const delta = Math.min(0.05, (now - prev) / 1000);
+      const delta = Math.min(0.048, (now - prev) / 1000);
       prev = now;
-      const width = firstSet.getBoundingClientRect().width;
+      const width = firstSet.offsetWidth;
       if (width > 1) {
         pos += PX_PER_SEC * delta;
-        if (pos >= width) pos -= width;
+        if (pos >= width) pos = pos % width;
         track.style.transform = `translate3d(${-pos}px,0,0)`;
       }
       rafId = requestAnimationFrame(frame);
     };
 
-    rafId = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(rafId);
+    const start = () => {
+      pos = 0;
+      prev = performance.now();
+      rafId = requestAnimationFrame(frame);
+    };
+    const t = window.setTimeout(start, 80);
+
+    return () => {
+      window.clearTimeout(t);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
-  const Chip = ({
-    icon: Icon,
-    label,
-  }: {
-    icon: (typeof FEATURE_CHIPS)[number]["icon"];
-    label: string;
-  }) => (
-    <span
-      className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/20 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
-      style={{ marginLeft: 10 }}
-    >
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#003527]/10 text-[#003527]">
-        <Icon size={16} aria-hidden />
+  const renderSet = (prefix: string) =>
+    FEATURE_CHIPS.map(({ icon: Icon, label }) => (
+      <span
+        key={`${prefix}-${label}`}
+        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/20 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
+        style={{ marginInlineEnd: 12 }}
+      >
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#003527]/10 text-[#003527]">
+          <Icon size={16} aria-hidden />
+        </span>
+        {label}
       </span>
-      {label}
-    </span>
-  );
+    ));
 
   return (
     <div
@@ -187,14 +198,13 @@ function FeatureChipsMarquee() {
         }}
       >
         <div ref={firstSetRef} style={{ display: "flex", flexShrink: 0 }}>
-          {FEATURE_CHIPS.map((c) => (
-            <Chip key={`a-${c.label}`} icon={c.icon} label={c.label} />
-          ))}
+          {renderSet("a")}
         </div>
         <div style={{ display: "flex", flexShrink: 0 }} aria-hidden>
-          {FEATURE_CHIPS.map((c) => (
-            <Chip key={`b-${c.label}`} icon={c.icon} label={c.label} />
-          ))}
+          {renderSet("b")}
+        </div>
+        <div style={{ display: "flex", flexShrink: 0 }} aria-hidden>
+          {renderSet("c")}
         </div>
       </div>
     </div>
