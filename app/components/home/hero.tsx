@@ -30,7 +30,6 @@ const FEATURE_CHIPS = [
   { icon: MdCake, label: "پیام تبریک تولد" },
 ] as const;
 
-/** نمای نمایشی رابط پنل — داده نمونه، نه اسکرین‌شات زنده */
 function PanelPreview() {
   return (
     <div className="overflow-hidden rounded-2xl border border-[#0a4d3a]/20 bg-white shadow-[0_24px_60px_-24px_rgba(0,53,39,0.35)] sm:rounded-3xl">
@@ -120,94 +119,83 @@ function PanelPreview() {
   );
 }
 
-/** حلقه بی‌پایان کپسول‌ها — اسکرول پیکسلی بدون پرش */
 function FeatureChipsMarquee() {
-  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const setRef = useRef<HTMLDivElement>(null);
+  const firstSetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
-    const setEl = setRef.current;
-    if (!track || !setEl) return;
+    const firstSet = firstSetRef.current;
+    if (!track || !firstSet) return;
 
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
 
-    let raf = 0;
-    let x = 0;
-    let last = performance.now();
-    const SPEED = 42;
+    let rafId = 0;
+    let pos = 0;
+    let prev = performance.now();
+    const PX_PER_SEC = 36;
 
-    const tick = (now: number) => {
-      const dt = Math.min(64, now - last) / 1000;
-      last = now;
-      const loopWidth = setEl.offsetWidth;
-      if (loopWidth > 0) {
-        x -= SPEED * dt;
-        if (x <= -loopWidth) {
-          x += loopWidth;
-        }
-        track.style.transform = `translate3d(${x}px,0,0)`;
+    const frame = (now: number) => {
+      const delta = Math.min(0.05, (now - prev) / 1000);
+      prev = now;
+      const width = firstSet.getBoundingClientRect().width;
+      if (width > 1) {
+        pos += PX_PER_SEC * delta;
+        if (pos >= width) pos -= width;
+        track.style.transform = `translate3d(${-pos}px,0,0)`;
       }
-      raf = requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(frame);
     };
 
-    raf = requestAnimationFrame(tick);
-
-    const onVisibility = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(raf);
-      } else {
-        last = performance.now();
-        raf = requestAnimationFrame(tick);
-      }
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
+    rafId = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  const renderSet = (copy: number) => (
-    <div
-      key={copy}
-      ref={copy === 0 ? setRef : undefined}
-      className="flex shrink-0 items-center"
-      aria-hidden={copy === 0 ? undefined : true}
+  const Chip = ({
+    icon: Icon,
+    label,
+  }: {
+    icon: (typeof FEATURE_CHIPS)[number]["icon"];
+    label: string;
+  }) => (
+    <span
+      className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/20 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
+      style={{ marginLeft: 10 }}
     >
-      {FEATURE_CHIPS.map(({ icon: Icon, label }) => (
-        <div
-          key={`${copy}-${label}`}
-          className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-primary-home/15 bg-white px-3.5 py-2 text-sm font-medium text-[#1f3a2e] shadow-sm"
-          style={{ marginInlineEnd: 10 }}
-        >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-home/10 text-primary-home">
-            <Icon className="text-base" aria-hidden />
-          </span>
-          {label}
-        </div>
-      ))}
-    </div>
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#003527]/10 text-[#003527]">
+        <Icon size={16} aria-hidden />
+      </span>
+      {label}
+    </span>
   );
 
   return (
     <div
-      ref={viewportRef}
-      className="mt-10 w-full overflow-hidden sm:mt-12"
+      className="mt-8 w-full"
+      style={{ overflow: "hidden" }}
       aria-label="امکانات نارژین"
     >
       <div
         ref={trackRef}
-        className="flex w-max"
-        style={{ transform: "translate3d(0,0,0)", willChange: "transform" }}
+        style={{
+          display: "flex",
+          width: "max-content",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+        }}
       >
-        {renderSet(0)}
-        {renderSet(1)}
+        <div ref={firstSetRef} style={{ display: "flex", flexShrink: 0 }}>
+          {FEATURE_CHIPS.map((c) => (
+            <Chip key={`a-${c.label}`} icon={c.icon} label={c.label} />
+          ))}
+        </div>
+        <div style={{ display: "flex", flexShrink: 0 }} aria-hidden>
+          {FEATURE_CHIPS.map((c) => (
+            <Chip key={`b-${c.label}`} icon={c.icon} label={c.label} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -257,14 +245,14 @@ export default function Hero() {
                 مشاهده معرفی
               </a>
             </div>
+
+            <FeatureChipsMarquee />
           </div>
 
           <div className="order-1 min-w-0 lg:order-2">
             <PanelPreview />
           </div>
         </div>
-
-        <FeatureChipsMarquee />
       </div>
     </section>
   );
