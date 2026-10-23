@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import {
   MdPlayArrow,
   MdAccessTime,
@@ -119,6 +120,99 @@ function PanelPreview() {
   );
 }
 
+/** حلقه بی‌پایان کپسول‌ها — اسکرول پیکسلی بدون پرش */
+function FeatureChipsMarquee() {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const setEl = setRef.current;
+    if (!track || !setEl) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    let raf = 0;
+    let x = 0;
+    let last = performance.now();
+    const SPEED = 42;
+
+    const tick = (now: number) => {
+      const dt = Math.min(64, now - last) / 1000;
+      last = now;
+      const loopWidth = setEl.offsetWidth;
+      if (loopWidth > 0) {
+        x -= SPEED * dt;
+        if (x <= -loopWidth) {
+          x += loopWidth;
+        }
+        track.style.transform = `translate3d(${x}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else {
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  const renderSet = (copy: number) => (
+    <div
+      key={copy}
+      ref={copy === 0 ? setRef : undefined}
+      className="flex shrink-0 items-center"
+      aria-hidden={copy === 0 ? undefined : true}
+    >
+      {FEATURE_CHIPS.map(({ icon: Icon, label }) => (
+        <div
+          key={`${copy}-${label}`}
+          className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-primary-home/15 bg-white px-3.5 py-2 text-sm font-medium text-[#1f3a2e] shadow-sm"
+          style={{ marginInlineEnd: 10 }}
+        >
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-home/10 text-primary-home">
+            <Icon className="text-base" aria-hidden />
+          </span>
+          {label}
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div
+      ref={viewportRef}
+      className="mt-10 w-full overflow-hidden sm:mt-12"
+      aria-label="امکانات نارژین"
+    >
+      <div
+        ref={trackRef}
+        className="flex w-max"
+        style={{ transform: "translate3d(0,0,0)", willChange: "transform" }}
+      >
+        {renderSet(0)}
+        {renderSet(1)}
+      </div>
+    </div>
+  );
+}
+
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-background-home pt-[5.5rem] pb-12 sm:pt-28 sm:pb-16 md:pb-20">
@@ -170,38 +264,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              .narjin-chips{position:relative;width:100%;overflow:hidden;margin-top:2.5rem}
-              .narjin-chips-track{display:flex;width:max-content;gap:0;direction:ltr;animation:narjinChips 40s linear infinite;will-change:transform}
-              .narjin-chip{display:inline-flex;flex-shrink:0;align-items:center;gap:.5rem;white-space:nowrap;border-radius:9999px;border:1px solid rgba(0,53,39,.15);background:#fff;padding:.5rem .875rem;margin-inline-end:.625rem;font-size:.875rem;font-weight:500;color:#1f3a2e;box-shadow:0 1px 2px rgba(0,53,39,.06)}
-              .narjin-chip i{display:flex;height:1.75rem;width:1.75rem;flex-shrink:0;align-items:center;justify-content:center;border-radius:9999px;background:rgba(0,53,39,.1);color:#003527}
-              .narjin-chips:hover .narjin-chips-track{animation-play-state:paused}
-              @keyframes narjinChips{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
-              @media (prefers-reduced-motion:reduce){.narjin-chips-track{animation:none!important;flex-wrap:wrap;width:100%;justify-content:center}.narjin-chip{margin:.25rem}.narjin-chip[data-dup="1"]{display:none}}
-            `,
-          }}
-        />
-        <div className="narjin-chips" aria-label="امکانات نارژین">
-          <div className="narjin-chips-track">
-            {[0, 1].flatMap((copy) =>
-              FEATURE_CHIPS.map(({ icon: Icon, label }) => (
-                <div
-                  key={`${copy}-${label}`}
-                  className="narjin-chip"
-                  data-dup={copy}
-                  aria-hidden={copy === 1 ? true : undefined}
-                >
-                  <i>
-                    <Icon className="text-base" aria-hidden />
-                  </i>
-                  <span>{label}</span>
-                </div>
-              )),
-            )}
-          </div>
-        </div>
+        <FeatureChipsMarquee />
       </div>
     </section>
   );
