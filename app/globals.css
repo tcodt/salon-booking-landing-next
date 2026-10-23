@@ -249,13 +249,11 @@ button {
   color: #003527;
 }
 
-/* HERO CHIPS MARQUEE — seamless infinite scroll */
+/* HERO CHIPS MARQUEE — infinite seamless (margin spacing, no mask) */
 .hero-chips-marquee {
   position: relative;
   width: 100%;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
 
 .hero-chips-track {
@@ -263,20 +261,8 @@ button {
   width: max-content;
   gap: 0;
   direction: ltr;
-  will-change: transform;
-  backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
-  animation: hero-chips-scroll 40s linear infinite;
-}
-
-.hero-chips-group {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.625rem;
-  margin: 0;
-  padding: 0 0.625rem 0 0;
-  list-style: none;
+  animation: hero-chips-scroll 45s linear infinite;
 }
 
 .hero-chip {
@@ -289,6 +275,7 @@ button {
   border: 1px solid rgba(0, 53, 39, 0.15);
   background: #fff;
   padding: 0.5rem 0.875rem;
+  margin-inline-end: 0.625rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: #1f3a2e;
@@ -312,8 +299,12 @@ button {
 }
 
 @keyframes hero-chips-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -323,19 +314,11 @@ button {
     width: 100%;
     max-width: 100%;
     justify-content: center;
-    gap: 0.625rem;
   }
-  .hero-chips-group {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
+  .hero-chip {
+    margin: 0.25rem;
   }
-  .hero-chips-group[aria-hidden="true"] {
+  .hero-chip[aria-hidden="true"] {
     display: none;
-  }
-  .hero-chips-marquee {
-    -webkit-mask-image: none;
-    mask-image: none;
-    overflow: visible;
   }
 }
