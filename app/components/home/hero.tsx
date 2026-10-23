@@ -15,6 +15,20 @@ import {
   MdCake,
 } from "react-icons/md";
 
+const FEATURE_CHIPS = [
+  { icon: MdAccessTime, label: "رزرو ۲۴ ساعته" },
+  { icon: MdSms, label: "یادآوری پیامکی" },
+  { icon: MdBarChart, label: "گزارش درآمد" },
+  { icon: MdLink, label: "لینک اختصاصی رزرو" },
+  { icon: MdCalendarMonth, label: "تقویم هوشمند نوبت‌ها" },
+  { icon: MdGroups, label: "مدیریت کارکنان" },
+  { icon: MdStorefront, label: "مدیریت اطلاعات سالن" },
+  { icon: MdTrendingUp, label: "تحلیل خدمات پرفروش" },
+  { icon: MdAssessment, label: "گزارش عملکرد کارکنان" },
+  { icon: MdLoyalty, label: "باشگاه مشتریان" },
+  { icon: MdCake, label: "پیام تبریک تولد" },
+] as const;
+
 /** نمای نمایشی رابط پنل — داده نمونه، نه اسکرین‌شات زنده */
 function PanelPreview() {
   return (
@@ -149,49 +163,34 @@ export default function Hero() {
                 مشاهده معرفی
               </a>
             </div>
-
-            <div
-              className="hero-chips-marquee mt-8"
-              aria-label="امکانات نارژین"
-            >
-              <div className="hero-chips-track">
-                {[0, 1].map((copy) => (
-                  <ul
-                    key={copy}
-                    className="hero-chips-group"
-                    aria-hidden={copy === 1}
-                  >
-                    {[
-                      { icon: MdAccessTime, label: "رزرو ۲۴ ساعته" },
-                      { icon: MdSms, label: "یادآوری پیامکی" },
-                      { icon: MdBarChart, label: "گزارش درآمد" },
-                      { icon: MdLink, label: "لینک اختصاصی رزرو" },
-                      { icon: MdCalendarMonth, label: "تقویم هوشمند نوبت‌ها" },
-                      { icon: MdGroups, label: "مدیریت کارکنان" },
-                      { icon: MdStorefront, label: "مدیریت اطلاعات سالن" },
-                      { icon: MdTrendingUp, label: "تحلیل خدمات پرفروش" },
-                      { icon: MdAssessment, label: "گزارش عملکرد کارکنان" },
-                      { icon: MdLoyalty, label: "باشگاه مشتریان" },
-                      { icon: MdCake, label: "پیام تبریک تولد" },
-                    ].map(({ icon: Icon, label }) => (
-                      <li
-                        key={`${copy}-${label}`}
-                        className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-primary-home/15 bg-white px-3.5 py-2 text-sm font-medium text-[#1f3a2e] shadow-sm"
-                      >
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-home/10 text-primary-home">
-                          <Icon className="text-base" aria-hidden />
-                        </span>
-                        {label}
-                      </li>
-                    ))}
-                  </ul>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="order-1 min-w-0 lg:order-2">
             <PanelPreview />
+          </div>
+        </div>
+
+        <div
+          className="hero-chips-marquee mt-10 sm:mt-12"
+          aria-label="امکانات نارژین"
+        >
+          <div className="hero-chips-track">
+            {[0, 1].map((copy) => (
+              <ul
+                key={copy}
+                className="hero-chips-group"
+                aria-hidden={copy === 1 ? true : undefined}
+              >
+                {FEATURE_CHIPS.map(({ icon: Icon, label }) => (
+                  <li key={`${copy}-${label}`} className="hero-chip">
+                    <span className="hero-chip-icon">
+                      <Icon className="text-base" aria-hidden />
+                    </span>
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
         </div>
       </div>
