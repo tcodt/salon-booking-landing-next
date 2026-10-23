@@ -170,21 +170,32 @@ export default function Hero() {
           </div>
         </div>
 
-        <div
-          className="hero-chips-marquee mt-10 sm:mt-12"
-          aria-label="امکانات نارژین"
-        >
-          <div className="hero-chips-track">
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              .narjin-chips{position:relative;width:100%;overflow:hidden;margin-top:2.5rem}
+              .narjin-chips-track{display:flex;width:max-content;gap:0;direction:ltr;animation:narjinChips 40s linear infinite;will-change:transform}
+              .narjin-chip{display:inline-flex;flex-shrink:0;align-items:center;gap:.5rem;white-space:nowrap;border-radius:9999px;border:1px solid rgba(0,53,39,.15);background:#fff;padding:.5rem .875rem;margin-inline-end:.625rem;font-size:.875rem;font-weight:500;color:#1f3a2e;box-shadow:0 1px 2px rgba(0,53,39,.06)}
+              .narjin-chip i{display:flex;height:1.75rem;width:1.75rem;flex-shrink:0;align-items:center;justify-content:center;border-radius:9999px;background:rgba(0,53,39,.1);color:#003527}
+              .narjin-chips:hover .narjin-chips-track{animation-play-state:paused}
+              @keyframes narjinChips{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
+              @media (prefers-reduced-motion:reduce){.narjin-chips-track{animation:none!important;flex-wrap:wrap;width:100%;justify-content:center}.narjin-chip{margin:.25rem}.narjin-chip[data-dup="1"]{display:none}}
+            `,
+          }}
+        />
+        <div className="narjin-chips" aria-label="امکانات نارژین">
+          <div className="narjin-chips-track">
             {[0, 1].flatMap((copy) =>
               FEATURE_CHIPS.map(({ icon: Icon, label }) => (
                 <div
                   key={`${copy}-${label}`}
-                  className="hero-chip"
+                  className="narjin-chip"
+                  data-dup={copy}
                   aria-hidden={copy === 1 ? true : undefined}
                 >
-                  <span className="hero-chip-icon">
+                  <i>
                     <Icon className="text-base" aria-hidden />
-                  </span>
+                  </i>
                   <span>{label}</span>
                 </div>
               )),
