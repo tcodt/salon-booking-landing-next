@@ -175,22 +175,20 @@ export default function Hero() {
           aria-label="امکانات نارژین"
         >
           <div className="hero-chips-track">
-            {[0, 1].map((copy) => (
-              <ul
-                key={copy}
-                className="hero-chips-group"
-                aria-hidden={copy === 1 ? true : undefined}
-              >
-                {FEATURE_CHIPS.map(({ icon: Icon, label }) => (
-                  <li key={`${copy}-${label}`} className="hero-chip">
-                    <span className="hero-chip-icon">
-                      <Icon className="text-base" aria-hidden />
-                    </span>
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            ))}
+            {[0, 1].flatMap((copy) =>
+              FEATURE_CHIPS.map(({ icon: Icon, label }) => (
+                <div
+                  key={`${copy}-${label}`}
+                  className="hero-chip"
+                  aria-hidden={copy === 1 ? true : undefined}
+                >
+                  <span className="hero-chip-icon">
+                    <Icon className="text-base" aria-hidden />
+                  </span>
+                  <span>{label}</span>
+                </div>
+              )),
+            )}
           </div>
         </div>
       </div>
