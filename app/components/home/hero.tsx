@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import {
   MdPlayArrow,
   MdAccessTime,
@@ -20,7 +19,6 @@ import {
   MdCake,
 } from "react-icons/md";
 
-/** فقط سرتیتر امکانات — برای حلقه بی‌پایان هیرو */
 const FEATURE_CHIPS = [
   { icon: MdAccessTime, label: "رزرو آنلاین ۲۴ ساعته" },
   { icon: MdLink, label: "لینک اختصاصی رزرو" },
@@ -129,50 +127,11 @@ function PanelPreview() {
 }
 
 function FeatureChipsMarquee() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const firstSetRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    const firstSet = firstSetRef.current;
-    if (!track || !firstSet) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let rafId = 0;
-    let pos = 0;
-    let prev = performance.now();
-    const PX_PER_SEC = 40;
-
-    const frame = (now: number) => {
-      const delta = Math.min(0.048, (now - prev) / 1000);
-      prev = now;
-      const width = firstSet.offsetWidth;
-      if (width > 1) {
-        pos += PX_PER_SEC * delta;
-        if (pos >= width) pos = pos % width;
-        track.style.transform = `translate3d(${-pos}px,0,0)`;
-      }
-      rafId = requestAnimationFrame(frame);
-    };
-
-    const start = () => {
-      pos = 0;
-      prev = performance.now();
-      rafId = requestAnimationFrame(frame);
-    };
-    const t = window.setTimeout(start, 80);
-
-    return () => {
-      window.clearTimeout(t);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  const renderSet = (prefix: string) =>
+  const row = (prefix: string) =>
     FEATURE_CHIPS.map(({ icon: Icon, label }) => (
       <span
         key={`${prefix}-${label}`}
-        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/20 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
+        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/25 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
         style={{ marginInlineEnd: 12 }}
       >
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#003527]/10 text-[#003527]">
@@ -183,31 +142,43 @@ function FeatureChipsMarquee() {
     ));
 
   return (
-    <div
-      className="mt-8 w-full"
-      style={{ overflow: "hidden" }}
-      aria-label="امکانات نارژین"
-    >
-      <div
-        ref={trackRef}
-        style={{
-          display: "flex",
-          width: "max-content",
-          willChange: "transform",
-          backfaceVisibility: "hidden",
-        }}
-      >
-        <div ref={firstSetRef} style={{ display: "flex", flexShrink: 0 }}>
-          {renderSet("a")}
-        </div>
-        <div style={{ display: "flex", flexShrink: 0 }} aria-hidden>
-          {renderSet("b")}
-        </div>
-        <div style={{ display: "flex", flexShrink: 0 }} aria-hidden>
-          {renderSet("c")}
+    <>
+      <style>{`
+        @keyframes narjin-marquee {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-33.333333%, 0, 0); }
+        }
+        .narjin-mq {
+          overflow: hidden;
+          width: 100%;
+          margin-top: 2rem;
+          direction: ltr;
+        }
+        .narjin-mq-track {
+          display: flex;
+          width: max-content;
+          animation: narjin-marquee 50s linear infinite;
+        }
+        .narjin-mq-set {
+          display: flex;
+          flex-shrink: 0;
+        }
+        .narjin-mq:hover .narjin-mq-track {
+          animation-play-state: paused;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .narjin-mq-track { animation: none !important; flex-wrap: wrap; width: 100%; }
+          .narjin-mq-set:nth-child(n+2) { display: none; }
+        }
+      `}</style>
+      <div className="narjin-mq" aria-label="امکانات نارژین">
+        <div className="narjin-mq-track">
+          <div className="narjin-mq-set">{row("a")}</div>
+          <div className="narjin-mq-set" aria-hidden="true">{row("b")}</div>
+          <div className="narjin-mq-set" aria-hidden="true">{row("c")}</div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -255,14 +226,14 @@ export default function Hero() {
                 مشاهده معرفی
               </a>
             </div>
-
-            <FeatureChipsMarquee />
           </div>
 
           <div className="order-1 min-w-0 lg:order-2">
             <PanelPreview />
           </div>
         </div>
+
+        <FeatureChipsMarquee />
       </div>
     </section>
   );
