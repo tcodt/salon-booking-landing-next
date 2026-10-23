@@ -11,8 +11,11 @@ export default function ProductVideo() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section className="bg-background-home py-12 sm:py-16" id="demo">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section
+      id="product-demo"
+      className="scroll-mt-24 bg-surface-home py-12 sm:py-16"
+    >
+      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
         <div className="mb-8 w-full text-center">
           <h2 className="mx-auto max-w-2xl text-xl font-extrabold leading-snug text-primary-home sm:text-2xl md:text-3xl">
             در ۴۳ ثانیه با نارژین آشنا بشید
@@ -26,7 +29,7 @@ export default function ProductVideo() {
           {isPlaying ? (
             <iframe
               src={APARAT_EMBED}
-              title="ویدیوی معرفی نرم‌افزار مدیریت سالن زیبایی نارژین"
+              title="ویدیوی معرفی نرم افزار مدیریت نوبت دهی نارژین"
               className="absolute inset-0 h-full w-full border-0"
               allowFullScreen
               allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
