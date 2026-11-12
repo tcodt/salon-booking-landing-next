@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "نارژین | نرم‌افزار نوبت‌دهی و مدیریت سالن زیبایی",
+  metadataBase: new URL("https://narjin.ir"),
   description:
     "نارژین نرم‌افزار تخصصی مدیریت سالن‌های زیبایی — رزرو آنلاین، مدیریت مشتریان، گزارش مالی و کارکنان",
   icons: {

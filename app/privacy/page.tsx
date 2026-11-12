@@ -2,12 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "سیاست حریم خصوصی | نارژین",
   description:
     "سیاست حریم خصوصی نارژین درباره جمع‌آوری، استفاده، نگهداری و حفاظت از اطلاعات کاربران و مشتریان سالن‌های زیبایی.",
 };
 
-const LAST_UPDATED = "۲۵ مهر ۱۴۰۴";
+const LAST_UPDATED = "۱۸ آبان ۱۴۰۵";
 
 const toc = [
   { id: "intro", label: "مقدمه" },
@@ -53,10 +54,10 @@ export default function PrivacyPage() {
             سیاست حریم خصوصی
           </h1>
           <p className="text-sm text-[#5a7266]">آخرین به‌روزرسانی: {LAST_UPDATED}</p>
-          <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950">
-            این صفحه پیش‌نویس سیاست حریم خصوصی است و باید با فرآیندهای واقعی
-            سامانه و الزامات حقوقی هماهنگ شود. پیش از اتکای حقوقی، بازبینی مشاور
-            حقوقی توصیه می‌شود.
+          <p className="mt-4 text-sm leading-relaxed text-[#5a7266]">
+            در نارژین، حریم خصوصی شما و مشتریان سالنتان برای ما مهم است. در این
+            صفحه توضیح می‌دهیم چه اطلاعاتی جمع‌آوری می‌کنیم، چرا به آن نیاز داریم
+            و چطور از آن محافظت می‌کنیم.
           </p>
         </header>
 
@@ -123,8 +124,7 @@ export default function PrivacyPage() {
               <p className={pClass}>
                 اطلاعات مشتریان ممکن است توسط مدیر سالن برای نوبت‌دهی ثبت شود.
                 دسترسی تابع نقش‌های پنل است. سالن مسئول رعایت قوانین مربوط به
-                داده‌های مشتریان خود است. نقش حقوقی قطعی هر طرف در این پیش‌نویس
-                اعلام نشده است.
+                داده‌های مشتریان خود است.
               </p>
             </section>
 

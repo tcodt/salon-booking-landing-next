@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "قوانین و مقررات | نارژین",
   description:
     "شرایط استفاده از خدمات نارژین، حساب کاربری، پلن‌ها، پرداخت، تعهدات کاربران و مسئولیت‌های طرفین.",

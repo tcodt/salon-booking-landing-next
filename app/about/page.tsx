@@ -8,6 +8,7 @@ import {
 } from "react-icons/md";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "درباره نارژین | نرم‌افزار مدیریت و نوبت‌دهی آنلاین سالن زیبایی",
   description:
     "با نارژین و امکانات آن آشنا شوید؛ نرم‌افزار فارسی رزرو آنلاین، مدیریت مشتری و گزارش مالی سالن‌های زیبایی.",
