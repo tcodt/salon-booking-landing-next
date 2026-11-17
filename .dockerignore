@@ -1,0 +1,22 @@
+.git
+.github
+.idea
+.vscode
+node_modules
+.next
+out
+build
+coverage
+.env
+.env.*
+!.env.example
+npm-debug.log*
+*.md
+!README.md
+# فایل‌های پشتیبان قدیمی (توسط Next استفاده نمی‌شوند)
+**/*.bak
+**/*.bak2
+deploy/letsencrypt
+deploy/certbot-webroot
+Dockerfile
+docker-compose*.yml

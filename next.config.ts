@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // خروجی مستقل (server.js + فقط وابستگی‌های لازم) برای تصویر کوچک Docker
+  output: "standalone",
   images: {
     remotePatterns: [
       {

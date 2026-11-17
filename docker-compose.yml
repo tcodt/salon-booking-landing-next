@@ -1,0 +1,54 @@
+# لندینگ نارژین: Next.js (web) + nginx اختیاری (profile: proxy) برای TLS و دامنه
+#
+# ۱) فقط لندینگ، پشت nginx/Cloudflare موجود:   docker compose up -d --build
+#       (روی 127.0.0.1:3000 در دسترس است)
+# ۲) لندینگ + nginx خودش با TLS:                docker compose --profile proxy up -d --build
+# ۳) روی همان سروری که API (Docker) دارد:      docker compose -f docker-compose.yml -f docker-compose.edge.yml up -d --build web
+#       (README ← «لندینگ و API روی یک سرور»)
+name: narjin-landing
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org}
+    image: narjin-landing:latest
+    init: true
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      NODE_ENV: production
+      INTERNAL_SITE_URL: http://127.0.0.1:3000
+    ports:
+      - "${LANDING_BIND:-127.0.0.1}:${LANDING_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    profiles: ["proxy"]
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      DOMAIN: ${DOMAIN:-_}
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./deploy/nginx/${NGINX_MODE:-http}.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ${LETSENCRYPT_DIR:-./deploy/letsencrypt}:/etc/letsencrypt:ro
+      - ./deploy/certbot-webroot:/var/www/certbot:ro

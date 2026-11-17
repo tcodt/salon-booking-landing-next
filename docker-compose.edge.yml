@@ -1,0 +1,16 @@
+# حالت «یک سرور»: لندینگ به شبکهٔ Docker پروژهٔ API (narjin_default) وصل می‌شود تا nginx آن
+# بتواند narjin.ir را به لندینگ برساند. استفاده:
+#   docker compose -f docker-compose.yml -f docker-compose.edge.yml up -d --build web
+# (پروژهٔ API باید قبلاً بالا آمده باشد تا شبکه وجود داشته باشد)
+services:
+  web:
+    networks:
+      default: {}
+      edge:
+        aliases:
+          - landing
+
+networks:
+  edge:
+    external: true
+    name: ${EDGE_NETWORK:-narjin_default}
