@@ -3,41 +3,19 @@
 import { useState } from "react";
 import { MdExpandMore } from "react-icons/md";
 
-const faqs = [
-  {
-    q: "نارژین برای چه نوع سالن‌هایی مناسب است؟",
-    a: "برای آرایشگاه‌ها، سالن‌های زیبایی، مراکز ناخن، پوست و مو و کسب‌وکارهای مشابه که نیاز به نوبت‌دهی و مدیریت مشتریان دارند.",
-  },
-  {
-    q: "آیا مشتریان می‌توانند به‌صورت آنلاین نوبت رزرو کنند؟",
-    a: "بله. با لینک اختصاصی سالن، مشتری می‌تواند بدون تماس تلفنی نوبت بگیرد.",
-  },
-  {
-    q: "یادآوری نوبت‌ها چگونه انجام می‌شود؟",
-    a: "در پلن‌هایی که پیامک یادآوری فعال است، تأیید و یادآوری به‌صورت خودکار برای مشتری ارسال می‌شود.",
-  },
-  {
-    q: "آیا امکان مشاهده گزارش درآمد وجود دارد؟",
-    a: "بله. در پنل مدیریت می‌توانید گزارش‌های مالی و عملکرد مرتبط با خدمات و کارکنان را مشاهده کنید.",
-  },
-  {
-    q: "برای شروع استفاده از نارژین چه باید کرد؟",
-    a: "از طریق دکمه «ساخت سالن من، رایگان» وارد پنل شوید یا از بخش تماس درخواست مشاوره ثبت کنید.",
-  },
-  {
-    q: "هزینه استفاده از نارژین چگونه محاسبه می‌شود؟",
-    a: "پلن رایگان و پلن‌های اشتراکی در صفحه تعرفه‌ها توضیح داده شده‌اند. جزئیات را در بخش تعرفه‌ها ببینید.",
-  },
-];
+import type { SiteContent } from "@/lib/site";
 
-export default function Faq() {
+export default function Faq({ site }: { site: SiteContent }) {
+  const faqs = site.faqs.map((f) => ({ q: f.question, a: f.answer }));
   const [open, setOpen] = useState<number | null>(0);
+
+  if (faqs.length === 0) return null;
 
   return (
     <section className="bg-[#eef4f0] py-12 sm:py-16" id="faq">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
-          قبل از شروع، این‌ها رو بدونید
+          {site.settings.faq_title}
         </h2>
         <div className="space-y-3">
           {faqs.map((item, i) => {

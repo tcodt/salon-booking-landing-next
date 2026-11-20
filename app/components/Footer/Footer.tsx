@@ -8,8 +8,9 @@ import {
   FaEnvelope,
   FaWhatsapp,
 } from "react-icons/fa";
+import type { SiteSettings } from "@/lib/site";
 
-export default function Footer() {
+export default function Footer({ settings }: { settings: SiteSettings }) {
   const currentYear = (() => {
     try {
       return new Intl.DateTimeFormat("fa-IR-u-ca-persian", { year: "numeric" })
@@ -42,18 +43,18 @@ export default function Footer() {
               className="mx-auto mt-3 w-full min-w-0 text-sm leading-[1.9] text-white/75 min-[480px]:mx-0 lg:max-w-[18rem]"
               style={{ overflowWrap: "normal", wordBreak: "normal" }}
             >
-              نرم‌افزار مدیریت و نوبت‌دهی آنلاین سالن زیبایی
+              {settings.footer_description}
             </p>
             <div className="mt-5 flex justify-center gap-3 min-[480px]:justify-start">
-              <a href="https://instagram.com/narjin" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="اینستاگرام">
+              {settings.instagram && <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="اینستاگرام">
                 <FaInstagram className="h-4 w-4" />
-              </a>
-              <a href="https://t.me/narjin" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="تلگرام">
+              </a>}
+              {settings.telegram && <a href={settings.telegram} target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="تلگرام">
                 <FaTelegramPlane className="h-4 w-4" />
-              </a>
-              <a href="https://wa.me/989912146083" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="واتس‌اپ">
+              </a>}
+              {settings.whatsapp && <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 transition hover:border-[#8bd6b6] hover:text-[#8bd6b6]" aria-label="واتس‌اپ">
                 <FaWhatsapp className="h-4 w-4" />
-              </a>
+              </a>}
             </div>
           </div>
 
@@ -81,11 +82,13 @@ export default function Footer() {
             <h3 className="mb-3 text-sm font-bold text-white">تماس</h3>
             <ul className="flex flex-col gap-1">
               <li><Link href="/#contact" className={linkClass}>تماس با ما</Link></li>
-              <li>
-                <a href="mailto:info@narjin.ir" className={linkClass}>
-                  info@narjin.ir
-                </a>
-              </li>
+              {settings.email && (
+                <li>
+                  <a href={`mailto:${settings.email}`} className={linkClass}>
+                    {settings.email}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

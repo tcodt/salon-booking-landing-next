@@ -10,8 +10,10 @@ import {
   featureLine,
   isFeatureIncluded,
 } from "@/lib/api";
+import type { SiteContent } from "@/lib/site";
 
-export default function PricingTeaser() {
+export default function PricingTeaser({ site }: { site: SiteContent }) {
+  const pricingTitle = site.settings.pricing_title;
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +50,7 @@ export default function PricingTeaser() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mb-8 text-center sm:mb-10">
           <h2 className="text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
-            از رایگان شروع کنید؛ با رشد سالن ارتقا بدید
+            {pricingTitle}
           </h2>
         </div>
 
@@ -146,12 +148,12 @@ export default function PricingTeaser() {
                   </ul>
                   {isFree ? (
                     <a
-                      href="https://panel.narjin.ir"
+                      href={site.settings.hero_cta_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
                     >
-                      ساخت سالن من، رایگان
+                      {site.settings.hero_cta_text}
                     </a>
                   ) : isOrg ? (
                     <Link

@@ -7,8 +7,9 @@ import Testimonials from "./components/home/testimonials";
 import PricingTeaser from "./components/home/pricing-teaser";
 import Faq from "./components/home/faq";
 import ContactForm from "./components/home/contact-form";
+import { getSite } from "@/lib/site";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: "نرم‌افزار مدیریت سالن زیبایی و نوبت‌دهی | نارژین",
   description:
@@ -33,17 +34,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+// محتوا از API (پنل مدیریت) می‌آید و هر ۶۰ ثانیه تازه می‌شود
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { settings } = await getSite();
+  return {
+    ...metadata,
+    title: settings.meta_title,
+    description: settings.meta_description,
+    openGraph: { ...metadata.openGraph, title: settings.meta_title, description: settings.meta_description },
+  };
+}
+
+export default async function Home() {
+  const site = await getSite();
   return (
     <main>
-      <Hero />
-      <ProductVideo />
-      <Features />
-      <Comparison />
-      <Testimonials />
-      <PricingTeaser />
-      <Faq />
-      <ContactForm />
+      <Hero site={site} />
+      <ProductVideo site={site} />
+      <Features site={site} />
+      <Comparison site={site} />
+      <Testimonials site={site} />
+      <PricingTeaser site={site} />
+      <Faq site={site} />
+      <ContactForm site={site} />
     </main>
   );
 }

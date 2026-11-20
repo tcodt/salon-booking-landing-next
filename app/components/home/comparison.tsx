@@ -2,30 +2,21 @@
 
 import { MdCheckCircleOutline, MdClose } from "react-icons/md";
 
-const withoutItems = [
-  "دفترچه‌های کاغذی شلوغ و نامرتب",
-  "پاسخگویی به تلفن حتی در زمان کار",
-  "فراموشی نوبت توسط مشتری",
-  "محاسبه دستی سهم آرایشگرها",
-];
+import type { SiteContent } from "@/lib/site";
 
-const withItems = [
-  "تقویم آنلاین و منظم نوبت‌ها",
-  "لینک اختصاصی نوبت‌دهی",
-  "پیامک تأیید و یادآوری خودکار",
-  "گزارش مالی و عملکرد آرایشگران",
-];
-
-export default function Comparison() {
+export default function Comparison({ site }: { site: SiteContent }) {
+  const withoutItems = site.comparison.without;
+  const withItems = site.comparison.with;
+  if (withoutItems.length === 0 && withItems.length === 0) return null;
   return (
     <section className="bg-[#eef4f0] py-12 sm:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:mb-10 sm:text-2xl md:text-3xl">
-          یک روز کاری سالن شما، قبل و بعد از نارژین
+          {site.settings.comparison_title}
         </h2>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           <div className="rounded-2xl border border-[#0a4d3a]/15 bg-white p-5 sm:rounded-3xl sm:p-7">
-            <h3 className="mb-5 text-lg font-bold text-[#15241c]">بدون نارژین</h3>
+            <h3 className="mb-5 text-lg font-bold text-[#15241c]">{site.settings.comparison_without_title}</h3>
             <ul className="space-y-3.5">
               {withoutItems.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-[#3d5a4c] sm:text-base">
@@ -36,7 +27,7 @@ export default function Comparison() {
             </ul>
           </div>
           <div className="rounded-2xl border-2 border-primary-home/30 bg-primary-home p-5 text-white shadow-md sm:rounded-3xl sm:p-7">
-            <h3 className="mb-5 text-lg font-bold">با نارژین</h3>
+            <h3 className="mb-5 text-lg font-bold">{site.settings.comparison_with_title}</h3>
             <ul className="space-y-3.5">
               {withItems.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm sm:text-base">

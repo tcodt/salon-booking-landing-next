@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import { getSite } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +31,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const site = await getSite();
   return (
     <html lang="fa" dir="rtl">
       <head>
@@ -64,7 +66,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
-        <Footer />
+        <Footer settings={site.settings} />
       </body>
     </html>
   );

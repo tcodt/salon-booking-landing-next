@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdPhone, MdSchedule } from "react-icons/md";
+import { toFaDigits, type SiteContent } from "@/lib/site";
 
 interface FormData {
   full_name: string;
@@ -11,9 +12,6 @@ interface FormData {
   message: string;
 }
 
-const PHONE_DISPLAY = "۰۹۹۱۲۱۴۶۰۸۳";
-const PHONE_TEL = "09912146083";
-const WHATSAPP = "https://wa.me/989912146083";
 
 const subjectOptions = [
   { value: "مشاوره رایگان", label: "مشاوره رایگان" },
@@ -26,7 +24,11 @@ const subjectOptions = [
 const fieldClass =
   "w-full rounded-xl border border-primary-home/20 bg-[#f5f8f6] px-4 py-3 text-base text-[#15241c] outline-none transition focus:border-primary-home focus:ring-2 focus:ring-primary-home/20 disabled:opacity-60 min-h-[48px]";
 
-export default function ContactForm() {
+export default function ContactForm({ site }: { site: SiteContent }) {
+  const st = site.settings;
+  const PHONE_TEL = st.phone;
+  const PHONE_DISPLAY = toFaDigits(st.phone);
+  const WHATSAPP = st.whatsapp ? `https://wa.me/${st.whatsapp}` : "";
   const [formData, setFormData] = useState<FormData>({
     full_name: "",
     phone: "",
@@ -80,10 +82,10 @@ export default function ContactForm() {
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="min-w-0">
           <h2 className="mb-3 text-xl font-extrabold text-primary-home sm:text-2xl">
-            آماده‌اید سالنتون رو آنلاین کنید؟
+            {st.contact_title}
           </h2>
           <p className="mb-6 text-sm leading-relaxed text-[#3d5a4c] sm:text-base">
-            فرم رو پر کنید یا مستقیم تماس بگیرید؛ کارشناسان ما جواب می‌دن.
+            {st.contact_subtitle}
           </p>
 
           <div className="space-y-4 rounded-2xl border border-primary-home/10 bg-[#f5f8f6] p-5">
@@ -110,7 +112,7 @@ export default function ContactForm() {
               </span>
             </div>
 
-            <a
+            {WHATSAPP && (<a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
@@ -118,7 +120,7 @@ export default function ContactForm() {
             >
               <FaWhatsapp className="text-xl" />
               گفتگو در واتس‌اپ
-            </a>
+            </a>)}
           </div>
         </div>
 

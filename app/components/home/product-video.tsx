@@ -4,10 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import { MdPlayArrow } from "react-icons/md";
 
-const APARAT_EMBED =
-  "https://www.aparat.com/video/video/embed/videohash/nelxg17/vt/frame";
+import type { SiteContent } from "@/lib/site";
 
-export default function ProductVideo() {
+export default function ProductVideo({ site }: { site: SiteContent }) {
+  const st = site.settings;
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
@@ -18,7 +18,7 @@ export default function ProductVideo() {
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
         <div className="mb-8 w-full text-center">
           <h2 className="mx-auto max-w-2xl text-xl font-extrabold leading-snug text-primary-home sm:text-2xl md:text-3xl">
-            در ۴۳ ثانیه با نارژین آشنا بشید
+            {st.video_title}
           </h2>
         </div>
 
@@ -28,7 +28,7 @@ export default function ProductVideo() {
         >
           {isPlaying ? (
             <iframe
-              src={APARAT_EMBED}
+              src={st.video_embed_url}
               title="ویدیوی معرفی نرم افزار مدیریت نوبت دهی نارژین"
               className="absolute inset-0 h-full w-full border-0"
               allowFullScreen
@@ -61,12 +61,12 @@ export default function ProductVideo() {
 
         <div className="mt-6 flex w-full justify-center sm:mt-8">
           <a
-            href="https://panel.narjin.ir"
+            href={st.hero_cta_url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-[48px] w-full max-w-[280px] items-center justify-center rounded-full bg-primary-home px-5 py-3 text-sm font-bold text-white shadow-md transition hover:opacity-95 active:scale-[0.98] sm:w-auto sm:min-w-[220px] sm:max-w-none sm:px-8 sm:text-base"
           >
-            ساخت سالن من (رایگان)
+            {st.hero_cta_text}
           </a>
         </div>
       </div>

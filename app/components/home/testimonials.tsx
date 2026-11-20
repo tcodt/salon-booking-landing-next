@@ -3,37 +3,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { MdStar, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-const samples = [
-  {
-    name: "سارا محمدی",
-    role: "مدیر سالن زیبایی",
-    avatar: "/images/avatars/a1.svg",
-    text: "نوبت‌دهی آنلاین باعث شده تماس‌های تکراری کمتر شود و تقویم مرتب‌تر باشد.",
-  },
-  {
-    name: "مریم احمدی",
-    role: "مسئول پذیرش",
-    avatar: "/images/avatars/a2.svg",
-    text: "یادآوری پیامکی به پیگیری نوبت‌ها کمک می‌کند و کار روزانه منظم‌تر پیش می‌رود.",
-  },
-  {
-    name: "نیلوفر رضایی",
-    role: "مالک مجموعه",
-    avatar: "/images/avatars/a3.svg",
-    text: "گزارش‌های پنل برای بررسی عملکرد خدمات و برنامه‌ریزی پرسنل مفید است.",
-  },
-  {
-    name: "رضا کریمی",
-    role: "مدیر فنی سالن",
-    avatar: "/images/avatars/a4.svg",
-    text: "لینک اختصاصی نوبت‌دهی را در اینستاگرام گذاشتیم؛ مشتری‌ها راحت‌تر وقت می‌گیرند.",
-  },
-];
+import type { SiteContent } from "@/lib/site";
 
-export default function Testimonials() {
+const FALLBACK_AVATARS = ["/images/avatars/a1.svg", "/images/avatars/a2.svg", "/images/avatars/a3.svg", "/images/avatars/a4.svg"];
+
+export default function Testimonials({ site }: { site: SiteContent }) {
+  const samples = site.testimonials.map((t, i) => ({ ...t, avatar: t.avatar ?? FALLBACK_AVATARS[i % FALLBACK_AVATARS.length] }));
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const max = samples.length - 1;
+  const max = Math.max(samples.length - 1, 0);
 
   const scrollToIndex = useCallback((i: number) => {
     const track = trackRef.current;
@@ -80,11 +58,13 @@ export default function Testimonials() {
     return () => track.removeEventListener("scroll", onScroll);
   }, []);
 
+  if (samples.length === 0) return null;
+
   return (
     <section className="bg-[#eef4f0] py-12 sm:py-16" id="testimonials">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <h2 className="mb-8 text-center text-xl font-extrabold text-primary-home sm:text-2xl md:text-3xl">
-          مدیران سالن درباره نارژین چی می‌گن؟
+          {site.settings.testimonials_title}
         </h2>
 
         <div

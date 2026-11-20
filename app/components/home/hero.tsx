@@ -2,46 +2,16 @@
 
 import PhoneMockup from "./phone-mockup";
 
-import {
-  MdPlayArrow,
-  MdAccessTime,
-  MdLink,
-  MdCalendarMonth,
-  MdGroups,
-  MdContentCut,
-  MdStorefront,
-  MdBarChart,
-  MdTrendingUp,
-  MdAssessment,
-  MdFolderShared,
-  MdHistory,
-  MdSearch,
-  MdSms,
-  MdLoyalty,
-  MdCake,
-} from "react-icons/md";
+import { MdPlayArrow } from "react-icons/md";
+import { siteIcon } from "@/lib/site-icons";
+import type { SiteContent } from "@/lib/site";
 
-const FEATURE_CHIPS = [
-  { icon: MdAccessTime, label: "رزرو آنلاین ۲۴ ساعته" },
-  { icon: MdLink, label: "لینک اختصاصی رزرو" },
-  { icon: MdCalendarMonth, label: "تقویم هوشمند نوبت‌ها" },
-  { icon: MdGroups, label: "مدیریت کارکنان" },
-  { icon: MdContentCut, label: "مدیریت خدمات سالن" },
-  { icon: MdStorefront, label: "مدیریت اطلاعات سالن" },
-  { icon: MdBarChart, label: "گزارش درآمد سالن" },
-  { icon: MdTrendingUp, label: "تحلیل خدمات پرفروش" },
-  { icon: MdAssessment, label: "گزارش عملکرد کارکنان" },
-  { icon: MdFolderShared, label: "پرونده اختصاصی مشتریان" },
-  { icon: MdHistory, label: "تاریخچه مراجعات" },
-  { icon: MdSearch, label: "جستجوی سریع مشتریان" },
-  { icon: MdSms, label: "پیامک یادآوری خودکار" },
-  { icon: MdLoyalty, label: "باشگاه مشتریان" },
-  { icon: MdCake, label: "پیام تبریک تولد" },
-] as const;
-
-function FeatureChipsMarquee() {
+function FeatureChipsMarquee({ chips }: { chips: SiteContent["chips"] }) {
+  if (chips.length === 0) return null;
   const row = (prefix: string) =>
-    FEATURE_CHIPS.map(({ icon: Icon, label }) => (
+    chips.map(({ icon, title: label }) => {
+      const Icon = siteIcon(icon);
+      return (
       <span
         key={`${prefix}-${label}`}
         className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#003527]/25 bg-white px-3.5 py-2 text-sm font-semibold text-[#1f3a2e] shadow-sm"
@@ -52,7 +22,8 @@ function FeatureChipsMarquee() {
         </span>
         {label}
       </span>
-    ));
+      );
+    });
 
   return (
     <>
@@ -95,7 +66,8 @@ function FeatureChipsMarquee() {
   );
 }
 
-export default function Hero() {
+export default function Hero({ site }: { site: SiteContent }) {
+  const st = site.settings;
   return (
     <section className="relative overflow-hidden bg-background-home pt-[5.5rem] pb-12 sm:pt-28 sm:pb-16 md:pb-20">
       <div className="pointer-events-none absolute inset-x-0 top-[4.5rem] bottom-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,53,39,0.06),_transparent_50%)]" />
@@ -104,7 +76,7 @@ export default function Hero() {
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14">
           <div className="order-2 min-w-0 text-center lg:order-1 lg:text-right">
             <p className="mb-3 inline-flex items-center rounded-full border border-primary-home/20 bg-primary-home/5 px-3.5 py-1.5 text-sm font-semibold text-primary-home sm:text-base">
-              نرم افزار مدیریت نوبت دهی
+              {st.hero_badge}
             </p>
 
             <h1
@@ -112,11 +84,11 @@ export default function Hero() {
               className="mb-4 font-extrabold leading-[1.35] text-primary-home sm:mb-5"
               style={{ fontSize: "clamp(1.5rem, 2.6vw + 0.85rem, 2.5rem)" }}
             >
-              روشی هوشمند برای مدیریت مراجعه کنندگان شما
+              {st.hero_title}
             </h1>
 
             <p className="narjin-prose mx-auto mb-7 max-w-[36rem] text-[0.95rem] leading-[1.85] text-[#3d5a4c] sm:mb-8 sm:text-base lg:mx-0 lg:max-w-none">
-              کمتر تلفن جواب بدید و نوبت ها رو منظم تر مدیریت کنید
+              {st.hero_subtitle}
             </p>
 
             <div
@@ -124,19 +96,19 @@ export default function Hero() {
               className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:justify-start"
             >
               <a
-                href="https://panel.narjin.ir"
+                href={st.hero_cta_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-container-home px-8 py-3.5 text-base font-bold text-on-primary shadow-md transition hover:opacity-95 hover:shadow-lg"
               >
-                ساخت سالن من، رایگان
+                {st.hero_cta_text}
               </a>
               <a
                 href="#product-demo"
                 className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary-home/30 px-5 py-3 text-base font-bold text-primary-home transition hover:border-primary-home hover:bg-primary-home/5"
               >
                 <MdPlayArrow className="text-xl" />
-                مشاهده معرفی
+                {st.hero_secondary_text}
               </a>
             </div>
           </div>
@@ -146,7 +118,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <FeatureChipsMarquee />
+        <FeatureChipsMarquee chips={site.chips} />
       </div>
     </section>
   );
