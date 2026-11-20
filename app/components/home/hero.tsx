@@ -1,5 +1,7 @@
 "use client";
 
+import PhoneMockup from "./phone-mockup";
+
 import {
   MdPlayArrow,
   MdAccessTime,
@@ -36,100 +38,6 @@ const FEATURE_CHIPS = [
   { icon: MdLoyalty, label: "باشگاه مشتریان" },
   { icon: MdCake, label: "پیام تبریک تولد" },
 ] as const;
-
-function BookingPreview() {
-  const days = [
-    { d: "شنبه", n: "۱۵" },
-    { d: "یکشنبه", n: "۱۶" },
-    { d: "دوشنبه", n: "۱۷" },
-    { d: "سه‌شنبه", n: "۱۸" },
-  ];
-  const times = ["۱۰:۰۰", "۱۱:۳۰", "۱۴:۰۰", "۱۶:۳۰"];
-  return (
-    <div className="relative mx-auto w-full max-w-[28rem]">
-      <div className="overflow-hidden rounded-2xl border border-[#0a4d3a]/20 bg-white shadow-[0_24px_60px_-24px_rgba(0,53,39,0.35)] sm:rounded-3xl">
-        <div className="flex items-center gap-2 border-b border-[#0a4d3a]/10 bg-[#003527] px-4 py-3">
-          <MdLink className="text-lg text-[#ffc329]" aria-hidden />
-          <span className="text-xs font-medium text-white/90 sm:text-sm" dir="ltr">
-            narjin.ir/your-salon
-          </span>
-        </div>
-
-        <div className="space-y-4 p-4 sm:p-5">
-          <div>
-            <p className="mb-2 text-xs font-bold text-[#003527] sm:text-sm">۱. خدمت را انتخاب کنید</p>
-            <div className="flex flex-wrap gap-2">
-              {["کوتاهی مو", "رنگ و مش", "مراقبت پوست", "ناخن"].map((s, i) => (
-                <span
-                  key={s}
-                  className={`rounded-full border px-3 py-1.5 text-[11px] sm:text-xs ${
-                    i === 1
-                      ? "border-[#003527] bg-[#003527] font-semibold text-white"
-                      : "border-[#0a4d3a]/20 bg-[#f7faf6] text-[#3d5a4c]"
-                  }`}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <p className="mb-2 text-xs font-bold text-[#003527] sm:text-sm">۲. روز و ساعت</p>
-            <div className="grid grid-cols-4 gap-2">
-              {days.map((x, i) => (
-                <div
-                  key={x.d}
-                  className={`rounded-xl border px-1 py-2 text-center ${
-                    i === 1
-                      ? "border-[#003527] bg-[#003527]/10"
-                      : "border-[#0a4d3a]/10 bg-[#f7faf6]"
-                  }`}
-                >
-                  <p className="text-[10px] text-[#5a7266]">{x.d}</p>
-                  <p className="text-sm font-bold text-[#003527]">{x.n}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-2 grid grid-cols-4 gap-2">
-              {times.map((t, i) => (
-                <span
-                  key={t}
-                  className={`rounded-lg py-1.5 text-center text-[11px] font-semibold sm:text-xs ${
-                    i === 2
-                      ? "bg-[#ffc329] text-[#003527]"
-                      : "bg-[#003527]/5 text-[#003527]"
-                  }`}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-hidden
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-[#003527] py-2.5 text-sm font-bold text-white"
-          >
-            <MdCalendarMonth aria-hidden /> ثبت نوبت
-          </button>
-        </div>
-      </div>
-
-      <div className="absolute -bottom-5 start-2 flex max-w-[80%] items-center gap-2.5 rounded-2xl border border-[#0a4d3a]/15 bg-white px-3.5 py-2.5 shadow-lg sm:-start-4">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-          <MdSms aria-hidden />
-        </span>
-        <div className="min-w-0">
-          <p className="text-xs font-bold text-[#15241c]">نوبت شما ثبت شد ✓</p>
-          <p className="text-[10px] text-[#5a7266]">پیامک یادآوری ارسال می‌شود</p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function FeatureChipsMarquee() {
   const row = (prefix: string) =>
@@ -233,8 +141,8 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="order-1 min-w-0 pb-6 lg:order-2">
-            <BookingPreview />
+          <div className="order-1 min-w-0 lg:order-2">
+            <PhoneMockup />
           </div>
         </div>
 
