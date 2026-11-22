@@ -1,0 +1,222 @@
+From 5431e7ce91def9c136535782c24fd6e12f5c3ed5 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sun, 22 Nov 2026 09:56:12 +0000
+Subject: [PATCH] feat(pricing): all plans in one row (up to 5), tick/cross
+ features aligned across plans, is_included support
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Ezz4TwFtWwHNpy2TJqWavp
+---
+ app/api/plans/route.ts                 |  2 +-
+ app/components/home/pricing-teaser.tsx | 44 ++++++++++++++------------
+ app/pricing/page.tsx                   | 20 ++++++------
+ lib/api.ts                             | 38 ++++++++++++++++++++++
+ 4 files changed, 74 insertions(+), 30 deletions(-)
+
+diff --git a/app/api/plans/route.ts b/app/api/plans/route.ts
+index ff557bf..c33ccee 100644
+--- a/app/api/plans/route.ts
++++ b/app/api/plans/route.ts
+@@ -1,6 +1,6 @@
+ import { NextResponse } from "next/server";
+ 
+-const UPSTREAM = "https://api.narjin.ir/landing/plans/";
++const UPSTREAM = `${process.env.NARJIN_API_URL ?? "https://api.narjin.ir"}/landing/plans/`;
+ 
+ export async function GET() {
+   try {
+diff --git a/app/components/home/pricing-teaser.tsx b/app/components/home/pricing-teaser.tsx
+index 03a1cf0..ab5c889 100644
+--- a/app/components/home/pricing-teaser.tsx
++++ b/app/components/home/pricing-teaser.tsx
+@@ -2,13 +2,14 @@
+ 
+ import { useEffect, useState } from "react";
+ import Link from "next/link";
+-import { MdCheck } from "react-icons/md";
++import { MdCheck, MdClose } from "react-icons/md";
+ import {
+   type Plan,
+   formatPlanPrice,
+   durationLabel,
+-  featureLine,
+-  isFeatureIncluded,
++  allPlanFeatures,
++  planFeatureState,
++  planGridClass,
+ } from "@/lib/api";
+ import type { SiteContent } from "@/lib/site";
+ 
+@@ -73,14 +74,10 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
+         )}
+ 
+         {!loading && plans.length > 0 && (
+-          <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">
+-            {plans.slice(0, 3).map((p) => {
++          <div className={`grid items-stretch gap-5 ${planGridClass(plans.length)}`}>
++            {plans.map((p) => {
+               const featured = p.id === featuredId;
+-              const lines = (p.features || [])
+-                .filter(isFeatureIncluded)
+-                .map(featureLine)
+-                .filter(Boolean)
+-                .slice(0, 5);
++              const rows = allPlanFeatures(plans).slice(0, 6).map((f) => ({ ...f, ...planFeatureState(p, f.id) }));
+               const isFree = !p.price || p.price <= 0;
+               const isOrg = /سازمان|enterprise/i.test(p.title || "");
+ 
+@@ -126,23 +123,30 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
+                     </p>
+                   )}
+                   <ul className="mt-5 flex flex-1 flex-col gap-2.5">
+-                    {lines.map((f) => (
++                    {rows.map((f) => (
+                       <li
+-                        key={f}
++                        key={f.id}
+                         className={
+                           featured
+                             ? "flex items-start gap-2 text-sm text-white/90"
+                             : "flex items-start gap-2 text-sm text-[#3d5a4c]"
+                         }
+                       >
+-                        <MdCheck
+-                          className={
+-                            featured
+-                              ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
+-                              : "mt-0.5 shrink-0 text-lg text-primary-home"
+-                          }
+-                        />
+-                        <span>{f}</span>
++                        {f.included ? (
++                          <MdCheck
++                            className={
++                              featured
++                                ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
++                                : "mt-0.5 shrink-0 text-lg text-primary-home"
++                            }
++                          />
++                        ) : (
++                          <MdClose className="mt-0.5 shrink-0 text-lg text-gray-400" />
++                        )}
++                        <span className={f.included ? "" : "opacity-60"}>
++                          {f.title}
++                          {f.included && f.note ? `: ${f.note}` : ""}
++                        </span>
+                       </li>
+                     ))}
+                   </ul>
+diff --git a/app/pricing/page.tsx b/app/pricing/page.tsx
+index 8cb33b2..8639fab 100644
+--- a/app/pricing/page.tsx
++++ b/app/pricing/page.tsx
+@@ -7,8 +7,9 @@ import {
+   type Plan,
+   formatPlanPrice,
+   durationLabel,
+-  featureLine,
+-  isFeatureIncluded,
++  allPlanFeatures,
++  planFeatureState,
++  planGridClass,
+ } from "@/lib/api";
+ 
+ export default function PricingPage() {
+@@ -115,7 +116,7 @@ export default function PricingPage() {
+       )}
+ 
+       {!loading && !error && plans.length > 0 && (
+-        <div className="mb-8 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
++        <div className={`mb-8 grid items-stretch gap-6 ${planGridClass(plans.length)}`}>
+           {plans.map((plan) => {
+             const featured = plan.id === featuredId;
+             const cta = ctaFor(plan);
+@@ -165,13 +166,11 @@ export default function PricingPage() {
+                 )}
+ 
+                 <ul className="mt-6 flex flex-1 flex-col gap-2.5">
+-                  {(plan.features || []).map((pf, idx) => {
+-                    const included = isFeatureIncluded(pf);
+-                    const line = featureLine(pf);
+-                    if (!line) return null;
++                  {allPlanFeatures(plans).map((f) => {
++                    const { included, note } = planFeatureState(plan, f.id);
+                     return (
+                       <li
+-                        key={`${plan.id}-${pf.feature?.id ?? idx}`}
++                        key={`${plan.id}-${f.id}`}
+                         className={
+                           featured
+                             ? "flex items-start gap-2 text-sm text-white/90"
+@@ -189,7 +188,10 @@ export default function PricingPage() {
+                         ) : (
+                           <FaTimesCircle className="mt-0.5 shrink-0 text-gray-400" />
+                         )}
+-                        <span className={included ? "" : "opacity-60"}>{line}</span>
++                        <span className={included ? "" : "opacity-60"}>
++                          {f.title}
++                          {included && note ? `: ${note}` : ""}
++                        </span>
+                       </li>
+                     );
+                   })}
+diff --git a/lib/api.ts b/lib/api.ts
+index 0293f11..8ed60be 100644
+--- a/lib/api.ts
++++ b/lib/api.ts
+@@ -8,6 +8,8 @@ export type PlanFeature = {
+     description: string;
+   };
+   value: string;
++  /** تیک/ضربدر از پنل مدیریت (API جدید)؛ اگر نبود از value حدس زده می‌شود */
++  is_included?: boolean;
+ };
+ 
+ export type Plan = {
+@@ -54,7 +56,43 @@ export function featureLine(pf: PlanFeature): string {
+ }
+ 
+ export function isFeatureIncluded(pf: PlanFeature): boolean {
++  if (typeof pf.is_included === "boolean") return pf.is_included;
+   const v = (pf.value ?? "").trim().toLowerCase();
+   if (v === "false" || v === "0" || v === "no" || v === "خیر") return false;
+   return true;
+ }
++
++const GENERIC_VALUES = new Set(["دارد", "ندارد", "خیر", "بله", "true", "false", "1", "0", "yes", "no", "✓", "✗"]);
++
++/** توضیح اختیاری کنار ویژگی (مثلاً «تا ۲ نفر»)؛ مقدارهای عمومی دارد/ندارد نادیده گرفته می‌شود. */
++export function featureNote(pf: PlanFeature): string {
++  const v = (pf.value ?? "").trim();
++  return GENERIC_VALUES.has(v.toLowerCase()) ? "" : v;
++}
++
++/** اجتماع ویژگی‌های همهٔ پلن‌ها (به ترتیب اولین ظهور) تا همهٔ کارت‌ها یک‌اندازه و هم‌تراز شوند. */
++export function allPlanFeatures(plans: Plan[]): { id: number; title: string }[] {
++  const seen = new Map<number, string>();
++  for (const p of plans)
++    for (const pf of p.features || []) {
++      const id = pf.feature?.id;
++      if (id != null && !seen.has(id)) seen.set(id, pf.feature.title);
++    }
++  return Array.from(seen, ([id, title]) => ({ id, title }));
++}
++
++/** وضعیت یک ویژگی در یک پلن: اگر در پلن نباشد = ضربدر. */
++export function planFeatureState(plan: Plan, featureId: number): { included: boolean; note: string } {
++  const pf = (plan.features || []).find((x) => x.feature?.id === featureId);
++  if (!pf) return { included: false, note: "" };
++  return { included: isFeatureIncluded(pf), note: featureNote(pf) };
++}
++
++/** ستون‌های گرید: تا ۴ (و ۵) پلن همیشه در «یک ردیف» (روی دسکتاپ). */
++export function planGridClass(count: number): string {
++  if (count <= 1) return "grid-cols-1 mx-auto max-w-md";
++  if (count === 2) return "grid-cols-1 md:grid-cols-2 mx-auto max-w-3xl";
++  if (count === 3) return "grid-cols-1 md:grid-cols-3";
++  if (count === 4) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
++  return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5";
++}
+-- 
+2.43.0
+
