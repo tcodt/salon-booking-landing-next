@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdClose } from "react-icons/md";
 import {
   type Plan,
   formatPlanPrice,
   durationLabel,
-  featureLine,
-  isFeatureIncluded,
+  allPlanFeatures,
+  planFeatureState,
+  planGridClass,
 } from "@/lib/api";
 import type { SiteContent } from "@/lib/site";
 
@@ -73,14 +74,10 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
         )}
 
         {!loading && plans.length > 0 && (
-          <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">
-            {plans.slice(0, 3).map((p) => {
+          <div className={`grid items-stretch gap-5 ${planGridClass(plans.length)}`}>
+            {plans.map((p) => {
               const featured = p.id === featuredId;
-              const lines = (p.features || [])
-                .filter(isFeatureIncluded)
-                .map(featureLine)
-                .filter(Boolean)
-                .slice(0, 5);
+              const rows = allPlanFeatures(plans).slice(0, 6).map((f) => ({ ...f, ...planFeatureState(p, f.id) }));
               const isFree = !p.price || p.price <= 0;
               const isOrg = /سازمان|enterprise/i.test(p.title || "");
 
@@ -126,23 +123,30 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
                     </p>
                   )}
                   <ul className="mt-5 flex flex-1 flex-col gap-2.5">
-                    {lines.map((f) => (
+                    {rows.map((f) => (
                       <li
-                        key={f}
+                        key={f.id}
                         className={
                           featured
                             ? "flex items-start gap-2 text-sm text-white/90"
                             : "flex items-start gap-2 text-sm text-[#3d5a4c]"
                         }
                       >
-                        <MdCheck
-                          className={
-                            featured
-                              ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
-                              : "mt-0.5 shrink-0 text-lg text-primary-home"
-                          }
-                        />
-                        <span>{f}</span>
+                        {f.included ? (
+                          <MdCheck
+                            className={
+                              featured
+                                ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
+                                : "mt-0.5 shrink-0 text-lg text-primary-home"
+                            }
+                          />
+                        ) : (
+                          <MdClose className="mt-0.5 shrink-0 text-lg text-gray-400" />
+                        )}
+                        <span className={f.included ? "" : "opacity-60"}>
+                          {f.title}
+                          {f.included && f.note ? `: ${f.note}` : ""}
+                        </span>
                       </li>
                     ))}
                   </ul>

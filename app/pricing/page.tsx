@@ -7,8 +7,9 @@ import {
   type Plan,
   formatPlanPrice,
   durationLabel,
-  featureLine,
-  isFeatureIncluded,
+  allPlanFeatures,
+  planFeatureState,
+  planGridClass,
 } from "@/lib/api";
 
 export default function PricingPage() {
@@ -115,7 +116,7 @@ export default function PricingPage() {
       )}
 
       {!loading && !error && plans.length > 0 && (
-        <div className="mb-8 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className={`mb-8 grid items-stretch gap-6 ${planGridClass(plans.length)}`}>
           {plans.map((plan) => {
             const featured = plan.id === featuredId;
             const cta = ctaFor(plan);
@@ -165,13 +166,11 @@ export default function PricingPage() {
                 )}
 
                 <ul className="mt-6 flex flex-1 flex-col gap-2.5">
-                  {(plan.features || []).map((pf, idx) => {
-                    const included = isFeatureIncluded(pf);
-                    const line = featureLine(pf);
-                    if (!line) return null;
+                  {allPlanFeatures(plans).map((f) => {
+                    const { included, note } = planFeatureState(plan, f.id);
                     return (
                       <li
-                        key={`${plan.id}-${pf.feature?.id ?? idx}`}
+                        key={`${plan.id}-${f.id}`}
                         className={
                           featured
                             ? "flex items-start gap-2 text-sm text-white/90"
@@ -189,7 +188,10 @@ export default function PricingPage() {
                         ) : (
                           <FaTimesCircle className="mt-0.5 shrink-0 text-gray-400" />
                         )}
-                        <span className={included ? "" : "opacity-60"}>{line}</span>
+                        <span className={included ? "" : "opacity-60"}>
+                          {f.title}
+                          {included && note ? `: ${note}` : ""}
+                        </span>
                       </li>
                     );
                   })}

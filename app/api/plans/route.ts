@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const UPSTREAM = "https://api.narjin.ir/landing/plans/";
+const UPSTREAM = `${process.env.NARJIN_API_URL ?? "https://api.narjin.ir"}/landing/plans/`;
 
 export async function GET() {
   try {

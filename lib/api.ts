@@ -8,6 +8,8 @@ export type PlanFeature = {
     description: string;
   };
   value: string;
+  /** تیک/ضربدر از پنل مدیریت (API جدید)؛ اگر نبود از value حدس زده می‌شود */
+  is_included?: boolean;
 };
 
 export type Plan = {
@@ -54,7 +56,43 @@ export function featureLine(pf: PlanFeature): string {
 }
 
 export function isFeatureIncluded(pf: PlanFeature): boolean {
+  if (typeof pf.is_included === "boolean") return pf.is_included;
   const v = (pf.value ?? "").trim().toLowerCase();
   if (v === "false" || v === "0" || v === "no" || v === "خیر") return false;
   return true;
+}
+
+const GENERIC_VALUES = new Set(["دارد", "ندارد", "خیر", "بله", "true", "false", "1", "0", "yes", "no", "✓", "✗"]);
+
+/** توضیح اختیاری کنار ویژگی (مثلاً «تا ۲ نفر»)؛ مقدارهای عمومی دارد/ندارد نادیده گرفته می‌شود. */
+export function featureNote(pf: PlanFeature): string {
+  const v = (pf.value ?? "").trim();
+  return GENERIC_VALUES.has(v.toLowerCase()) ? "" : v;
+}
+
+/** اجتماع ویژگی‌های همهٔ پلن‌ها (به ترتیب اولین ظهور) تا همهٔ کارت‌ها یک‌اندازه و هم‌تراز شوند. */
+export function allPlanFeatures(plans: Plan[]): { id: number; title: string }[] {
+  const seen = new Map<number, string>();
+  for (const p of plans)
+    for (const pf of p.features || []) {
+      const id = pf.feature?.id;
+      if (id != null && !seen.has(id)) seen.set(id, pf.feature.title);
+    }
+  return Array.from(seen, ([id, title]) => ({ id, title }));
+}
+
+/** وضعیت یک ویژگی در یک پلن: اگر در پلن نباشد = ضربدر. */
+export function planFeatureState(plan: Plan, featureId: number): { included: boolean; note: string } {
+  const pf = (plan.features || []).find((x) => x.feature?.id === featureId);
+  if (!pf) return { included: false, note: "" };
+  return { included: isFeatureIncluded(pf), note: featureNote(pf) };
+}
+
+/** ستون‌های گرید: تا ۴ (و ۵) پلن همیشه در «یک ردیف» (روی دسکتاپ). */
+export function planGridClass(count: number): string {
+  if (count <= 1) return "grid-cols-1 mx-auto max-w-md";
+  if (count === 2) return "grid-cols-1 md:grid-cols-2 mx-auto max-w-3xl";
+  if (count === 3) return "grid-cols-1 md:grid-cols-3";
+  if (count === 4) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+  return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5";
 }
