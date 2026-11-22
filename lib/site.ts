@@ -16,6 +16,7 @@ export interface SiteSettings {
   comparison_with_title: string;
   testimonials_title: string;
   pricing_title: string;
+  pricing_trial_text: string;
   faq_title: string;
   contact_title: string;
   contact_subtitle: string;
@@ -54,6 +55,7 @@ export const DEFAULT_SITE: SiteContent = {
     comparison_with_title: "با نارژین",
     testimonials_title: "مدیران سالن درباره نارژین چی می‌گن؟",
     pricing_title: "از رایگان شروع کنید؛ با رشد سالن ارتقا بدید",
+    pricing_trial_text: "۱۴ روز اول کاملاً رایگان است؛ با تمامی ویژگی‌ها و بدون نیاز به کارت بانکی.",
     faq_title: "قبل از شروع، این‌ها رو بدونید",
     contact_title: "آماده‌اید سالنتون رو آنلاین کنید؟",
     contact_subtitle: "فرم رو پر کنید یا مستقیم تماس بگیرید؛ کارشناسان ما جواب می‌دن.",

@@ -18,6 +18,8 @@ export type Plan = {
   price: number;
   duration_days: number;
   features: PlanFeature[];
+  /** پلن پیشنهادی (از پنل مدیریت) */
+  is_recommended?: boolean;
 };
 
 export type Article = {
@@ -95,4 +97,23 @@ export function planGridClass(count: number): string {
   if (count === 3) return "grid-cols-1 md:grid-cols-3";
   if (count === 4) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
   return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5";
+}
+
+/** پلن پیشنهادی (از پنل مدیریت)؛ اگر نبود، پلن میانیِ پولی. */
+export function featuredPlanId(plans: Plan[]): number | undefined {
+  const rec = plans.find((p) => p.is_recommended);
+  if (rec) return rec.id;
+  const paid = plans.filter((p) => p.price > 0).sort((a, b) => a.price - b.price);
+  if (paid.length >= 1) return paid[Math.floor((paid.length - 1) / 2)].id;
+  return plans[1]?.id ?? plans[0]?.id;
+}
+
+/** مرتب‌سازی نمایش: بر اساس قیمت؛ اگر پلن پیشنهادی هست، وسط کارت‌ها قرار می‌گیرد. */
+export function orderPlansForDisplay(plans: Plan[]): Plan[] {
+  const sorted = [...plans].sort((a, b) => a.price - b.price);
+  const rec = sorted.find((p) => p.is_recommended);
+  if (!rec || sorted.length < 3) return sorted;
+  const rest = sorted.filter((p) => p.id !== rec.id);
+  rest.splice(Math.floor((sorted.length - 1) / 2), 0, rec);
+  return rest;
 }

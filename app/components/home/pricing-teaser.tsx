@@ -8,10 +8,14 @@ import {
   formatPlanPrice,
   durationLabel,
   allPlanFeatures,
+  featuredPlanId,
+  orderPlansForDisplay,
   planFeatureState,
   planGridClass,
 } from "@/lib/api";
 import type { SiteContent } from "@/lib/site";
+import PlanCard from "../pricing/plan-card";
+import TrialBanner from "../pricing/trial-banner";
 
 export default function PricingTeaser({ site }: { site: SiteContent }) {
   const pricingTitle = site.settings.pricing_title;
@@ -37,14 +41,7 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
     };
   }, []);
 
-  const featuredId = (() => {
-    const paid = plans.filter((p) => p.price > 0);
-    if (paid.length >= 1) {
-      const sorted = [...paid].sort((a, b) => a.price - b.price);
-      return sorted[Math.floor((sorted.length - 1) / 2)]?.id ?? paid[0].id;
-    }
-    return plans[1]?.id ?? plans[0]?.id;
-  })();
+  const featuredId = featuredPlanId(plans);
 
   return (
     <section className="bg-background-home py-12 sm:py-16" id="pricing-preview">
@@ -74,114 +71,37 @@ export default function PricingTeaser({ site }: { site: SiteContent }) {
         )}
 
         {!loading && plans.length > 0 && (
-          <div className={`grid items-stretch gap-5 ${planGridClass(plans.length)}`}>
-            {plans.map((p) => {
-              const featured = p.id === featuredId;
-              const rows = allPlanFeatures(plans).slice(0, 6).map((f) => ({ ...f, ...planFeatureState(p, f.id) }));
-              const isFree = !p.price || p.price <= 0;
-              const isOrg = /سازمان|enterprise/i.test(p.title || "");
-
-              return (
-                <div
-                  key={p.id}
-                  className={
-                    featured
-                      ? "relative flex flex-col rounded-2xl border border-primary-home bg-primary-home p-5 text-white shadow-lg sm:p-6"
-                      : "relative flex flex-col rounded-2xl border border-primary-home/15 bg-white p-5 sm:p-6"
-                  }
-                >
-                  {featured && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ffc329] px-3 py-0.5 text-xs font-bold text-[#003527]">
-                      محبوب‌ترین
-                    </span>
-                  )}
-                  <h3
-                    className={
-                      featured
-                        ? "text-lg font-bold text-white"
-                        : "text-lg font-bold text-[#15241c]"
-                    }
-                  >
-                    {p.title}
-                  </h3>
-                  <p
-                    className={
-                      featured
-                        ? "mt-2 text-2xl font-extrabold text-[#ffc329]"
-                        : "mt-2 text-2xl font-extrabold text-primary-home"
-                    }
-                  >
-                    {formatPlanPrice(p.price)}
-                  </p>
-                  {durationLabel(p.duration_days) && (
-                    <p
-                      className={
-                        featured ? "text-xs text-white/70" : "text-xs text-[#5a7266]"
-                      }
-                    >
-                      {durationLabel(p.duration_days)}
-                    </p>
-                  )}
-                  <ul className="mt-5 flex flex-1 flex-col gap-2.5">
-                    {rows.map((f) => (
-                      <li
-                        key={f.id}
-                        className={
-                          featured
-                            ? "flex items-start gap-2 text-sm text-white/90"
-                            : "flex items-start gap-2 text-sm text-[#3d5a4c]"
-                        }
-                      >
-                        {f.included ? (
-                          <MdCheck
-                            className={
-                              featured
-                                ? "mt-0.5 shrink-0 text-lg text-[#ffc329]"
-                                : "mt-0.5 shrink-0 text-lg text-primary-home"
-                            }
-                          />
-                        ) : (
-                          <MdClose className="mt-0.5 shrink-0 text-lg text-gray-400" />
-                        )}
-                        <span className={f.included ? "" : "opacity-60"}>
-                          {f.title}
-                          {f.included && f.note ? `: ${f.note}` : ""}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  {isFree ? (
-                    <a
-                      href={site.settings.hero_cta_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
-                    >
-                      {site.settings.hero_cta_text}
-                    </a>
-                  ) : isOrg ? (
-                    <Link
-                      href="/#contact"
-                      className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
-                    >
-                      دریافت مشاوره
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/pricing"
-                      className={
-                        featured
-                          ? "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-primary-home transition hover:bg-white/90"
-                          : "mt-6 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary-home px-4 py-3 text-sm font-bold text-white transition hover:opacity-95"
-                      }
-                    >
-                      مشاهده پلن‌ها
-                    </Link>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <>
+            <TrialBanner text={site.settings.pricing_trial_text} />
+            <div className={`grid items-stretch gap-6 ${planGridClass(plans.length)}`}>
+              {orderPlansForDisplay(plans).map((p) => {
+                const featured = p.id === featuredId;
+                const rows = allPlanFeatures(plans)
+                  .slice(0, 6)
+                  .map((f) => ({ ...f, ...planFeatureState(p, f.id) }));
+                const isFree = !p.price || p.price <= 0;
+                const isOrg = /سازمان|enterprise/i.test(p.title || "");
+                const base =
+                  "inline-flex min-h-[48px] w-full items-center justify-center rounded-full px-4 py-3 text-sm font-bold transition";
+                const primary = `${base} bg-primary-home text-white hover:opacity-95`;
+                const onDark = `${base} bg-white text-primary-home hover:bg-white/90`;
+                const cta = isFree ? (
+                  <a href={site.settings.hero_cta_url} target="_blank" rel="noopener noreferrer" className={featured ? onDark : primary}>
+                    {site.settings.hero_cta_text}
+                  </a>
+                ) : isOrg ? (
+                  <Link href="/#contact" className={featured ? onDark : primary}>
+                    دریافت مشاوره
+                  </Link>
+                ) : (
+                  <Link href="/pricing" className={featured ? onDark : primary}>
+                    مشاهده پلن‌ها
+                  </Link>
+                );
+                return <PlanCard key={p.id} plan={p} featured={featured} rows={rows} cta={cta} />;
+              })}
+            </div>
+          </>
         )}
 
         <p className="mt-6 text-center text-sm font-medium text-[#3d5a4c]">
