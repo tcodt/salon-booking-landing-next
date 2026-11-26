@@ -26,9 +26,7 @@ export default function Faq({ site }: { site: SiteContent }) {
                   <span className="min-w-0 flex-1">{item.q}</span>
                   <MdExpandMore className={`shrink-0 text-2xl text-primary-home transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </button>
-                {isOpen && (
-                  <div className="border-t border-primary-home/10 px-4 pb-4 pt-3 text-sm leading-relaxed text-[#3d5a4c] sm:px-5">{item.a}</div>
-                )}
+                <div hidden={!isOpen} className="border-t border-primary-home/10 px-4 pb-4 pt-3 text-sm leading-relaxed text-[#3d5a4c] sm:px-5">{item.a}</div>
               </div>
             );
           })}

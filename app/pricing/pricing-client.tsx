@@ -13,12 +13,21 @@ import {
   planGridClass,
 } from "@/lib/api";
 
-export default function PricingClient({ trialText }: { trialText: string }) {
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function PricingClient({
+  trialText,
+  initialPlans,
+  faqs,
+}: {
+  trialText: string;
+  initialPlans: Plan[] | null;
+  faqs: { question: string; answer: string }[];
+}) {
+  const [plans, setPlans] = useState<Plan[]>(initialPlans ?? []);
+  const [loading, setLoading] = useState(initialPlans === null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialPlans !== null) return; // سمت سرور آماده است
     let cancelled = false;
     (async () => {
       setLoading(true);
@@ -42,7 +51,7 @@ export default function PricingClient({ trialText }: { trialText: string }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialPlans]);
 
   const featuredId = featuredPlanId(plans);
 
@@ -69,11 +78,11 @@ export default function PricingClient({ trialText }: { trialText: string }) {
     <main className="mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 md:px-12">
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-3xl font-extrabold text-primary-home sm:text-4xl md:text-5xl">
-          پلن مناسب سالن خود را انتخاب کنید
+          قیمت نرم‌افزار مدیریت سالن زیبایی؛ پلن مناسب سالن خود را انتخاب کنید
         </h1>
         <p className="mx-auto max-w-2xl text-base leading-relaxed text-[#3d5a4c] sm:text-lg">
-          تعرفه‌ها از سرور نارژین بارگذاری می‌شوند. هر زمان نیاز داشتید می‌توانید
-          پلن را ارتقا دهید.
+          امکانات هر پلن را کنار هم ببینید، با دورهٔ آزمایشی شروع کنید و هر زمان
+          نیاز داشتید پلن را ارتقا دهید.
         </p>
       </div>
 
@@ -136,6 +145,23 @@ export default function PricingClient({ trialText }: { trialText: string }) {
           </div>
         </>
       )}
+
+      <section className="mx-auto mt-12 max-w-3xl" aria-labelledby="pricing-faq">
+        <h2 id="pricing-faq" className="mb-6 text-center text-2xl font-extrabold text-primary-home">
+          سؤالات متداول درباره تعرفه
+        </h2>
+        <div className="space-y-3">
+          {faqs.map((f) => (
+            <details key={f.question} className="rounded-2xl border border-primary-home/10 bg-white px-4 py-3">
+              <summary className="cursor-pointer font-bold text-[#15241c]">{f.question}</summary>
+              <p className="mt-2 leading-relaxed text-[#3d5a4c]">{f.answer}</p>
+            </details>
+          ))}
+        </div>
+        <p className="mt-6 text-center text-sm text-[#3d5a4c]">
+          جزئیات هر قابلیت را در <Link href="/features" className="font-bold text-primary-home underline">صفحهٔ امکانات نارژین</Link> ببینید.
+        </p>
+      </section>
     </main>
   );
 }

@@ -24,6 +24,8 @@ import {
   FaBirthdayCake,    // این آیکون وجود دارد
 } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
+import { FEATURE_FAQS } from "./faqs";
 
 export default function FeaturesPage() {
   const [activeTab, setActiveTab] = useState("all");
@@ -150,7 +152,7 @@ export default function FeaturesPage() {
       icon: FaBirthdayCake,
       title: "پیام تبریک تولد",
       description:
-        "در روز تولد مشتری، پیام تبریک همراه با کد تخفیف ارسال کنید و تجربه‌ای متفاوت برای او بسازید.",
+        "در روز تولد مشتری، پیامک تبریک به‌صورت خودکار برای او ارسال می‌شود تا ارتباط سالن با مشتری گرم‌تر بماند.",
     },
   ];
 
@@ -228,11 +230,10 @@ export default function FeaturesPage() {
 
     <section className="text-center mb-16 md:mb-20 fade-in-header">
       <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-6">
-        فراتر از یک مدیریت ساده
+        امکانات نرم‌افزار مدیریت سالن زیبایی نارژین
       </h1>
       <p className="text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-        نارژین ابزارهای هوشمندی را در اختیار شما می‌گذارد تا روی هنر خود تمرکز
-        کنید و دغدغه‌های مدیریتی را به ما بسپارید.
+        از نوبت‌دهی آنلاین و تقویم نوبت‌ها تا پرونده مشتری، مدیریت کارکنان و گزارش درآمد؛ هر قابلیت را بر اساس کار روزانهٔ سالن ببینید و ادامهٔ کار را به نارژین بسپارید.
       </p>
     </section>
 
@@ -336,6 +337,26 @@ export default function FeaturesPage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto py-12" aria-labelledby="features-faq">
+        <h2 id="features-faq" className="text-2xl md:text-3xl font-extrabold text-primary mb-6 text-center">
+          سؤالات پرتکرار درباره امکانات نارژین
+        </h2>
+        <div className="space-y-3">
+          {FEATURE_FAQS.map((f) => (
+            <details key={f.question} className="rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3">
+              <summary className="cursor-pointer font-bold text-primary">{f.question}</summary>
+              <p className="mt-2 text-on-surface-variant leading-relaxed">{f.answer}</p>
+            </details>
+          ))}
+        </div>
+        <p className="mt-6 text-center text-sm text-on-surface-variant">
+          مقایسهٔ پلن‌ها: <Link href="/pricing" className="font-bold text-primary underline">تعرفه نرم‌افزار مدیریت سالن زیبایی</Link>
+          {" · "}
+          <Link href="/blog" className="font-bold text-primary underline">آموزش‌های مدیریت سالن</Link>
+        </p>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-primary rounded-3xl p-8 md:p-12 text-center text-white mt-12 overflow-hidden relative">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
@@ -354,12 +375,18 @@ export default function FeaturesPage() {
 با نارژین، رزرو آنلاین، مدیریت مشتریان، کارکنان و گزارش‌های مالی را در یک پنل ساده و حرفه‌ای تجربه کنید. همین امروز رایگان شروع کنید و اولین قدم را برای رشد کسب‌وکار خود بردارید.
           </p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <button className="bg-secondary-container text-on-secondary-container text-base md:text-xl font-bold px-8 md:px-12 py-3 md:py-4 rounded-full pulse-animation hover:scale-105 transition-transform duration-300">
+            <a
+              href="https://panel.narjin.ir"
+              className="bg-secondary-container text-on-secondary-container text-base md:text-xl font-bold px-8 md:px-12 py-3 md:py-4 rounded-full pulse-animation hover:scale-105 transition-transform duration-300"
+            >
               شروع ۱۴ روز تست رایگان
-            </button>
-            <button className="border border-white/30 text-white px-8 md:px-12 py-3 md:py-4 rounded-full text-base md:text-xl font-bold hover:bg-white/10 transition-colors duration-300">
-              مشاوره رایگان
-            </button>
+            </a>
+            <Link
+              href="/pricing"
+              className="border border-white/30 text-white px-8 md:px-12 py-3 md:py-4 rounded-full text-base md:text-xl font-bold hover:bg-white/10 transition-colors duration-300"
+            >
+              مشاهده تعرفه‌ها
+            </Link>
           </div>
         </div>
       </section>

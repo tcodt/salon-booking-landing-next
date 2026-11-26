@@ -8,6 +8,7 @@ import PricingTeaser from "./components/home/pricing-teaser";
 import Faq from "./components/home/faq";
 import ContactForm from "./components/home/contact-form";
 import { getSite } from "@/lib/site";
+import { JsonLd, SITE_URL, faqPage } from "@/lib/jsonld";
 
 const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -43,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ...metadata,
     title: settings.meta_title,
     description: settings.meta_description,
-    openGraph: { ...metadata.openGraph, title: settings.meta_title, description: settings.meta_description },
+    openGraph: { ...metadata.openGraph, title: settings.meta_title, description: settings.meta_description, images: [{ url: "/images/logo-main.png", width: 1280, height: 1280, alt: "لوگوی نارژین" }] },
   };
 }
 
@@ -51,6 +52,22 @@ export default async function Home() {
   const site = await getSite();
   return (
     <main>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "نارژین",
+            url: SITE_URL,
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            inLanguage: "fa-IR",
+            description: site.settings.meta_description,
+            publisher: { "@id": `${SITE_URL}/#organization` },
+          },
+          ...(site.faqs.length ? [faqPage(site.faqs)] : []),
+        ]}
+      />
       <Hero site={site} />
       <ProductVideo site={site} />
       <Features site={site} />
