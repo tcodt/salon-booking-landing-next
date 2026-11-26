@@ -116,7 +116,7 @@ export default function ContactForm({ site }: { site: SiteContent }) {
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 font-bold text-white transition hover:opacity-95"
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#178741] px-4 py-3 font-bold text-white transition hover:opacity-95"
             >
               <FaWhatsapp className="text-xl" />
               گفتگو در واتس‌اپ

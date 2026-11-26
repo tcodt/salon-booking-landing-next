@@ -1,5 +1,3 @@
-"use client";
-
 import PhoneMockup from "./phone-mockup";
 
 import { MdPlayArrow } from "react-icons/md";

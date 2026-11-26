@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -32,7 +30,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             <Link href="/" className="inline-flex items-center gap-3">
               <Image
                 src="/images/logo-main.png"
-                alt="نارژین"
+                alt=""
                 width={40}
                 height={40}
                 className="h-10 w-10 object-contain"

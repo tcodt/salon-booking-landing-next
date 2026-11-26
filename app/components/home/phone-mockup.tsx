@@ -76,9 +76,17 @@ function DemoScreen() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-1.5 pb-4 pt-2">
+      {/* نقطه‌های صفحه‌بندی: فقط transform/opacity انیمیت می‌شوند (کامپوزیت)، نه width/background-color */}
+      <div className="flex justify-center gap-2 pb-4 pt-2" aria-hidden>
         {[0, 1, 2].map((i) => (
-          <span key={i} className={`h-1.5 rounded-full transition-all ${step === i ? "w-5 bg-[#003527]" : "w-1.5 bg-[#003527]/25"}`} />
+          <span key={i} className="relative block h-1.5 w-1.5">
+            <span className="absolute inset-0 rounded-full bg-[#003527]/25" />
+            <span
+              className={`absolute inset-0 rounded-full bg-[#003527] transition-[transform,opacity] duration-300 ${
+                step === i ? "scale-x-[3.33] opacity-100" : "scale-x-100 opacity-0"
+              }`}
+            />
+          </span>
         ))}
       </div>
     </div>

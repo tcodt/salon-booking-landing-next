@@ -78,7 +78,7 @@ export default function Navbar() {
             <div className="relative h-10 w-10 flex-shrink-0 md:h-12 md:w-12">
               <Image
                 src="/images/logo-main.png"
-                alt="نارژین"
+                alt=""
                 width={48}
                 height={48}
                 className="object-contain transition-transform duration-300 group-hover:scale-105"
@@ -161,7 +161,7 @@ export default function Navbar() {
               <div className="relative h-10 w-10 flex-shrink-0">
                 <Image
                   src="/images/logo-main.png"
-                  alt="نارژین"
+                  alt=""
                   width={40}
                   height={40}
                   className="object-contain"

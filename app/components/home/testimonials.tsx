@@ -121,20 +121,25 @@ export default function Testimonials({ site }: { site: SiteContent }) {
           >
             <MdChevronRight className="text-2xl" />
           </button>
-          <div className="flex gap-1.5">
+          <div className="flex">
             {samples.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => scrollToIndex(i)}
-                className={
-                  i === index
-                    ? "h-2 w-5 rounded-full bg-primary-home transition-all"
-                    : "h-2 w-2 rounded-full bg-primary-home/25 transition-all"
-                }
+                className="flex h-6 w-6 items-center justify-center"
                 aria-label={`نظر ${i + 1}`}
                 aria-current={i === index}
-              />
+              >
+                {/* ناحیهٔ لمس ۲۴×۲۴؛ خودِ نقطه مثل قبل ۸ پیکسل است */}
+                <span
+                  className={
+                    i === index
+                      ? "block h-2 w-5 rounded-full bg-primary-home transition-all"
+                      : "block h-2 w-2 rounded-full bg-primary-home/25 transition-all"
+                  }
+                />
+              </button>
             ))}
           </div>
           <button

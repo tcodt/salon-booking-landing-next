@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { getSite } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// فونت اصلی سایت: IRANSansX (نسخهٔ اعداد فارسی، وزن Medium) — فایل رسمی WOFF2 همان فونتِ قبلی (TTF).
+// display=swap + preload خودکار + فونت جایگزین با متریک نزدیک تا متن تیتر بی‌دلیل منتظر فونت نماند.
+const mainFont = localFont({
+  src: "./fonts/IRANSansXFaNum-Medium.woff2",
+  display: "swap",
+  variable: "--font-main",
+  adjustFontFallback: "Arial",
+  fallback: ["Tahoma", "Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -52,17 +52,9 @@ export default async function RootLayout({
           sizes="32x32"
         />
         <link rel="apple-touch-icon" href="/images/logo-main.png" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${mainFont.variable} antialiased`}
       >
         <Navbar />
         {children}

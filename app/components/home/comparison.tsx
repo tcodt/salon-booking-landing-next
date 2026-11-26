@@ -1,5 +1,3 @@
-"use client";
-
 import { MdCheckCircleOutline, MdClose } from "react-icons/md";
 
 import type { SiteContent } from "@/lib/site";

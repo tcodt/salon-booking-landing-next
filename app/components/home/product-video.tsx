@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { MdPlayArrow } from "react-icons/md";
 
 import type { SiteContent } from "@/lib/site";
@@ -41,14 +40,8 @@ export default function ProductVideo({ site }: { site: SiteContent }) {
               className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-[#0a2e22] transition hover:bg-[#0c3528]"
               aria-label="پخش ویدیوی معرفی نارژین"
             >
-              <Image
-                src="/images/video-poster.jpg"
-                alt=""
-                fill
-                className="object-cover opacity-40"
-                sizes="(max-width: 900px) 100vw, 900px"
-                priority={false}
-              />
+              {/* پوستر: فایل /images/video-poster.jpg در ریپو وجود ندارد و درخواست آن همیشه ۴۰۰ می‌داد (خطای کنسول).
+                  با گذاشتن فایل در public/images می‌توان <Image fill className="object-cover opacity-40" /> را اینجا برگرداند. */}
               <span className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-primary-home shadow-lg sm:h-20 sm:w-20">
                 <MdPlayArrow className="text-4xl sm:text-5xl" aria-hidden />
               </span>
