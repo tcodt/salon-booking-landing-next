@@ -1,29 +1,14 @@
 import { NextResponse } from "next/server";
+import { fetchArticles } from "@/lib/articles";
 
-const UPSTREAM = "https://api.narjin.ir/landing/article/";
-
+// همیشه آرایهٔ ساده برمی‌گرداند (سازگار با sitemap و کلاینت)، حتی اگر API صفحه‌بندی‌شده باشد.
 export async function GET() {
-  try {
-    const response = await fetch(UPSTREAM, {
-      headers: { accept: "application/json" },
-      next: { revalidate: 60 },
-    });
-    const text = await response.text();
-    let data: unknown;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      return NextResponse.json(
-        { error: true, message: "پاسخ نامعتبر از سرور مقالات" },
-        { status: 502 },
-      );
-    }
-    return NextResponse.json(data, { status: response.status });
-  } catch (err) {
-    console.error("articles proxy error:", err);
+  const articles = await fetchArticles();
+  if (articles === null) {
     return NextResponse.json(
-      { error: true, message: "اتصال به API مقالات برقرار نشد" },
+      { error: true, message: "دریافت مقالات از سرور ممکن نشد" },
       { status: 502 },
     );
   }
+  return NextResponse.json(articles);
 }
